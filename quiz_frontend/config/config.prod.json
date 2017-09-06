@@ -1,0 +1,12 @@
+{
+    "devServer": {
+        "host": "localhost",
+        "port": 8080
+    },
+    "global": {
+        "api": {
+            "url": "http://localhost:9000/api",
+            "tokenTtl": 432000
+        }
+    }
+}

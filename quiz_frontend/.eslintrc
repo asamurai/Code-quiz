@@ -1,0 +1,47 @@
+{
+	"parser": "babel-eslint",
+	"extends": "eslint:recommended",
+	"env": {
+		"browser": true,
+		"node": true,
+		"es6": true,
+		"jest": true
+	},
+	"parserOptions": {
+		"ecmaFeatures": {
+			"jsx": true
+		}	
+	},
+	"globals": {
+		"$": false
+	},
+	"plugins": ["react"],
+	"rules": {
+		"eol-last": 1, //end of line
+		"no-console": 0, //usage of console for debagging,
+		"no-var": 2, //disable var 
+		"semi": 1,
+		"no-else-return": 2,
+		"no-mixed-spaces-and-tabs": 1,
+		"no-unreachable": 0, //specially for reducer
+		"no-multi-spaces": 1,
+		"no-throw-literal": 2,
+		"no-underscore-dangle": 0,
+		"react/jsx-boolean-value": 2,
+		"react/jsx-curly-spacing": 2,
+		"react/jsx-no-bind": 2,
+		"react/jsx-no-duplicate-props": 2,
+		"react/jsx-no-undef": 2,
+		"react/jsx-uses-react": 2,
+		"react/jsx-uses-vars": 2,
+		"react/no-danger": 2,
+		"react/no-did-mount-set-state": 2,
+		"react/no-did-update-set-state": 2,
+		"react/no-direct-mutation-state": 2,
+		"react/no-multi-comp": 2,
+		"react/no-unknown-property": 2,
+		"react/react-in-jsx-scope": 2,
+		"react/self-closing-comp": 2,
+		"strict": [2, "global"]
+	}
+}
