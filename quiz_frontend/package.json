@@ -21,7 +21,12 @@
   "author": "Artem Vergun",
   "license": "ISC",
   "engines": {
-    "node": "7.10.1"
+    "node": "8.4.0"
+  },
+  "jest":{
+    "moduleNameMapper": {
+      "^.+\\.(css|less|scss|sass)$": "babel-jest"
+    }    
   },
   "devDependencies": {
     "babel-core": "^6.25.0",
@@ -44,6 +49,7 @@
     "jest": "^20.0.4",
     "json-loader": "^0.5.7",
     "node-sass": "^4.5.3",
+    "react-test-renderer": "^15.6.1",
     "regenerator-runtime": "^0.10.5",
     "rimraf": "^2.6.1",
     "sass-loader": "^6.0.6",
@@ -53,6 +59,7 @@
     "webpack-dev-server": "^2.6.1"
   },
   "dependencies": {
+    "classnames": "^2.2.5",
     "react": "^15.6.1",
     "react-dom": "^15.6.1",
     "react-hot-loader": "^3.0.0-beta.7",
