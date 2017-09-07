@@ -1,17 +1,23 @@
 import React from 'react';
 import { Button } from '../index.js';
-import renderer from 'react-test-renderer';
+import { shallow } from 'enzyme';
+import toJson from 'enzyme-to-json';
 
-it('Button title renders correctly', () => {
-  const buttonDefaultTitle = renderer.create(
-    <Button/>
-  ).toJSON();
-  expect(buttonDefaultTitle).toMatchSnapshot();
-
-  const buttonCustomTitle = renderer.create(
-    <Button
-        title="subscribe"
-    />
-  ).toJSON();
-  expect(buttonCustomTitle).toMatchSnapshot();
+describe('Button component test', () => {
+  it('Button title renders correctly without props', () => {
+    const button = shallow(
+      <Button/>
+    );
+    const tree = toJson(button);
+    expect(tree).toMatchSnapshot();
+  }); 
+  it('Button title renders correctly with props', () => { 
+    const button = shallow(
+      <Button
+          title="subscribe"
+      />
+    );
+    const tree = toJson(button);
+    expect(tree).toMatchSnapshot();
+  }); 
 });

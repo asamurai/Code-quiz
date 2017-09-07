@@ -1,17 +1,13 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`renders correctly 1`] = `
-<div
-  className={undefined}
->
-  Button
+exports[`Button component test Button title renders correctly with props 1`] = `
+<div>
+  subscribe
 </div>
 `;
 
-exports[`renders correctly 2`] = `
-<div
-  className={undefined}
->
-  subscribe
+exports[`Button component test Button title renders correctly without props 1`] = `
+<div>
+  Button
 </div>
 `;
