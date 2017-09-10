@@ -1,16 +1,16 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`renders correctly 1`] = `
+exports[`Button title renders correctly 1`] = `
 <div
-  className={undefined}
+  className="button"
 >
   Button
 </div>
 `;
 
-exports[`renders correctly 2`] = `
+exports[`Button title renders correctly 2`] = `
 <div
-  className={undefined}
+  className="button"
 >
   subscribe
 </div>
