@@ -1,24 +1,20 @@
 import React, { Component } from 'react';
 import './../assets/style/index.sass';
 
-import { Button } from './components/ui';
+import { Icon } from './components/ui';
+import icons from './utils/icons.json';
 
 class Application extends Component {
     constructor(props){
         super(props);
-        this.onClick = this.onClick.bind(this);
-    }
-
-    onClick(){
-        console.log('click');
     }
 
     render () {
         return (
             <div>
                 <div>Hello word</div>
-                <Button
-                    onMouseEnter={this.onClick}
+                <Icon
+                    icon={icons.git}
                 />
             </div>
         );
