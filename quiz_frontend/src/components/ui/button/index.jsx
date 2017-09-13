@@ -41,7 +41,7 @@ class Button extends Component {
     }
 
     render () {
-        const { title, icon,...rest } = this.props;
+        const { title, icon, iconColor,...rest } = this.props;
         const { iconLeft, iconRight } = this.state;
         return (
             <div
@@ -52,12 +52,14 @@ class Button extends Component {
                 {icon && iconLeft &&
                     <Icon
                         icon={icon}
+                        iconColor={iconColor}
                     />
                 }
                 {title}
                 {icon && iconRight &&
                     <Icon
                         icon={icon}
+                        color={iconColor}
                     />
                 }
             </div>
@@ -69,13 +71,15 @@ Button.propTypes = {
     title: PropTypes.string,
     icon: PropTypes.string,
     iconLeft: PropTypes.bool,
-    iconRight: PropTypes.bool
+    iconRight: PropTypes.bool,
+    iconColor: PropTypes.string
 };
 
 Button.defaultProps = {
     title: 'Button',
     iconLeft: true,
-    iconRight: false
+    iconRight: false,
+    iconColor: '#ffffff'
 };
 
 export default Button;

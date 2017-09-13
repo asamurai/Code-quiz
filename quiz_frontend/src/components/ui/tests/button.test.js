@@ -26,7 +26,8 @@ describe('Button component test', () => {
       title: 'subscribe',
       icon: icons.facebook,
       iconRight: true,
-      iconLeft: false
+      iconLeft: false,
+      iconColor: 'blue'
     };
     const button = shallow(
       <Button
@@ -34,10 +35,12 @@ describe('Button component test', () => {
           icon={dummyProps.icon}
           iconRight={dummyProps.iconRight}
           iconLeft={dummyProps.iconLeft}
+          iconColor={'blue'}
       />
     );
     const tree = toJson(button);
     
+    expect(button.find(Icon).props().color).toBe('blue');
     expect(button.find(Icon).length).toBe(1);
     expect(button.instance().props.icon).toBe(dummyProps.icon);
     expect(button.instance().props.iconRight).toBe(dummyProps.iconRight);
