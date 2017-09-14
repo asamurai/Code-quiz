@@ -24,14 +24,13 @@ class TextField extends Component {
     render () {
         const { type, label } = this.props;
         const { value } =this.state;
-        const id = `${new Date().getTime()}_${label}}`;
         return (
             <div>
-                <label htmlFor={id}>
+                <label htmlFor={label}>
                     {label}
                 </label>
                 <input 
-                    id={id} 
+                    id={label} 
                     type={type} 
                     value={value} 
                     onChange={this.onChange}
@@ -42,7 +41,7 @@ class TextField extends Component {
 }
 
 TextField.propTypes = {
-    type: PropTypes.oneOf['text', 'password'],
+    type: PropTypes.oneOf(['text', 'password']),
     label: PropTypes.string.isRequired,
     value: PropTypes.string
 };

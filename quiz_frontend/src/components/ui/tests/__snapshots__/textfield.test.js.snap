@@ -1,0 +1,17 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`TextField component test TextField renders with default props 1`] = `
+<div>
+  <label
+    htmlFor="text"
+  >
+    text
+  </label>
+  <input
+    id="text"
+    onChange={[Function]}
+    type="text"
+    value=""
+  />
+</div>
+`;
