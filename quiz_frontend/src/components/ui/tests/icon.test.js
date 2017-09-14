@@ -11,13 +11,15 @@ describe('Button component test', () => {
                 icon={icons.facebook}
             />
         );
+        const defaultStyles = {
+            backgroundColor: 'rgba(0,0,0,0)',
+            display: 'inline-block',
+            verticalAlign: 'middle',
+        };
         const tree = toJson(icon);
         
         expect(icon.instance().props.icon).toBe(icons.facebook);
-        expect(icon.props().style).toEqual({
-            display: 'inline-block',
-            verticalAlign: 'middle',
-        });
+        expect(icon.props().style).toEqual(defaultStyles);
         expect(icon.props().width).toBe('20px');
         expect(icon.props().height===icon.props().width).toBeTruthy();
         expect(icon.props().viewBox).toBe('0 0 1024 1024');
@@ -30,12 +32,14 @@ describe('Button component test', () => {
         const dummyProps = {
             icon: icons.vk,
             color: 'blue',
-            size: 32
+            size: 32,
+            bgColor: 'green'
         }
         const icon = shallow(
             <Icon
                 icon={dummyProps.icon}
                 color={dummyProps.color}
+                bgColor={dummyProps.bgColor}
                 size={dummyProps.size}
             />
         );
@@ -43,8 +47,10 @@ describe('Button component test', () => {
 
         expect(icon.instance().props.icon).toBe(dummyProps.icon);
         expect(icon.instance().props.color).toBe(dummyProps.color);
+        expect(icon.instance().props.bgColor).toBe(dummyProps.bgColor);
         expect(icon.instance().props.size).toBe(dummyProps.size);
         expect(icon.props().style).toEqual({
+            backgroundColor: dummyProps.bgColor,
             display: 'inline-block',
             verticalAlign: 'middle',
         });

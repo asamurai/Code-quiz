@@ -7,59 +7,31 @@ import styles from './index.sass';
 class Button extends Component {
     constructor(props){
         super(props);
-        this.state = {
-            iconLeft: this.props.iconLeft,
-            iconRight: this.props.iconRight
-        };
-    }
-
-    
-    componentWillMount (){
-        const { iconLeft, iconRight } = this.props;
-        switch (true) {
-            case (!iconLeft && iconRight):
-                this.setState({
-                    iconLeft: false,
-                    iconRight: true                    
-                });
-                break;
-            case (iconLeft && !iconRight):
-                this.setState({
-                    iconLeft: true,
-                    iconRight: false                    
-                });                
-                break;
-            case (iconLeft && iconRight) || (!iconLeft && !iconRight):
-            default:
-                this.setState({
-                    iconLeft: true,
-                    iconRight: false               
-                });
-                console.warn('Params iconLeft and iconRight should not be the same.');
-                break;
-        }
     }
 
     render () {
-        const { title, icon, iconColor,...rest } = this.props;
-        const { iconLeft, iconRight } = this.state;
+        const { title, icon, iconColor, iconBgColor, iconLeft, iconRight,...rest } = this.props;
         return (
             <div
                 className={styles.button}
                 icon={icon}
                 {...rest}
             >   
-                {icon && iconLeft &&
+                {icon && iconLeft && !iconRight &&
                     <Icon
                         icon={icon}
+                        style={{marginRight: '5px'}}
                         color={iconColor}
+                        bgColor={iconBgColor}
                     />
                 }
                 {title}
-                {icon && iconRight &&
+                {icon && !iconLeft && iconRight &&
                     <Icon
                         icon={icon}
+                        style={{marginLeft: '5px'}}
                         color={iconColor}
+                        bgColor={iconBgColor}
                     />
                 }
             </div>
@@ -72,14 +44,14 @@ Button.propTypes = {
     icon: PropTypes.string,
     iconLeft: PropTypes.bool,
     iconRight: PropTypes.bool,
-    iconColor: PropTypes.string
+    iconColor: PropTypes.string,
+    iconBgColor: PropTypes.string
 };
 
 Button.defaultProps = {
     title: 'Button',
     iconLeft: true,
-    iconRight: false,
-    iconColor: '#ffffff'
+    iconRight: false
 };
 
 export default Button;
