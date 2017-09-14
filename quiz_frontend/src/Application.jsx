@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import './../assets/style/index.sass';
 
-import { Icon } from './components/ui';
+import { Button } from './components/ui';
 import icons from './utils/icons.json';
 
 class Application extends Component {
@@ -13,8 +13,10 @@ class Application extends Component {
         return (
             <div>
                 <div>Hello word</div>
-                <Icon
+                <Button 
                     icon={icons.git}
+                    iconRight
+                    iconLeft={false}
                 />
             </div>
         );

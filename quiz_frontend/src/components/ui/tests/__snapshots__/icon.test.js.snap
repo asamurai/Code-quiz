@@ -5,6 +5,7 @@ exports[`Button component test Icon renders with custom props 1`] = `
   height="32px"
   style={
     Object {
+      "backgroundColor": "green",
       "display": "inline-block",
       "verticalAlign": "middle",
     }
@@ -28,6 +29,7 @@ exports[`Button component test Icon renders with default props 1`] = `
   height="20px"
   style={
     Object {
+      "backgroundColor": "rgba(0,0,0,0)",
       "display": "inline-block",
       "verticalAlign": "middle",
     }
@@ -39,7 +41,7 @@ exports[`Button component test Icon renders with default props 1`] = `
     d="M608 192h160v-192h-160c-123.514 0-224 100.486-224 224v96h-128v192h128v512h192v-512h160l32-192h-192v-96c0-17.346 14.654-32 32-32z"
     style={
       Object {
-        "fill": undefined,
+        "fill": "#ffffff",
       }
     }
   />
