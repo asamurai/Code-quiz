@@ -52,7 +52,7 @@ class Button extends Component {
                 {icon && iconLeft &&
                     <Icon
                         icon={icon}
-                        iconColor={iconColor}
+                        color={iconColor}
                     />
                 }
                 {title}
