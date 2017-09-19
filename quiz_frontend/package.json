@@ -63,6 +63,7 @@
     "webpack-dev-server": "^2.6.1"
   },
   "dependencies": {
+    "axios": "^0.16.2",
     "classnames": "^2.2.5",
     "react": "^15.6.1",
     "react-dom": "^15.6.1",
