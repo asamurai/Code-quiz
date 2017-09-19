@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { BrowserRouter } from 'react-router-dom';
 import Application from './Application.jsx';
 
-class Router extends Component {
+class Providers extends Component {
     render () {
         return (
             <BrowserRouter>
@@ -12,5 +12,5 @@ class Router extends Component {
     }
 }
 
-export default Router;
+export default Providers;
 

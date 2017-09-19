@@ -2,22 +2,22 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { AppContainer } from 'react-hot-loader';
 
-import Router from './Router.jsx';
+import Providers from './Providers.jsx';
 
 const root = document.getElementById('root');
 
-const render = (Router) => {
+const render = (Providers) => {
 	ReactDOM.render(
 		<AppContainer>
-			<Router/>
+			<Providers/>
 		</AppContainer>,
 		root
 	);
 };
-render(Router);
+render(Providers);
 
 if(module.hot){
-	module.hot.accept('./Router.jsx', () => {
+	module.hot.accept('./Providers.jsx', () => {
 		render(root);
 	});
 }
