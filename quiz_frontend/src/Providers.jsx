@@ -1,13 +1,20 @@
 import React, { Component } from 'react';
+import { Provider } from 'react-redux';
 import { BrowserRouter } from 'react-router-dom';
-import Application from './Application.jsx';
+import Application from './containers/Application';
+
+import configureStore from './store';
+
+const store = configureStore();
 
 class Providers extends Component {
     render () {
         return (
-            <BrowserRouter>
-                <Application/>
-            </BrowserRouter>
+            <Provider store={store}>
+                <BrowserRouter>
+                    <Application/>
+                </BrowserRouter>
+            </Provider>
         );
     }
 }
