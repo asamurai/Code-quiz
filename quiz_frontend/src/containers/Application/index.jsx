@@ -1,10 +1,12 @@
 import React, { Component } from 'react';
+import { withRouter } from 'react-router-dom';
 import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
 
 import { signOut } from './../../actions/user';
 
 import HeaderNavigation from './../../components/Navigation/HeaderNavigation';
+import Main from './../Main';
 
 import './../../../assets/style/index.sass';
 
@@ -24,9 +26,9 @@ class Application extends Component {
                     userName={data && data.name ? data.name : null}
                     signOutFunction={this.signOut}
                 />
-                <div>
-                    content
-                </div>
+                <Main
+                    user={user}
+                />
             </div>
         );
     }
@@ -45,4 +47,4 @@ function mapDispatchToProps(dispatch) {
     };
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(Application);
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Application));

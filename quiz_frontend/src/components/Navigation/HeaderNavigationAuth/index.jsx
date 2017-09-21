@@ -28,7 +28,7 @@ class HeaderNavigationAuth extends Component {
         return (
             <div>
                 <Link to='/signin'>Sign in</Link>
-                <Link to='/sigup'>Create account</Link>
+                <Link to='/signup'>Create account</Link>
             </div>
         );
     }
