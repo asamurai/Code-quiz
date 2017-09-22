@@ -1,20 +1,22 @@
 import React, { Component } from 'react';
 import { Switch, Route } from 'react-router-dom';
 
-import PrivateRoute from './../../components/PrivateRoute';
-import HomeContainer from './../HomeContainer';
-import AuthContainer from './../AuthContainer';
-import FullQuizzesContainer from './../FullQuizzesContainer';
-import FreeQuizzesContainer from './../FreeQuizzesContainer';
-import UserAccountContainer from './../UserAccountContainer';
-import UserStatisticsContainer from './../UserStatisticsContainer';
-import NotMatchedComponent from './../../components/NotMatchedComponent';
+import PrivateRoute from './../PrivateRoute';
+import HomeContainer from './../../containers/HomeContainer';
+import AuthContainer from './../../containers/AuthContainer';
+import FullQuizzesContainer from './../../containers/FullQuizzesContainer';
+import FreeQuizzesContainer from './../../containers/FreeQuizzesContainer';
+import UserAccountContainer from './../../containers/UserAccountContainer';
+import UserStatisticsContainer from './../../containers/UserStatisticsContainer';
+import NotMatchedComponent from './../NotMatchedComponent';
+
+import styles from './index.sass';
 
 class Main extends Component {
     render () {
         const { loggedIn } = this.props.user;
         return (
-            <main>
+            <main className={styles.content_wrapper}>
                 <Switch>
                     <Route exact path='/' component={HomeContainer}/>
                     <Route path='/signin' component={AuthContainer}/>
