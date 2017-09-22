@@ -5,6 +5,13 @@ import { Button } from './../../ui';
 
 import styles from './../index.sass';
 
+/**
+ * Component with suggestions for authorisation and registration for unauthenticated users and
+ * with user options and signout button for authenticated users.
+ * 
+ * @class HeaderNavigationAuth
+ * @extends {Component}
+ */
 class HeaderNavigationAuth extends Component {
     constructor(props){
         super(props);

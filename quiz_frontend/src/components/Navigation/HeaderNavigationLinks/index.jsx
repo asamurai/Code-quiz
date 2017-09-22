@@ -5,6 +5,12 @@ import { Image } from './../../ui';
 
 import styles from './../index.sass';
 
+/**
+ * Component with default links that are available for all types of user.
+ * 
+ * @class HeaderNavigationLinks
+ * @extends {Component}
+ */
 class HeaderNavigationLinks extends Component {
     render () {
         return (

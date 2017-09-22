@@ -1,7 +1,17 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+
 /**
  * ToDo: Styles and Tests for TextField
+ * 
+ * TextField component
+ * 
+ * @prop {string} type  : type of textfield, can be only 'text' or 'password', default is text
+ * @prop {string} label : label of textefield, required
+ * @prop {string} value : initial value for textfield, default is ''
+ * 
+ * @class TextField
+ * @extends {Component}
  */
 class TextField extends Component {
     constructor(props){

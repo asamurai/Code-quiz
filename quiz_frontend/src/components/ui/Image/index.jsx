@@ -1,6 +1,18 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
+/**
+ * Image component
+ * 
+ * @prop {string} src         : source path to the image, required
+ * @prop {string} alt         : alt title of the image, by default is ''
+ * @prop {string} className   : className of the image, by default is ''
+ * @prop {number} width       : width of image
+ * @prop {number} height      : height of image
+ * 
+ * @class Image
+ * @extends {Component}
+ */
 class Image extends Component {
     render () {
         const { src, alt, width, height, className } = this.props;

@@ -4,6 +4,19 @@ import { Icon } from './../index.js';
 
 import styles from './index.sass';
 
+/**
+ * Button component
+ * 
+ * @prop {string} title         : button title
+ * @prop {string} icon          : button icon,by default at the left part of element. Renders Icon component.
+ * @prop {bool} iconLeft        : makes button to be at the left part of element
+ * @prop {bool} iconRight       : makes button to be at the right part of element
+ * @prop {string} iconColor     : icon color
+ * @prop {string} iconBgColor   : icon background color
+ * 
+ * @class Button
+ * @extends {Component}
+ */
 class Button extends Component {
     constructor(props){
         super(props);

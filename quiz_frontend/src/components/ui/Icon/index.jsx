@@ -1,6 +1,16 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
+/**
+ * Icon component
+ * 
+ * @prop {string} icon    : icon path, required
+ * @prop {number} size    : icon size, by default is 20
+ * @prop {string} color   : icon color, by default is #ffffff
+ * @prop {string} bgColor : icon background color, by default is rgba(0, 0, 0, 0)
+ * 
+ * @returns 
+ */
 const Icon = props => {
   const styles = {
     svg: {
