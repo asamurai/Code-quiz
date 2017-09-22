@@ -6,7 +6,7 @@ import {bindActionCreators} from 'redux';
 import { signOut } from './../../actions/user';
 
 import HeaderNavigation from './../../components/Navigation/HeaderNavigation';
-import Main from './../Main';
+import Main from './../../components/Main';
 
 import './../../../assets/style/index.sass';
 
