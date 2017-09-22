@@ -13,6 +13,7 @@ import styles from './index.sass';
  * @prop {bool} iconRight       : makes button to be at the right part of element
  * @prop {string} iconColor     : icon color
  * @prop {string} iconBgColor   : icon background color
+ * @prop {string} className     : button extents className
  * 
  * @class Button
  * @extends {Component}
@@ -23,17 +24,17 @@ class Button extends Component {
     }
 
     render () {
-        const { title, icon, iconColor, iconBgColor, iconLeft, iconRight,...rest } = this.props;
+        const { title, icon, iconColor, iconBgColor, iconLeft, iconRight, className, ...rest } = this.props;
         return (
             <div
-                className={styles.button}
+                className={`${styles.button} ${className}`.trim()}
                 icon={icon}
                 {...rest}
             >   
                 {icon && iconLeft && !iconRight &&
                     <Icon
                         icon={icon}
-                        style={{marginRight: '5px'}}
+                        style={{marginRight: title ? '5px' : '0px'}}
                         color={iconColor}
                         bgColor={iconBgColor}
                     />
@@ -42,7 +43,7 @@ class Button extends Component {
                 {icon && !iconLeft && iconRight &&
                     <Icon
                         icon={icon}
-                        style={{marginLeft: '5px'}}
+                        style={{marginLeft: title ? '5px' : '0px'}}
                         color={iconColor}
                         bgColor={iconBgColor}
                     />
@@ -58,13 +59,15 @@ Button.propTypes = {
     iconLeft: PropTypes.bool,
     iconRight: PropTypes.bool,
     iconColor: PropTypes.string,
-    iconBgColor: PropTypes.string
+    iconBgColor: PropTypes.string,
+    className: PropTypes.string
 };
 
 Button.defaultProps = {
-    title: 'Button',
+    title: '',
     iconLeft: true,
-    iconRight: false
+    iconRight: false,
+    className: ''
 };
 
 export default Button;

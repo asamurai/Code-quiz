@@ -1,0 +1,101 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Modal HOC test Modal HOC with children 1`] = `
+<div
+  className="modal__wrapper"
+>
+  <div
+    className="modal__body"
+  >
+    <div
+      className="modal_top__wrapper"
+    >
+      <div
+        className="modal__title"
+      >
+        Modal
+      </div>
+      <Button
+        className="modal__close modal__button"
+        icon="M672 256l-160 160-160-160-96 96 160 160-160 160 96 96 160-160 160 160 96-96-160-160 160-160z"
+        iconLeft={true}
+        iconRight={false}
+        title=""
+      />
+    </div>
+    <div
+      className="modal__content"
+    >
+      <HomeContainer />
+    </div>
+    <hr />
+    <div
+      className="modal_bottom__wrapper"
+    >
+      <Button
+        className="modal__button"
+        icon="M672 256l-160 160-160-160-96 96 160 160-160 160 96 96 160-160 160 160 96-96-160-160 160-160z"
+        iconLeft={true}
+        iconRight={false}
+        title="Cancel"
+      />
+      <Button
+        className="modal__button"
+        icon="M864 128l-480 480-224-224-160 160 384 384 640-640z"
+        iconLeft={true}
+        iconRight={false}
+        title="Сonfirm"
+      />
+    </div>
+  </div>
+</div>
+`;
+
+exports[`Modal HOC test Modal HOC without children 1`] = `
+<div
+  className="modal__wrapper"
+>
+  <div
+    className="modal__body"
+  >
+    <div
+      className="modal_top__wrapper"
+    >
+      <div
+        className="modal__title"
+      >
+        Modal
+      </div>
+      <Button
+        className="modal__close modal__button"
+        icon="M672 256l-160 160-160-160-96 96 160 160-160 160 96 96 160-160 160 160 96-96-160-160 160-160z"
+        iconLeft={true}
+        iconRight={false}
+        title=""
+      />
+    </div>
+    <div
+      className="modal__content"
+    />
+    <hr />
+    <div
+      className="modal_bottom__wrapper"
+    >
+      <Button
+        className="modal__button"
+        icon="M672 256l-160 160-160-160-96 96 160 160-160 160 96 96 160-160 160 160 96-96-160-160 160-160z"
+        iconLeft={true}
+        iconRight={false}
+        title="Cancel"
+      />
+      <Button
+        className="modal__button"
+        icon="M864 128l-480 480-224-224-160 160 384 384 640-640z"
+        iconLeft={true}
+        iconRight={false}
+        title="Сonfirm"
+      />
+    </div>
+  </div>
+</div>
+`;
