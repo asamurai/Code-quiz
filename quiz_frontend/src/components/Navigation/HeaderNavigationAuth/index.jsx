@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, NavLink } from 'react-router-dom';
 
 import { Button } from './../../ui';
 
-import styles from './index.sass';
+import styles from './../index.sass';
 
 class HeaderNavigationAuth extends Component {
     constructor(props){
@@ -27,11 +27,11 @@ class HeaderNavigationAuth extends Component {
         }
         return (
             <div>
-                <Link to='/signin'>Sign in</Link>
-                <Link to='/signup'>Create account</Link>
+                <NavLink to='/signin' className={styles.link} activeClassName={styles.link_active}>Sign in</NavLink>
+                <NavLink to='/signup' className={styles.link} activeClassName={styles.link_active}>Create account</NavLink>
             </div>
         );
     }
-}
+} 
 
 export default HeaderNavigationAuth;

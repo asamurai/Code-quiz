@@ -8,6 +8,7 @@ import FullQuizzesContainer from './../FullQuizzesContainer';
 import FreeQuizzesContainer from './../FreeQuizzesContainer';
 import UserAccountContainer from './../UserAccountContainer';
 import UserStatisticsContainer from './../UserStatisticsContainer';
+import NotMatchedComponent from './../../components/NotMatchedComponent';
 
 class Main extends Component {
     render () {
@@ -22,6 +23,7 @@ class Main extends Component {
                     <Route path='/free-quizzes' component={FreeQuizzesContainer}/>
                     <PrivateRoute authed={loggedIn} path='/account' component={UserAccountContainer}/>
                     <PrivateRoute authed={loggedIn} path='/statistics' component={UserStatisticsContainer}/>
+                    <Route component={NotMatchedComponent}/>
                 </Switch>                
             </main>
         );
