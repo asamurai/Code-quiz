@@ -43,10 +43,10 @@ module.exports = {
         },
         {
             test: /\.(jpe?g|png|gif|svg|ico)$/i,
-            use: 'file-loader?name=[name].[ext]'
+            use: 'file'
         },
         { 
-            test: /\.(png|woff|woff2|eot|ttf|svg)$/,
+            test: /\.(woff|woff2|eot|ttf|svg)$/,
             loader: 'url-loader?limit=100000'
         }
     ],

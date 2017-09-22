@@ -1,0 +1,27 @@
+$link_color: #c9c9c9
+$link_hover_color: #ffffff
+$background_color: #0e0e0e
+.header
+    &_nav
+        background-color: $background_color
+    &_wrapper
+        display: flex
+        flex-direction: row
+        align-items: center
+        &_links
+            justify-content: space-around
+        &_nav
+            justify-content: space-between
+            margin: 0 auto
+            padding: 10px 15px
+            width: 100%
+            max-width: 1024px
+.link
+    font-style: bold
+    margin: 0px 5px
+    color: $link_color
+    transition: all .35s
+    &:hover
+        color: $link_hover_color
+    &_active
+        color: $link_hover_color

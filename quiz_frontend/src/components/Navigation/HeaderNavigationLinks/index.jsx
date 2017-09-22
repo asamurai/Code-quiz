@@ -3,22 +3,22 @@ import { Link, NavLink } from 'react-router-dom';
 
 import { Image } from './../../ui';
 
-import styles from './index.sass';
+import styles from './../index.sass';
 
 class HeaderNavigationLinks extends Component {
     render () {
         return (
-            <div className={styles.headerLinksWrapper}>
+            <div className={`${styles.header_wrapper} ${styles.header_wrapper_links}`}>
                 <Link to='/'>
                     <Image
-                        src="https://cdn0.iconfinder.com/data/icons/seo-smart-pack/128/grey_new_seo3-07-512.png"
+                        src={require('./../../images/logo.png')}
                         alt="logo"
                         height={30}
                         width={30}
                     />   
                 </Link>
-                <NavLink to='/full-quizzes' className={styles.link} activeClassName={styles.activeLink}>Full quizzes</NavLink>
-                <NavLink to='/free-quizzes' className={styles.link} activeClassName={styles.activeLink}>Free quizzes</NavLink>
+                <NavLink to='/full-quizzes' className={styles.link} activeClassName={styles.link_active}>Full quizzes</NavLink>
+                <NavLink to='/free-quizzes' className={styles.link} activeClassName={styles.link_active}>Free quizzes</NavLink>
             </div>
         );
     }

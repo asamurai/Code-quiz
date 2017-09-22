@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import HeaderNavigationLinks from './../HeaderNavigationLinks';
 import HeaderNavigationAuth from './../HeaderNavigationAuth';
 
-import styles from './index.sass';
+import styles from './../index.sass';
 
 class HeaderNavigation extends Component {
     constructor(props){
@@ -14,14 +14,16 @@ class HeaderNavigation extends Component {
     render () {
         const { loggedIn, userName } = this.props;
         return (
-            <div className={styles.headerNavWrapper}>
-                <HeaderNavigationLinks/>
-                <HeaderNavigationAuth
-                    loggedIn={loggedIn}
-                    userName={userName}
-                    signOutFunction={this.signOutFunction}
-                />
-            </div>
+            <header className={styles.header_nav}>
+                <div className={`${styles.header_wrapper} ${styles.header_wrapper_nav}`}>
+                    <HeaderNavigationLinks/>
+                    <HeaderNavigationAuth
+                        loggedIn={loggedIn}
+                        userName={userName}
+                        signOutFunction={this.signOutFunction}
+                    />
+                </div>
+            </header>
         );
     }
 }
