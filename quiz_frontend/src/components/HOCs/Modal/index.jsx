@@ -6,6 +6,15 @@ import icons from './../../../utils/icons.json';
 
 import styles from './index.sass';
 
+/**
+ * Modal HOC
+ * 
+ * @prop {string} title :   Modal title, required
+ * @prop {any} children :   Modal content
+ * 
+ * @class Modal
+ * @extends {Component}
+ */
 class Modal extends Component {
     render () {
         const { title, children } = this.props;
