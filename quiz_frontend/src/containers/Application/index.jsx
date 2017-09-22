@@ -10,6 +10,17 @@ import Main from './../../components/Main';
 
 import './../../../assets/style/index.sass';
 
+/**
+ * Application container
+ * 
+ * Container wrapper by redux connect HOC.
+ * 
+ * Render and passing props from redux store 
+ * into application navigation (HeaderNavigation) and content (Main) components.
+ * 
+ * @class Application
+ * @extends {Component}
+ */
 class Application extends Component {
     constructor(props){
         super(props);
