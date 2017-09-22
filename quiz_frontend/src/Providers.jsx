@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { Provider } from 'react-redux';
 import { BrowserRouter } from 'react-router-dom';
 import Application from './containers/Application';
-import ScrollToTop from './components/ScrollToTopComponent';
+import ScrollToTop from './components/HOC/ScrollToTopComponent';
 
 import configureStore from './store';
 
