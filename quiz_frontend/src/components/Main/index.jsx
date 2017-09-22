@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Switch, Route } from 'react-router-dom';
 
-import PrivateRoute from './../HOC/PrivateRoute';
+import { PrivateRoute } from './../HOCs';
 import HomeContainer from './../../containers/HomeContainer';
 import AuthContainer from './../../containers/AuthContainer';
 import FullQuizzesContainer from './../../containers/FullQuizzesContainer';

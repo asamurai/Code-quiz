@@ -2,6 +2,7 @@
 
 exports[`Button component test Icon renders with custom props 1`] = `
 <svg
+  className=""
   height="32px"
   style={
     Object {
@@ -26,6 +27,7 @@ exports[`Button component test Icon renders with custom props 1`] = `
 
 exports[`Button component test Icon renders with default props 1`] = `
 <svg
+  className=""
   height="20px"
   style={
     Object {

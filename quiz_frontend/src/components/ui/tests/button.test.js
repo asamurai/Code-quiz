@@ -6,7 +6,7 @@ import toJson from 'enzyme-to-json';
 
 describe('Button component test', () => {
   const expectedDefaultProps = {
-    title: 'Button',
+    title: '',
     className: 'button'
   };
   it('Button title renders correctly without props', () => {
