@@ -6,6 +6,16 @@ import HeaderNavigationAuth from './../HeaderNavigationAuth';
 
 import styles from './../index.sass';
 
+/**
+ * Component renders links depend authentication status of user.(HeaderNavigationAuth component)
+ * 
+ * Also renders default links that are for all.(HeaderNavigationLinks component)
+ * 
+ * Pass loggedIn, userName, signOutFunction props into HeaderNavigationAuth component.
+ * 
+ * @class HeaderNavigation
+ * @extends {Component}
+ */
 class HeaderNavigation extends Component {
     constructor(props){
         super(props);

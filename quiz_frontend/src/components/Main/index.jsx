@@ -12,6 +12,13 @@ import NotMatchedComponent from './../NotMatchedComponent';
 
 import styles from './index.sass';
 
+/**
+ * Component with applications content without navigation,
+ * that will rerender each time route changes.
+ * 
+ * @class Main
+ * @extends {Component}
+ */
 class Main extends Component {
     render () {
         const { loggedIn } = this.props.user;

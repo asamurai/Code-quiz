@@ -4,6 +4,14 @@ import PropTypes from 'prop-types';
 
 import styles from './index.sass';
 
+/**
+ * Component that will render if you get wrong route
+ * 
+ * @prop {number} error_code : number of error happend, standart is 404
+ * 
+ * @class NotMatchedComponent
+ * @extends {Component}
+ */
 class NotMatchedComponent extends Component {
     render () {
         const { error_code } = this.props;
