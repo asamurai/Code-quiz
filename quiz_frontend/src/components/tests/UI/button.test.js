@@ -1,8 +1,9 @@
 import React from 'react';
-import { Button, Icon } from '../index.js';
-import icons from './../../../utils/icons.json';
 import { shallow } from 'enzyme';
 import toJson from 'enzyme-to-json';
+
+import { Button, Icon } from '../../ui';
+import icons from './../../../utils/icons.json';
 
 describe('Button component test', () => {
   const expectedDefaultProps = {

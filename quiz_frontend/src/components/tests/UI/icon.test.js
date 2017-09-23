@@ -1,8 +1,9 @@
 import React from 'react';
-import { Icon } from '../index.js';
-import icons from './../../../utils/icons.json';
 import { shallow } from 'enzyme';
 import toJson from 'enzyme-to-json';
+
+import { Icon } from './../../ui';
+import icons from './../../../utils/icons.json';
 
 describe('Button component test', () => {
     it('Icon renders with default props', () => {

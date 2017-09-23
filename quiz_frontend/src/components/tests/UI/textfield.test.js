@@ -1,7 +1,8 @@
 import React from 'react';
-import { TextField } from '../index.js';
 import { shallow } from 'enzyme';
 import toJson from 'enzyme-to-json';
+
+import { TextField } from './../../ui';
 
 describe('TextField component test', () => {
     it('TextField renders with default props', () => {

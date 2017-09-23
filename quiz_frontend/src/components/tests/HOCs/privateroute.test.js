@@ -3,7 +3,7 @@ import { shallow } from 'enzyme';
 import toJson from 'enzyme-to-json';
 
 import HomeContainer from './../../../containers/HomeContainer';
-import { PrivateRoute } from './../index.js';
+import { PrivateRoute } from './../../HOCs';
 /**
  * ToDo: do test routing
  */
