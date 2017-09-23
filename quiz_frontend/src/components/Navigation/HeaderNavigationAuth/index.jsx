@@ -3,6 +3,13 @@ import { Link, NavLink } from 'react-router-dom';
 
 import { Button } from './../../ui';
 
+import {
+    SIGNIN_PATH,
+    SIGNUP_PATH,
+    USER_ACCOUNT_PATH,
+    USER_STATISTICS_PATH
+} from './../../../routes';
+
 import styles from './../index.sass';
 
 /**
@@ -23,8 +30,8 @@ class HeaderNavigationAuth extends Component {
         if(loggedIn && userName){
             return (
                 <div>
-                    <Link to='/account' className={styles.link}>{userName}s Account</Link>
-                    <Link to='/statistics' className={styles.link}>Quiz statistics</Link>
+                    <Link to={USER_ACCOUNT_PATH} className={styles.link}>{userName}s Account</Link>
+                    <Link to={USER_STATISTICS_PATH} className={styles.link}>Quiz statistics</Link>
                     <Button
                         title="Sign out"
                         onClick={this.signOut}
@@ -34,8 +41,8 @@ class HeaderNavigationAuth extends Component {
         }
         return (
             <div>
-                <NavLink to='/signin' className={styles.link} activeClassName={styles.link_active}>Sign in</NavLink>
-                <NavLink to='/signup' className={styles.link} activeClassName={styles.link_active}>Create account</NavLink>
+                <NavLink to={SIGNIN_PATH} className={styles.link} activeClassName={styles.link_active}>Sign in</NavLink>
+                <NavLink to={SIGNUP_PATH} className={styles.link} activeClassName={styles.link_active}>Create account</NavLink>
             </div>
         );
     }

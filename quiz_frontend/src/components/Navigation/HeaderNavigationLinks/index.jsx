@@ -3,6 +3,12 @@ import { Link, NavLink } from 'react-router-dom';
 
 import { Image } from './../../ui';
 
+import {
+    HOME_PATH,
+    FULL_QUIZZES_PATH,
+    FREE_QUIZZES_PATH
+} from './../../../routes';
+
 import styles from './../index.sass';
 
 /**
@@ -15,7 +21,7 @@ class HeaderNavigationLinks extends Component {
     render () {
         return (
             <div className={`${styles.header_wrapper} ${styles.header_wrapper_links}`}>
-                <Link to='/'>
+                <Link to={HOME_PATH}>
                     <Image
                         src={require('./../../images/logo.png')}
                         alt="logo"
@@ -23,8 +29,8 @@ class HeaderNavigationLinks extends Component {
                         width={30}
                     />   
                 </Link>
-                <NavLink to='/full-quizzes' className={styles.link} activeClassName={styles.link_active}>Full quizzes</NavLink>
-                <NavLink to='/free-quizzes' className={styles.link} activeClassName={styles.link_active}>Free quizzes</NavLink>
+                <NavLink to={FULL_QUIZZES_PATH} className={styles.link} activeClassName={styles.link_active}>Full quizzes</NavLink>
+                <NavLink to={FREE_QUIZZES_PATH} className={styles.link} activeClassName={styles.link_active}>Free quizzes</NavLink>
             </div>
         );
     }
