@@ -7,7 +7,7 @@ import AuthContainer from './../../containers/AuthContainer';
 import FullQuizzesContainer from './../../containers/FullQuizzesContainer';
 import FreeQuizzesContainer from './../../containers/FreeQuizzesContainer';
 import UserAccountContainer from './../../containers/UserAccountContainer';
-import NotMatchedComponent from './../NotMatchedComponent';
+import RestErrorComponent from './../RestErrorComponent';
 
 import {
     HOME_PATH,
@@ -39,7 +39,7 @@ class Main extends Component {
                     <Route path={FULL_QUIZZES_PATH} component={FullQuizzesContainer}/>
                     <Route path={FREE_QUIZZES_PATH} component={FreeQuizzesContainer}/>
                     <PrivateRoute authed={loggedIn} path={USER_ACCOUNT_PATH} component={UserAccountContainer}/>
-                    <Route component={NotMatchedComponent}/>
+                    <Route component={RestErrorComponent}/>
                 </Switch>                
             </main>
         );
