@@ -7,8 +7,16 @@ import AuthContainer from './../../containers/AuthContainer';
 import FullQuizzesContainer from './../../containers/FullQuizzesContainer';
 import FreeQuizzesContainer from './../../containers/FreeQuizzesContainer';
 import UserAccountContainer from './../../containers/UserAccountContainer';
-import UserStatisticsContainer from './../../containers/UserStatisticsContainer';
-import NotMatchedComponent from './../NotMatchedComponent';
+import RestErrorComponent from './../RestErrorComponent';
+
+import {
+    HOME_PATH,
+    FULL_QUIZZES_PATH,
+    FREE_QUIZZES_PATH,
+    SIGNIN_PATH,
+    SIGNUP_PATH,
+    USER_ACCOUNT_PATH
+} from './../../routes';
 
 import styles from './index.sass';
 
@@ -25,14 +33,13 @@ class Main extends Component {
         return (
             <main className={styles.content_wrapper}>
                 <Switch>
-                    <Route exact path='/' component={HomeContainer}/>
-                    <Route path='/signin' component={AuthContainer}/>
-                    <Route path='/signup' component={AuthContainer}/>
-                    <Route path='/full-quizzes' component={FullQuizzesContainer}/>
-                    <Route path='/free-quizzes' component={FreeQuizzesContainer}/>
-                    <PrivateRoute authed={loggedIn} path='/account' component={UserAccountContainer}/>
-                    <PrivateRoute authed={loggedIn} path='/statistics' component={UserStatisticsContainer}/>
-                    <Route component={NotMatchedComponent}/>
+                    <Route exact path={HOME_PATH} component={HomeContainer}/>
+                    <Route path={SIGNIN_PATH} component={AuthContainer}/>
+                    <Route path={SIGNUP_PATH} component={AuthContainer}/>
+                    <Route path={FULL_QUIZZES_PATH} component={FullQuizzesContainer}/>
+                    <Route path={FREE_QUIZZES_PATH} component={FreeQuizzesContainer}/>
+                    <PrivateRoute authed={loggedIn} path={USER_ACCOUNT_PATH} component={UserAccountContainer}/>
+                    <Route component={RestErrorComponent}/>
                 </Switch>                
             </main>
         );

@@ -2,7 +2,7 @@ import React from 'react';
 import { shallow } from 'enzyme';
 import toJson from 'enzyme-to-json';
 
-import { Image } from './../index';
+import { Image } from './../../ui';
 
 const data = {
     src: 'https://cdn0.iconfinder.com/data/icons/seo-smart-pack/128/grey_new_seo3-07-512.png',

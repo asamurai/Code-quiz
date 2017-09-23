@@ -1,6 +1,10 @@
 import React from 'react';
 import { Route, Redirect } from 'react-router-dom';
 
+import {
+    SIGNIN_PATH
+} from './../../../routes';
+
 /**
  * HOC wich renders component if you authenticated or 
  * redirects you to /signin page if you are not.
@@ -18,7 +22,7 @@ const PrivateRoute = ({component: Component, authed, ...rest}) => {
         if(authed === true){
             return <Component {...props} />;
         }
-        return <Redirect to={{pathname: '/signin', state: {from: props.location}}} />;
+        return <Redirect to={{pathname: SIGNIN_PATH, state: {from: props.location}}} />;
     };
     return (
         <Route

@@ -2,7 +2,7 @@ import React from 'react';
 import { shallow } from 'enzyme';
 import toJson from 'enzyme-to-json';
 
-import { ScrollToTopComponent } from './../index.js';
+import { ScrollToTopComponent } from './../../HOCs';
 import HomeContainer from './../../../containers/HomeContainer';
 
 describe('ScrollToTop HOC test', () => {
