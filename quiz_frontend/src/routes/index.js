@@ -7,6 +7,7 @@ export const FULL_QUIZZES_PATH = '/full-quizzes';
 export const FREE_QUIZZES_PATH = '/free-quizzes';
 export const SIGNIN_PATH = '/signin';
 export const SIGNUP_PATH = '/signup';
+export const FAQ_PATH = '/faq';
 
 /**
  * PRIVATE ROUTES
