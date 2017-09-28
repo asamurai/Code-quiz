@@ -4,13 +4,15 @@ import PropTypes from 'prop-types';
 import styles from './index.sass';
 
 /**
- * ToDo: Styles and Tests for TextField
- * 
  * TextField component
  * 
  * @prop {string} type  : type of textfield, can be only 'text' or 'password', default is text
  * @prop {string} label : label of textefield, required
  * @prop {string} value : initial value for textfield, default is ''
+ * @prop {boll} error : initial error prop for textfield, required
+ * @prop {string} errorMessage : initial errorNessage for textfield, default is ''
+ * @prop {object} regex : initial regex prop for textfield, default is regex for anything, checks in isValid method and trgiggers on blur
+ * @prop {string} className : initial classname for textfield, default is ''
  * 
  * @class TextField
  * @extends {Component}
@@ -20,6 +22,7 @@ class TextField extends Component {
         super(props);
         this.state = {
             focused: false,
+            invalid: this.props.error,
             value: this.props.value
         };
         this.onChange = this.onChange.bind(this);
@@ -28,12 +31,18 @@ class TextField extends Component {
     }
 
     onBlur(){
+        const isValid = this.isValid();
         this.setState({
-            focused: false
+            focused: false,
+            invalid: !isValid
         });
         if(this.props.onBlur){
             this.props.onBlur();
         }  
+    }
+
+    isValid(){
+        return this.props.regex.test(this.state.value);
     }
 
     onFocus(){
@@ -55,29 +64,39 @@ class TextField extends Component {
     }
 
     render () {
-        const { type, label, className } = this.props;
-        const { value, focused } =this.state;
+        const { type, label, className, errorMessage } = this.props;
+        const { value, focused, invalid } =this.state;
         return (
-            <div className={`  
-                ${styles.wrapper} 
-                ${(focused || value.trim().length > 0 ) ? `${styles.active} ${styles.completed}` : ''}
-                ${className}
-            `}>
-                <label 
-                    htmlFor={label} 
-                    className={styles.label}
-                >
-                    {label}
-                </label>
-                <input 
-                    id={label} 
-                    type={type} 
-                    className={styles.input}
-                    value={value} 
-                    onChange={this.onChange}
-                    onFocus={this.onFocus}
-                    onBlur={this.onBlur}
-                />
+            <div>
+                <div className={`  
+                    ${styles.wrapper} 
+                    ${(focused || value.trim().length > 0 ) ? `${styles.active} ${styles.completed}` : ''}
+                    ${(!focused && invalid ) ? `${styles.invalid}` : ''}
+                    ${className}
+                `}>
+                    <label 
+                        htmlFor={label} 
+                        className={styles.label}
+                    >
+                        {label}
+                    </label>
+                    <input 
+                        id={label} 
+                        type={type} 
+                        className={styles.input}
+                        value={value} 
+                        onChange={this.onChange}
+                        onFocus={this.onFocus}
+                        onBlur={this.onBlur}
+                    />
+                    {invalid && 
+                        <div
+                            className={styles.warning}
+                        >
+                            {errorMessage}
+                        </div>
+                    }
+                </div>
             </div>
         );
     }
@@ -87,13 +106,18 @@ TextField.propTypes = {
     type: PropTypes.oneOf(['text', 'password']),
     label: PropTypes.string.isRequired,
     value: PropTypes.string,
+    error: PropTypes.bool.isRequired,
+    errorMessage: PropTypes.string,
+    regex: PropTypes.object,
     className: PropTypes.string
 };
 
 TextField.defaultProps = {
     type: 'text',
     value: '',
-    className: ''
+    className: '',
+    errorMessage: '',
+    regex: /\.*/
 };
 
 export default TextField;
