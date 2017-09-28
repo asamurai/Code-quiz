@@ -1,10 +1,14 @@
 import React, { Component } from 'react';
 
+import { TextField } from'./../../components/ui';
+
 class HomeContainer extends Component {
     render () {
         return (
             <div>
-                Home Container
+                <TextField
+                    label="text"
+                />
             </div>
         );
     }
