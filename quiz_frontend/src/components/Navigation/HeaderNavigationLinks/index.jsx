@@ -6,7 +6,8 @@ import { Image } from './../../ui';
 import {
     HOME_PATH,
     FULL_QUIZZES_PATH,
-    FREE_QUIZZES_PATH
+    FREE_QUIZZES_PATH,
+    FAQ_PATH
 } from './../../../routes';
 
 import styles from './../index.sass';
@@ -31,6 +32,7 @@ class HeaderNavigationLinks extends Component {
                 </Link>
                 <NavLink to={FULL_QUIZZES_PATH} className={styles.link} activeClassName={styles.link_active}>Full quizzes</NavLink>
                 <NavLink to={FREE_QUIZZES_PATH} className={styles.link} activeClassName={styles.link_active}>Free quizzes</NavLink>
+                <NavLink to={FAQ_PATH} className={styles.link} activeClassName={styles.link_active}>FAQ</NavLink>
             </div>
         );
     }

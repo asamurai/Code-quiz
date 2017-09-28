@@ -8,6 +8,7 @@ import FullQuizzesContainer from './../../containers/FullQuizzesContainer';
 import FreeQuizzesContainer from './../../containers/FreeQuizzesContainer';
 import UserAccountContainer from './../../containers/UserAccountContainer';
 import RestErrorComponent from './../RestErrorComponent';
+import FAQ from './../../containers/FAQ';
 
 import {
     HOME_PATH,
@@ -15,7 +16,8 @@ import {
     FREE_QUIZZES_PATH,
     SIGNIN_PATH,
     SIGNUP_PATH,
-    USER_ACCOUNT_PATH
+    USER_ACCOUNT_PATH,
+    FAQ_PATH
 } from './../../routes';
 
 import styles from './index.sass';
@@ -38,6 +40,7 @@ class Main extends Component {
                     <Route path={SIGNUP_PATH} component={AuthContainer}/>
                     <Route path={FULL_QUIZZES_PATH} component={FullQuizzesContainer}/>
                     <Route path={FREE_QUIZZES_PATH} component={FreeQuizzesContainer}/>
+                    <Route path={FAQ_PATH} component={FAQ}/>
                     <PrivateRoute authed={loggedIn} path={USER_ACCOUNT_PATH} component={UserAccountContainer}/>
                     <Route component={RestErrorComponent}/>
                 </Switch>                

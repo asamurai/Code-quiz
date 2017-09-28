@@ -1,15 +1,25 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`TextField component test TextField renders with default props 1`] = `
-<div>
+<div
+  className="  
+                wrapper 
+                
+                
+            "
+>
   <label
+    className="label"
     htmlFor="text"
   >
     text
   </label>
   <input
+    className="input"
     id="text"
+    onBlur={[Function]}
     onChange={[Function]}
+    onFocus={[Function]}
     type="text"
     value=""
   />

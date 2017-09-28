@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
+import styles from './index.sass';
+
 /**
  * ToDo: Styles and Tests for TextField
  * 
@@ -17,9 +19,30 @@ class TextField extends Component {
     constructor(props){
         super(props);
         this.state = {
+            focused: false,
             value: this.props.value
         };
         this.onChange = this.onChange.bind(this);
+        this.onBlur = this.onBlur.bind(this);
+        this.onFocus = this.onFocus.bind(this);
+    }
+
+    onBlur(){
+        this.setState({
+            focused: false
+        });
+        if(this.props.onBlur){
+            this.props.onBlur();
+        }  
+    }
+
+    onFocus(){
+        this.setState({
+            focused: true
+        });
+        if(this.props.onFocus){
+            this.props.onFocus();
+        }  
     }
 
     onChange(element){
@@ -32,19 +55,29 @@ class TextField extends Component {
     }
 
     render () {
-        const { type, label } = this.props;
-        const { value } =this.state;
+        const { type, label, className } = this.props;
+        const { value, focused } =this.state;
         return (
-            <div>
-                <label htmlFor={label}>
+            <div className={`  
+                ${styles.wrapper} 
+                ${(focused || value.trim().length > 0 ) ? `${styles.active} ${styles.completed}` : ''}
+                ${className}
+            `}>
+                <label 
+                    htmlFor={label} 
+                    className={styles.label}
+                >
                     {label}
                 </label>
                 <input 
                     id={label} 
                     type={type} 
+                    className={styles.input}
                     value={value} 
                     onChange={this.onChange}
-                /> 
+                    onFocus={this.onFocus}
+                    onBlur={this.onBlur}
+                />
             </div>
         );
     }
@@ -53,12 +86,14 @@ class TextField extends Component {
 TextField.propTypes = {
     type: PropTypes.oneOf(['text', 'password']),
     label: PropTypes.string.isRequired,
-    value: PropTypes.string
+    value: PropTypes.string,
+    className: PropTypes.string
 };
 
 TextField.defaultProps = {
     type: 'text',
-    value: ''
+    value: '',
+    className: ''
 };
 
 export default TextField;
