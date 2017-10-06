@@ -8,6 +8,9 @@ class HomeContainer extends Component {
             <div>
                 <TextField
                     label="text"
+                    error={false}
+                    regex={/\.com/g}
+                    errorMessage="Should contain '.com'"
                 />
             </div>
         );
