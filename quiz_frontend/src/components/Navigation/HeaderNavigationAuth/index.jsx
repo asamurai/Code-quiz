@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Link, NavLink } from 'react-router-dom';
 
-import { Button } from './../../ui';
+import { Button } from 'antd';
 
 import {
     SIGNIN_PATH,
@@ -33,9 +33,11 @@ class HeaderNavigationAuth extends Component {
                     <Link to={USER_ACCOUNT_PATH} className={styles.link}>{userName}s Account</Link>
                     <Link to={USER_STATISTICS_PATH} className={styles.link}>Quiz statistics</Link>
                     <Button
-                        title="Sign out"
+                        type="danger"
                         onClick={this.signOut}
-                    />
+                    >
+                        Sign out
+                    </Button>
                 </div>
             );
         }

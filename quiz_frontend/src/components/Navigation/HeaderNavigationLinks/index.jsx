@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { Link, NavLink } from 'react-router-dom';
 
-import { Image } from './../../ui';
 
 import {
     HOME_PATH,
@@ -23,7 +22,7 @@ class HeaderNavigationLinks extends Component {
         return (
             <div className={`${styles.header_wrapper} ${styles.header_wrapper_links}`}>
                 <Link to={HOME_PATH}>
-                    <Image
+                    <img
                         src={require('./../../images/logo.png')}
                         alt="logo"
                         height={30}
