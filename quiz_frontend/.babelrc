@@ -5,6 +5,10 @@
 		["transform-runtime", {
 			"polyfill": false,
 			"regenerator": true
+		}],
+		["import", {
+			"libraryName": "antd", 
+			"style": "css" 
 		}]
 	],
 	"env": {
@@ -13,7 +17,11 @@
 	    		"react-hmre"
 	    	],
 			"plugins": [
-				"react-hot-loader/babel"
+				"react-hot-loader/babel",
+				["import", {
+					"libraryName": "antd", 
+					"style": "css" 
+				}]
 			]
 		}
 	}

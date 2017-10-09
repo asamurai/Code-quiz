@@ -9,6 +9,7 @@ import HeaderNavigation from './../../components/Navigation/HeaderNavigation';
 import Main from './../../components/Main';
 
 import './../../../assets/style/index.sass';
+import 'antd/dist/antd.css';
 
 /**
  * Application container
