@@ -17,24 +17,18 @@ export default function (state = initialState, action){
         case USER_SIGNOUT.REQUEST:
         case USER_REGISTER.REQUEST:
             return {...state, error: null, loading: true};
-            break;
         case USER_SIGNIN.SUCCESS:
             return {...state, error: null, loading: false, data: action.data, loggedIn: true};
-            break;
         case USER_SIGNOUT.SUCCESS: 
             return {...state, error: null, loading: false, data: null, loggedIn: false};
-            break;
         case USER_REGISTER.SUCCESS: 
             return {...state, error: null, loading: false};
-            break;
         case USER_SIGNIN.ERROR: 
         case USER_SIGNOUT.ERROR:
         case USER_REGISTER.ERROR:
             return {...state, error: action.error, loading: false};
-            break;  
         default:
             return state;
-            break;
     }
 }
 
