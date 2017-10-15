@@ -4,7 +4,11 @@ import { bindActionCreators } from 'redux';
 import PropTypes from 'prop-types';
 import ReactNotify from 'react-notify';
 
-import { capitalize } from './../../utils';
+import { stringHelper } from './../../helpers';
+
+const {
+  capitalize
+} = stringHelper;
 
 import {
     closeMessage,
