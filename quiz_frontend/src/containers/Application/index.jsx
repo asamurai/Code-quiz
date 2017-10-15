@@ -37,7 +37,7 @@ class Application extends Component {
                 <HeaderNavigation
                     loggedIn={loggedIn}
                     userName={data && data.name ? data.name : null}
-                    signOutFunction={this.signOut}
+                    signOutFunction={() => this.signOut()}
                 />
                 <Main
                     user={user}

@@ -7,8 +7,8 @@ import {
 const initialState = {
     loading: false,
     error: null,
-    data: null,
-    loggedIn: false
+    data: {name: 'Artem'},
+    loggedIn: true
 };
 
 export default function (state = initialState, action){
