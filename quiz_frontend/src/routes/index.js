@@ -14,4 +14,5 @@ export const FAQ_PATH = '/faq';
  * 
  */
 export const USER_ACCOUNT_PATH = '/user';
-export const USER_STATISTICS_PATH = '/user/statistics';
+export const USER_SETTINGS_PATH = `${USER_ACCOUNT_PATH}/settings`;
+export const USER_STATISTICS_PATH = `${USER_ACCOUNT_PATH}/statistics`;

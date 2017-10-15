@@ -5,6 +5,7 @@ import {bindActionCreators} from 'redux';
 
 import { signOut } from './../../actions/user';
 
+import { BackTop } from 'antd';
 import HeaderNavigation from './../../components/Navigation/HeaderNavigation';
 import Main from './../../components/Main';
 
@@ -41,6 +42,7 @@ class Application extends Component {
                 <Main
                     user={user}
                 />
+                <BackTop />
             </div>
         );
     }
