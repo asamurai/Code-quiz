@@ -2,11 +2,22 @@ import {
     USER_SIGNIN,
     USER_SIGNOUT,
     USER_REGISTER
-} from './../../constants';
-import { saveToken, removeToken, withAuth } from './../../api';
+} from './../../constants/user';
+import { 
+    NOTIFICATION_SHOW_ERROR_MESSAGE,
+    NOTIFICATION_CLOSE_MESSAGE
+} from './../../constants/notifications';
+import { 
+    saveToken,
+    removeToken,
+    withAuth 
+} from './../../api';
 
 export const signIn = credentials => async dispatch => {
     try {
+        await dispatch({
+            type: NOTIFICATION_CLOSE_MESSAGE
+        });
         await dispatch({
             type: USER_SIGNIN.REQUEST
         });
@@ -20,12 +31,19 @@ export const signIn = credentials => async dispatch => {
         await dispatch({
             type: USER_SIGNIN.ERROR,
             error: error.message
-        });          
+        });  
+        await dispatch({
+            type: NOTIFICATION_SHOW_ERROR_MESSAGE,
+            message: error.message
+        });        
     }
 };
 
 export const signUp = credentials => async dispatch => {
     try {
+        await dispatch({
+            type: NOTIFICATION_CLOSE_MESSAGE
+        });
         await dispatch({
             type: USER_REGISTER.REQUEST
         });
@@ -37,14 +55,21 @@ export const signUp = credentials => async dispatch => {
         await signIn(data);
     } catch (error) {
         await dispatch({
-            type: USER_REGISTER.ERROR,
+            type: USER_SIGNIN.ERROR,
             error: error.message
-        });          
+        });  
+        await dispatch({
+            type: NOTIFICATION_SHOW_ERROR_MESSAGE,
+            message: error.message
+        });         
     }
 };
 
 export const signOut = credentials => async dispatch => {
     try {
+        await dispatch({
+            type: NOTIFICATION_CLOSE_MESSAGE
+        });
         await dispatch({
             type: USER_SIGNOUT.REQUEST
         }); 
@@ -55,8 +80,12 @@ export const signOut = credentials => async dispatch => {
         });        
     } catch (error) {
         await dispatch({
-            type: USER_SIGNOUT.ERROR,
+            type: USER_SIGNIN.ERROR,
             error: error.message
-        });       
+        });  
+        await dispatch({
+            type: NOTIFICATION_SHOW_ERROR_MESSAGE,
+            message: error.message
+        });     
     }
 };

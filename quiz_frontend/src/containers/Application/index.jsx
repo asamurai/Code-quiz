@@ -8,6 +8,7 @@ import { signOut } from './../../actions/user';
 import { BackTop } from 'antd';
 import HeaderNavigation from './../../components/Navigation/HeaderNavigation';
 import Main from './../../components/Main';
+import NotificationContainer from './../NotificationContainer';
 
 import './../../../assets/style/index.sass';
 import 'antd/dist/antd.css';
@@ -34,6 +35,7 @@ class Application extends Component {
         const { data, loggedIn } = user;
         return (
             <div>
+                <BackTop />
                 <HeaderNavigation
                     loggedIn={loggedIn}
                     userName={data && data.name ? data.name : null}
@@ -42,7 +44,7 @@ class Application extends Component {
                 <Main
                     user={user}
                 />
-                <BackTop />
+                <NotificationContainer />
             </div>
         );
     }

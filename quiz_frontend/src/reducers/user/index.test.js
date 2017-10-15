@@ -2,9 +2,9 @@ import {
     USER_SIGNIN,
     USER_SIGNOUT,
     USER_REGISTER
-} from './../../constants';
+} from './../../constants/users';
 
-import reducer from './../user.js';
+import reducer from './../user';
 
 const data = {
     data: {
