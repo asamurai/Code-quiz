@@ -1,22 +1,25 @@
 import React, { Component } from 'react';
 
+import SignIn from './../../components/Authorization/SignIn';
+import SignUp from './../../components/Authorization/SignUp';
+
+import * as routes from './../../routes';
+
 class AuthContainer extends Component {
     render () {
-        const location = this.props.location.pathname;
-        if(location.includes('signin')){
-            return (
-                <div>
-                    Sign In
-                </div>
-            );
+        const {
+            match: {
+                url
+            }
+        } = this.props;
+
+        if(url.includes(routes.SIGNIN_PATH)){
+            return <SignIn/>;
         }
-        if(location.includes('signup')){
-            return (
-                <div>
-                    Sign up
-                </div>
-            );
+        if(url.includes(routes.SIGNUP_PATH)){
+            return <SignUp/>;
         }
+        
         return(
             <span/>
         );

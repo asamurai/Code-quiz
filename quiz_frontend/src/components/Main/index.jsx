@@ -10,15 +10,7 @@ import UserAccountContainer from './../../containers/UserAccountContainer';
 import RestErrorComponent from './../RestErrorComponent';
 import FAQ from './../../containers/FAQ';
 
-import {
-    HOME_PATH,
-    FULL_QUIZZES_PATH,
-    FREE_QUIZZES_PATH,
-    SIGNIN_PATH,
-    SIGNUP_PATH,
-    USER_ACCOUNT_PATH,
-    FAQ_PATH
-} from './../../routes';
+import * as routes from './../../routes';
 
 import styles from './index.sass';
 
@@ -35,13 +27,13 @@ class Main extends Component {
         return (
             <main className={styles.content_wrapper}>
                 <Switch>
-                    <Route exact path={HOME_PATH} component={HomeContainer}/>
-                    <Route path={SIGNIN_PATH} component={AuthContainer}/>
-                    <Route path={SIGNUP_PATH} component={AuthContainer}/>
-                    <Route path={FULL_QUIZZES_PATH} component={FullQuizzesContainer}/>
-                    <Route path={FREE_QUIZZES_PATH} component={FreeQuizzesContainer}/>
-                    <Route path={FAQ_PATH} component={FAQ}/>
-                    <PrivateRoute authed={loggedIn} path={USER_ACCOUNT_PATH} component={UserAccountContainer}/>
+                    <Route exact path={routes.HOME_PATH} component={HomeContainer}/>
+                    <Route path={routes.SIGNIN_PATH} component={AuthContainer}/>
+                    <Route path={routes.SIGNUP_PATH} component={AuthContainer}/>
+                    <Route path={routes.FULL_QUIZZES_PATH} component={FullQuizzesContainer}/>
+                    <Route path={routes.FREE_QUIZZES_PATH} component={FreeQuizzesContainer}/>
+                    <Route path={routes.FAQ_PATH} component={FAQ}/>
+                    <PrivateRoute authed={loggedIn} path={routes.USER_ACCOUNT_PATH} component={UserAccountContainer}/>
                     <Route component={RestErrorComponent}/>
                 </Switch>                
             </main>

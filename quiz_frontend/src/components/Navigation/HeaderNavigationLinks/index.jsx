@@ -1,14 +1,8 @@
 import React, { Component } from 'react';
-import { Link, NavLink } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 
-import { Image } from './../../ui';
 
-import {
-    HOME_PATH,
-    FULL_QUIZZES_PATH,
-    FREE_QUIZZES_PATH,
-    FAQ_PATH
-} from './../../../routes';
+import * as routes from './../../../routes';
 
 import styles from './../index.sass';
 
@@ -22,17 +16,17 @@ class HeaderNavigationLinks extends Component {
     render () {
         return (
             <div className={`${styles.header_wrapper} ${styles.header_wrapper_links}`}>
-                <Link to={HOME_PATH}>
-                    <Image
+                <Link to={routes.HOME_PATH}>
+                    <img
                         src={require('./../../images/logo.png')}
                         alt="logo"
-                        height={30}
-                        width={30}
+                        height={60}
+                        width={60}
                     />   
                 </Link>
-                <NavLink to={FULL_QUIZZES_PATH} className={styles.link} activeClassName={styles.link_active}>Full quizzes</NavLink>
-                <NavLink to={FREE_QUIZZES_PATH} className={styles.link} activeClassName={styles.link_active}>Free quizzes</NavLink>
-                <NavLink to={FAQ_PATH} className={styles.link} activeClassName={styles.link_active}>FAQ</NavLink>
+                <Link to={routes.FULL_QUIZZES_PATH} className={styles.link}>Full quizzes</Link>
+                <Link to={routes.FREE_QUIZZES_PATH} className={styles.link}>Free quizzes</Link>
+                <Link to={routes.FAQ_PATH} className={styles.link}>FAQ</Link>
             </div>
         );
     }

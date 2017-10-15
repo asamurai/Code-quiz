@@ -1,14 +1,16 @@
 import React, { Component } from 'react';
-import { Link, NavLink } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 
-import { Button } from './../../ui';
+import { 
+    Button,
+    Menu,
+    Avatar,
+    Dropdown
+} from 'antd';
 
-import {
-    SIGNIN_PATH,
-    SIGNUP_PATH,
-    USER_ACCOUNT_PATH,
-    USER_STATISTICS_PATH
-} from './../../../routes';
+import ProfileRoutes from './ProfileRoutes.js';
+
+import * as routes from './../../../routes';
 
 import styles from './../index.sass';
 
@@ -27,22 +29,39 @@ class HeaderNavigationAuth extends Component {
 
     render () {
         const { loggedIn, userName } = this.props;
+
+        const AuthMenu = (<Menu>
+            {ProfileRoutes.length > 0 &&
+                ProfileRoutes.map((option) => (
+                    <Menu.Item key={option.route}>
+                        <Link to={option.route} className={styles.link}>
+                            {option.label}
+                        </Link>
+                    </Menu.Item>
+                ))
+            }
+            {ProfileRoutes.length > 0 && <Menu.Divider />}
+            <Menu.Item key="signout">
+                <Button
+                    type="danger"
+                    onClick={this.signOut}
+                >
+                    Sign out
+                </Button>
+            </Menu.Item>            
+        </Menu>);
+
         if(loggedIn && userName){
             return (
-                <div>
-                    <Link to={USER_ACCOUNT_PATH} className={styles.link}>{userName}s Account</Link>
-                    <Link to={USER_STATISTICS_PATH} className={styles.link}>Quiz statistics</Link>
-                    <Button
-                        title="Sign out"
-                        onClick={this.signOut}
-                    />
-                </div>
+                <Dropdown overlay={AuthMenu} placement="bottomRight">
+                    <Avatar style={{ backgroundColor: '#6980b0' }} icon="user" />
+                </Dropdown>
             );
         }
         return (
             <div>
-                <NavLink to={SIGNIN_PATH} className={styles.link} activeClassName={styles.link_active}>Sign in</NavLink>
-                <NavLink to={SIGNUP_PATH} className={styles.link} activeClassName={styles.link_active}>Create account</NavLink>
+                <Link to={routes.SIGNIN_PATH} className={styles.link}>Sign in</Link>
+                <Link to={routes.SIGNUP_PATH} className={styles.link}>Create account</Link>
             </div>
         );
     }

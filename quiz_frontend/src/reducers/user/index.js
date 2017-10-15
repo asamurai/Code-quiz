@@ -2,7 +2,7 @@ import {
     USER_SIGNIN,
     USER_SIGNOUT,
     USER_REGISTER
-} from './../constants';
+} from './../../constants/user';
 
 const initialState = {
     loading: false,
