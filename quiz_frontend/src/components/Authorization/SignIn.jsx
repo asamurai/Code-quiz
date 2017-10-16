@@ -1,68 +1,119 @@
-import React from 'react';
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
+
 import { 
     Form,
     Icon, 
     Input, 
-    Button, 
-    Checkbox 
+    Button
 } from 'antd';
+
 const FormItem = Form.Item;
 
 import * as routes from './../../routes';
 
 import './signin.css';
 
-class NormalLoginForm extends React.Component {
+class SignIn extends Component {
     constructor(props){
         super(props);
         this.handleSubmit = this.handleSubmit.bind(this);
     }
     handleSubmit(e){
+        const {
+            form: {
+                validateFields
+            },
+            onSignIn
+        } = this.props;
         e.preventDefault();
-        this.props.form.validateFields((err, values) => {
+        validateFields((err, values) => {
             if (!err) {
-            console.log('Received values of form: ', values);
+                onSignIn(values);
             }
         });
     }
     render() {
-        const { getFieldDecorator } = this.props.form;
+        const { 
+            form:{
+                getFieldDecorator
+            },
+            loading
+        } = this.props;
+
         return (
             <Form onSubmit={this.handleSubmit} className="login-form">
-                <FormItem>
-                    {getFieldDecorator('userName', {
-                    rules: [{ required: true, message: 'Please input your username!' }],
+                <FormItem
+                    label="Email"
+                >
+                    {getFieldDecorator('email', {
+                        rules: [
+                            { 
+                                required: true, 
+                                message: 'Please input your email.' 
+                            }
+                        ]
                     })(
-                    <Input prefix={<Icon type="user" style={{ fontSize: 13 }} />} placeholder="Username" />
+                        <Input 
+                            type="email"
+                            prefix={
+                                <Icon 
+                                    type="mail" 
+                                    style={{ fontSize: 13 }} 
+                                />
+                            } 
+                            placeholder="Email" 
+                        />
                     )}
                 </FormItem>
-                <FormItem>
+                <FormItem
+                    label="Password"
+                >
                     {getFieldDecorator('password', {
-                    rules: [{ required: true, message: 'Please input your Password!' }],
+                        rules: [
+                            { 
+                                required: true, 
+                                message: 'Please input your password.' 
+                            }
+                        ]
                     })(
-                    <Input prefix={<Icon type="lock" style={{ fontSize: 13 }} />} type="password" placeholder="Password" />
+                        <Input 
+                            prefix={
+                                <Icon 
+                                    type="lock" 
+                                    style={{ fontSize: 13 }} 
+                                />
+                            } 
+                            type="password" 
+                            placeholder="Password" 
+                        />
                     )}
                 </FormItem>
                 <FormItem>
-                    {getFieldDecorator('remember', {
-                    valuePropName: 'checked',
-                    initialValue: true,
-                    })(
-                    <Checkbox>Remember me</Checkbox>
-                    )}
-                    <a className="login-form-forgot" href="">Forgot password</a>
-                    <Button type="primary" htmlType="submit" className="login-form-button">
-                    Log in
+                    <Button 
+                        type="primary" 
+                        htmlType="submit" 
+                        className="login-form-button"
+                        loading={loading}
+                    >
+                        Sign in
                     </Button>
-                    {`Or `}  
-                    <Link to={routes.SIGNUP_PATH}>
-                    register now!
-                    </Link>
+                    <div>
+                        {`Need to create an account? `}
+                        <Link to={routes.SIGNUP_PATH}>
+                            Sign up
+                        </Link>
+                    </div>
                 </FormItem>
             </Form>
         );
     }
 }
 
-export default Form.create()(NormalLoginForm);
+SignIn.propTypes = {
+    loading: PropTypes.bool.isRequired,
+    onSignIn: PropTypes.func.isRequired
+};
+
+export default Form.create()(SignIn);

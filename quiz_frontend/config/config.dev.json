@@ -5,7 +5,7 @@
     },
     "global": {
         "api": {
-            "url": "http://localhost:9000/api",
+            "url": "http://127.0.0.1:8000",
             "tokenTtl": 432000
         }
     }

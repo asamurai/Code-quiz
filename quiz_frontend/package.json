@@ -73,7 +73,6 @@
     "react-cookies": "^0.1.0",
     "react-dom": "^15.6.1",
     "react-hot-loader": "next",
-    "react-notify": "^3.0.0",
     "react-redux": "^5.0.6",
     "react-router-dom": "^4.1.2",
     "redux": "^3.7.2",
