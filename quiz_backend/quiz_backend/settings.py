@@ -37,6 +37,10 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'rest_framework',
+    'profiles',
+    'rest_framework.authtoken',
+    'django.contrib.sites'
 ]
 
 MIDDLEWARE = [
@@ -113,8 +117,10 @@ USE_L10N = True
 
 USE_TZ = True
 
-
+SITE_ID = 1
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.11/howto/static-files/
 
 STATIC_URL = '/static/'
+
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
