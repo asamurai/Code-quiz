@@ -33,7 +33,9 @@ class UserAccountContainer extends Component {
                                 const component = routeProps.match.params.component || '';
                                 switch (component) {
                                     case 'account':
-                                        return <UserProfileAccount/>;
+                                        return <UserProfileAccount
+                                            image={''}
+                                        />;
                                     case 'settings':
                                         return <UserProfileSettings/>;
                                     case 'statistics':
