@@ -5,10 +5,11 @@ import {
     Button,
     Menu,
     Avatar,
-    Dropdown
+    Dropdown,
+    Icon
 } from 'antd';
 
-import ProfileRoutes from './ProfileRoutes.js';
+import ProfileRoutes from './../../../routes/userAccountRoutes';
 
 import * as routes from './../../../routes';
 
@@ -30,26 +31,30 @@ class HeaderNavigationAuth extends Component {
     render () {
         const { loggedIn, userName } = this.props;
 
-        const AuthMenu = (<Menu>
-            {ProfileRoutes.length > 0 &&
-                ProfileRoutes.map((option) => (
-                    <Menu.Item key={option.route}>
-                        <Link to={option.route} className={styles.link}>
-                            {option.label}
-                        </Link>
-                    </Menu.Item>
-                ))
-            }
-            {ProfileRoutes.length > 0 && <Menu.Divider />}
-            <Menu.Item key="signout">
-                <Button
-                    type="danger"
-                    onClick={this.signOut}
-                >
-                    Sign out
-                </Button>
-            </Menu.Item>            
-        </Menu>);
+        const AuthMenu = (
+            <Menu>
+                {ProfileRoutes.length > 0 &&
+                    ProfileRoutes.map((option) => (
+                        <Menu.Item key={option.route}>
+                            <Link to={option.route} className={styles.link}>
+                                <Icon type={option.icon} />
+                                {`  ${option.label}`}
+                            </Link>
+                        </Menu.Item>
+                    ))
+                }
+                {ProfileRoutes.length > 0 && <Menu.Divider />}
+                <Menu.Item key="signout">
+                    <Button
+                        type="danger"
+                        icon="logout"
+                        onClick={this.signOut}
+                    >
+                        Sign out
+                    </Button>
+                </Menu.Item>            
+            </Menu>
+        );
 
         if(loggedIn && userName){
             return (

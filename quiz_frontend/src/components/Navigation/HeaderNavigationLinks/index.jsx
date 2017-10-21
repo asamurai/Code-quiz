@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, NavLink } from 'react-router-dom';
 
 
 import * as routes from './../../../routes';
@@ -24,9 +24,9 @@ class HeaderNavigationLinks extends Component {
                         width={60}
                     />   
                 </Link>
-                <Link to={routes.FULL_QUIZZES_PATH} className={styles.link}>Full quizzes</Link>
-                <Link to={routes.FREE_QUIZZES_PATH} className={styles.link}>Free quizzes</Link>
-                <Link to={routes.FAQ_PATH} className={styles.link}>FAQ</Link>
+                <NavLink to={routes.FULL_QUIZZES_PATH} className={styles.link} activeClassName={styles.link_active}>Full quizzes</NavLink>
+                <NavLink to={routes.FREE_QUIZZES_PATH} className={styles.link} activeClassName={styles.link_active}>Free quizzes</NavLink>
+                <NavLink to={routes.FAQ_PATH} className={styles.link} activeClassName={styles.link_active}>FAQ</NavLink>
             </div>
         );
     }

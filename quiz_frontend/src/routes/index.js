@@ -13,6 +13,7 @@ export const FAQ_PATH = '/faq';
  * PRIVATE ROUTES
  * 
  */
-export const USER_ACCOUNT_PATH = '/user';
-export const USER_SETTINGS_PATH = `${USER_ACCOUNT_PATH}/settings`;
-export const USER_STATISTICS_PATH = `${USER_ACCOUNT_PATH}/statistics`;
+
+export const USER_ACCOUNT_PATH = '/user/account';
+export const USER_SETTINGS_PATH = `/user/settings`;
+export const USER_STATISTICS_PATH = `/user/statistics`;

@@ -44,10 +44,16 @@ class Application extends Component {
 
     
     componentWillMount () {
+        const {
+            notifications: {
+                notificationTtl
+            }
+        } = this.props;
+
         notification.config({
             placement: 'bottomLeft',
             bottom: 50,
-            duration: 3
+            duration: notificationTtl
         });
     }
     
