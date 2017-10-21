@@ -15,8 +15,6 @@ const TextArea = Input.TextArea;
 
 import ProfileImage from './ProfileImage';
 
-// import styles from './index.sass';
-
 /**
  * Profile account component
  * 
@@ -40,15 +38,15 @@ class Account extends Component {
     }
 
     readPreviewFile = (e) => {
-        const input = e.target;
-        if (input.files && input.files[0]) {
+        const input = e.target.files;
+        if (input && input[0]) {
             const reader = new FileReader();
             reader.onload = () => {
                 this.setState({
                     imageToUpload: reader.result
                 });
             };
-            reader.readAsDataURL(input.files[0]);
+            reader.readAsDataURL(input[0]);
         }
     }
 
