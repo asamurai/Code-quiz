@@ -1,23 +1,51 @@
 import React, { Component } from 'react';
-import { Switch, Route } from 'react-router-dom';
-import * as routes from './../../routes';
+import { 
+    Route,
+    Redirect
+} from 'react-router-dom';
 
-/**
- * ToDo: user account component with settings;
- * ToDo: user statistics component with his test results;
- */
+import {
+    Row,
+    Col
+} from 'antd';
+
+// import UserAccountMenu from './../../components/User/UserAccountMenu';
+
 const Account = () => <div>User Account</div>;
 const Settings = () => <div>User Settings</div>;
 const Statistics = () => <div>User statistics</div>;
 
 class UserAccountContainer extends Component {
     render () {
+        console.log(this.props.match);
         return (
-            <Switch>
-                <Route exact path={routes.USER_ACCOUNT_PATH} component={Account}/>
-                <Route path={routes.USER_SETTINGS_PATH} component={Settings}/>
-                <Route path={routes.USER_STATISTICS_PATH} component={Statistics}/>
-            </Switch>
+            <Row span="12">
+                <Col span="12">
+                    {/* <UserAccountMenu
+                        url={this.props.match}
+                    />                   */}
+                </Col>
+                <Col span="12">
+                    <Route
+                        path="/user/:component?"
+                        render={(routeProps) => {
+                                const component = routeProps.match.params.component || '';
+                                console.log(component);
+                                switch (component) {
+                                    case 'account':
+                                        return <Account/>;
+                                    case 'settings':
+                                        return <Settings/>;
+                                    case 'statistics':
+                                        return <Statistics/>;            
+                                    default:
+                                        return <Redirect to="/user/account" />;
+                                }
+                            }
+                        }
+                    />
+                </Col>
+            </Row>
         );
     }
 }

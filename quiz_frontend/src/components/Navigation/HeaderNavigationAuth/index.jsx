@@ -8,7 +8,7 @@ import {
     Dropdown
 } from 'antd';
 
-import ProfileRoutes from './ProfileRoutes.js';
+import ProfileRoutes from './../../../routes/userAccountRoutes';
 
 import * as routes from './../../../routes';
 
