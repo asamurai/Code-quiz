@@ -13,7 +13,7 @@ const FormItem = Form.Item;
 
 import * as routes from './../../routes';
 
-import './signin.css';
+import styles from './signin.sass';
 
 class SignIn extends Component {
     constructor(props){
@@ -43,27 +43,27 @@ class SignIn extends Component {
         } = this.props;
 
         return (
-            <Form onSubmit={this.handleSubmit} className="login-form">
+            <Form onSubmit={this.handleSubmit} className={styles['login-form']}>
                 <FormItem
-                    label="Email"
+                    label="Username"
                 >
-                    {getFieldDecorator('email', {
+                    {getFieldDecorator('username', {
                         rules: [
                             { 
                                 required: true, 
-                                message: 'Please input your email.' 
+                                message: 'Please input your username.' 
                             }
                         ]
                     })(
                         <Input 
-                            type="email"
+                            type="username"
                             prefix={
                                 <Icon 
-                                    type="mail" 
+                                    type="user"
                                     style={{ fontSize: 13 }} 
                                 />
                             } 
-                            placeholder="Email" 
+                            placeholder="Username" 
                         />
                     )}
                 </FormItem>
@@ -94,7 +94,8 @@ class SignIn extends Component {
                     <Button 
                         type="primary" 
                         htmlType="submit" 
-                        className="login-form-button"
+                        icon="login"
+                        className={styles['login-form-button']}
                         loading={loading}
                     >
                         Sign in

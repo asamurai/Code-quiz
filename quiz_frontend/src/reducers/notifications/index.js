@@ -13,7 +13,8 @@ const initialState = {
   isSuccessMessage: false,
   isErrorMessage: false,
   isInfoMessage: false,
-  message: ''
+  message: '',
+  notificationTtl: 10 //10s
 };
 
 const isSuccessMessage = (state = initialState.isSuccessMessage, action) => {

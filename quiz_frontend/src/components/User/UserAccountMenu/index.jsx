@@ -1,13 +1,47 @@
 import React, { Component } from 'react';
+import { 
+    withRouter
+} from 'react-router';
+import {
+    Link
+} from 'react-router-dom';
 
-class componentName extends Component {
+import {
+    Menu,
+    Icon
+} from 'antd';
+
+import profileRoutes from './../../../routes/userAccountRoutes';
+
+class UserAccountMenu extends Component {
     render () {
+        const {
+            location: {
+                pathname: path
+            }
+        } = this.props;
+
         return (
-            <div>
-                {this.props.url}
-            </div>
+            <Menu
+                selectedKeys={[path]}
+                mode="inline"
+            >
+                {
+                    profileRoutes.map(profileRoute => (
+                        <Menu.Item
+                            key={profileRoute.route}
+                        >
+                            <Link to={profileRoute.route}>
+                               <Icon type={profileRoute.icon} />
+                                {profileRoute.label}
+                            </Link>           
+                        </Menu.Item>            
+                    ))
+                    
+                }
+            </Menu>
         );
     }
 }
 
-export default componentName;
+export default withRouter(UserAccountMenu);

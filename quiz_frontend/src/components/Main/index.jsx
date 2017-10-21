@@ -33,7 +33,7 @@ class Main extends Component {
                     <Route path={routes.FULL_QUIZZES_PATH} component={FullQuizzesContainer}/>
                     <Route path={routes.FREE_QUIZZES_PATH} component={FreeQuizzesContainer}/>
                     <Route path={routes.FAQ_PATH} component={FAQ}/>
-                    <PrivateRoute authed={loggedIn} path={routes.USER_ACCOUNT_PATH} component={UserAccountContainer}/>
+                    <PrivateRoute authed={loggedIn} path={'/user/:component'} component={UserAccountContainer}/>
                     <Route component={RestErrorComponent}/>
                 </Switch>                
             </main>

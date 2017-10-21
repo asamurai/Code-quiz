@@ -9,37 +9,37 @@ import {
     Col
 } from 'antd';
 
-// import UserAccountMenu from './../../components/User/UserAccountMenu';
+import UserAccountMenu from './../../components/User/UserAccountMenu';
+import UserProfileAccount from './../../components/User/UserProfile/Account';
+import UserProfileSettings from './../../components/User/UserProfile/Settings';
+import UserProfileStatstics from './../../components/User/UserProfile/Statistics';
 
-const Account = () => <div>User Account</div>;
-const Settings = () => <div>User Settings</div>;
-const Statistics = () => <div>User statistics</div>;
+import {
+    USER_ACCOUNT_PATH
+} from './../../routes';
 
 class UserAccountContainer extends Component {
     render () {
-        console.log(this.props.match);
         return (
-            <Row span="12">
-                <Col span="12">
-                    {/* <UserAccountMenu
-                        url={this.props.match}
-                    />                   */}
+            <Row span="12" style={{ marginTop: '50px'}} >
+                <Col span="8">
+                    <UserAccountMenu/>                  
                 </Col>
-                <Col span="12">
+                <Col span="16" style={{ padding: '0px 50px' }}>
                     <Route
-                        path="/user/:component?"
+                        exact
+                        path="/user/:component"
                         render={(routeProps) => {
                                 const component = routeProps.match.params.component || '';
-                                console.log(component);
                                 switch (component) {
                                     case 'account':
-                                        return <Account/>;
+                                        return <UserProfileAccount/>;
                                     case 'settings':
-                                        return <Settings/>;
+                                        return <UserProfileSettings/>;
                                     case 'statistics':
-                                        return <Statistics/>;            
+                                        return <UserProfileStatstics/>;            
                                     default:
-                                        return <Redirect to="/user/account" />;
+                                        return <Redirect to={USER_ACCOUNT_PATH} />;
                                 }
                             }
                         }

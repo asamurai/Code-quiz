@@ -13,7 +13,7 @@ const FormItem = Form.Item;
 
 import * as routes from './../../routes';
 
-import './signin.css';
+import styles from './signin.sass';
 
 class SignUp extends Component {
     constructor(props){
@@ -43,11 +43,11 @@ class SignUp extends Component {
         } = this.props;
 
         return (
-            <Form onSubmit={this.handleSubmit} className="login-form">
+            <Form onSubmit={this.handleSubmit} className={styles['login-form']}>
                 <FormItem
-                    label="User name"
+                    label="Username"
                 >
-                    {getFieldDecorator('userName', {
+                    {getFieldDecorator('username', {
                         rules: [
                             { 
                                 required: true, 
@@ -62,7 +62,7 @@ class SignUp extends Component {
                                     style={{ fontSize: 13 }} 
                                 />
                             } 
-                            placeholder="User name" 
+                            placeholder="Username" 
                         />
                     )}
                 </FormItem>
@@ -139,7 +139,7 @@ class SignUp extends Component {
                     <Button 
                         type="primary" 
                         htmlType="submit" 
-                        className="login-form-button"
+                        className={styles['login-form-button']}
                         loading={loading}
                     >
                         Sign up
