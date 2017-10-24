@@ -37,6 +37,13 @@ class Account extends Component {
         };
     }
 
+    componentWillUnmount () {
+        const {
+            setUserFormViewState
+        } = this.props;
+        setUserFormViewState(true);
+    }
+
     readPreviewFile = (e) => {
         const input = e.target.files;
         if (input && input[0]) {
