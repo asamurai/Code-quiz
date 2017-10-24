@@ -1,4 +1,8 @@
-import * as types from './../../constants/user';
+import * as userTypes from './../../constants/user';
+
+const types = {
+    ...userTypes
+};
 
 const initialState = {
     loading: false,

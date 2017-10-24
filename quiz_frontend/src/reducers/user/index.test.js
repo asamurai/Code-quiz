@@ -1,4 +1,4 @@
-import * as userTypes from './../../constants/users';
+import * as userTypes from './../../constants/user';
 
 import reducer from './../user';
 
@@ -31,68 +31,80 @@ describe('Reducer user test', () => {
         expect(reducer(initialState, 'UNDEFINED_ACTION')).toBe(initialState);
     });
     it('USER_SIGNIN action test', () => {
-        expect(reducer(initialState, {type: types.USER_SIGNIN.REQUEST})).toEqual({...initialState, loading: true});
-        expect(reducer(initialState, {type: types.USER_SIGNIN.SUCCESS, ...data})).toEqual({...initialState, ...data, loggedIn: true});
-        expect(reducer(initialState, {type: types.USER_SIGNIN.ERROR, ...error})).toEqual({...initialState, ...error});
+        expect(
+            reducer(initialState, {type: types.USER_SIGNIN.REQUEST})
+        ).toEqual({...initialState, loading: true});
+        expect(
+            reducer(initialState, {type: types.USER_SIGNIN.SUCCESS, ...data})
+        ).toEqual({...initialState, ...data, loggedIn: true});
+        expect(
+            reducer(initialState, {type: types.USER_SIGNIN.ERROR, ...error})
+        ).toEqual({...initialState, ...error});
     });
     it('USER_SIGNOUT action test', () => {
-        expect(reducer(initialState, {type: types.USER_SIGNOUT.REQUEST})).toEqual({...initialState, loading: true});
-        expect(reducer(initialState, {type: types.USER_SIGNOUT.SUCCESS})).toEqual({...initialState});
-        expect(reducer(initialState, {type: types.USER_SIGNOUT.ERROR, ...error})).toEqual({...initialState, ...error});       
+        expect(
+            reducer(initialState, {type: types.USER_SIGNOUT.REQUEST})
+        ).toEqual({...initialState, loading: true});
+
+        expect(
+            reducer(initialState, {type: types.USER_SIGNOUT.SUCCESS})
+        ).toEqual({...initialState});
+
+        expect(
+            reducer(initialState, {type: types.USER_SIGNOUT.ERROR, ...error})
+        ).toEqual({...initialState, ...error});       
     });
     it('USER_REGISTER action test', () => {
-        expect(reducer(initialState, {type: types.USER_REGISTER.REQUEST})).toEqual({...initialState, loading: true});
-        expect(reducer(initialState, {type: types.USER_REGISTER.SUCCESS})).toEqual({...initialState});
-        expect(reducer(initialState, {type: types.USER_REGISTER.ERROR, ...error})).toEqual({...initialState, ...error});               
+        expect(
+            reducer(initialState, {type: types.USER_REGISTER.REQUEST})
+        ).toEqual({...initialState, loading: true});
+
+        expect(
+            reducer(initialState, {type: types.USER_REGISTER.SUCCESS})
+        ).toEqual({...initialState});
+        
+        expect(
+            reducer(initialState, {type: types.USER_REGISTER.ERROR, ...error})
+        ).toEqual({...initialState, ...error});               
     });
     it('CHANGE_FORM_EDIT_STATE action test', () => {
         expect(
             reducer(initialState, {type: types.CHANGE_FORM_EDIT_STATE, state: false })
-        )
-        .toEqual(
-            {
-                ...initialState,
-                formState: { 
-                    view: true,
-                    edit: false
-                }
+        ).toEqual({
+            ...initialState,
+            formState: { 
+                view: true,
+                edit: false
             }
-        );
+        });
         expect(
             reducer(initialState, {type: types.CHANGE_FORM_EDIT_STATE, state: true })
-        ).toEqual(
-            {
-                ...initialState,
-                formState: {
-                    view: false,
-                    edit: true
-                }
+        ).toEqual({
+            ...initialState,
+            formState: {
+                view: false,
+                edit: true
             }
-        );
+        });
     });
     it('CHANGE_FORM_VIEW_STATE action test', () => {
         expect(
             reducer(initialState, {type: types.CHANGE_FORM_VIEW_STATE, state: false })
-        )
-        .toEqual(
-            {
-                ...initialState,
-                formState: { 
-                    view: false,
-                    edit: true
-                }
+        ).toEqual({
+            ...initialState,
+            formState: { 
+                view: false,
+                edit: true
             }
-        );
+        });
         expect(
             reducer(initialState, {type: types.CHANGE_FORM_VIEW_STATE, state: true })
-        ).toEqual(
-            {
-                ...initialState,
-                formState: {
-                    view: true,
-                    edit: false
-                }
+        ).toEqual({
+            ...initialState,
+            formState: {
+                view: true,
+                edit: false
             }
-        ); 
+        }); 
     });
 });
