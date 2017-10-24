@@ -69,14 +69,20 @@ class Account extends Component {
             image,
             form:{
                 getFieldDecorator
-            }
+            },
+            formState: {
+                edit: editState,
+                view: viewState
+            },
+            setUserFormViewState,
+            setUserFormEditState
         } = this.props;
 
         return (
             <div>
                 <Modal
                     title="Upload new profile image"
-                    visible={!!imageToUpload}
+                    visible={!!imageToUpload && editState}
                     onOk={this.handleUploadNewImage}
                     okText={'Upload'}
                     onCancel={this.handleCancelUploadImageDialog}
@@ -113,8 +119,10 @@ class Account extends Component {
                                 <Button
                                     icon="upload"
                                     type="primary"
+                                    disabled={viewState}
                                     style={{
-                                        margin: '10px auto'
+                                        margin: '10px auto',
+                                        visibility:  `${viewState ? 'hidden' : 'visible'}`
                                     }}
                                 >
                                     <label htmlFor="profilePhoto" style={{ width: '100%', height: '100%', cursor: 'pointer' }}>
@@ -136,6 +144,7 @@ class Account extends Component {
                                     ]
                                 })(
                                     <Input
+                                        disabled={viewState}
                                         placeholder="Name" 
                                     />
                                 )}
@@ -152,6 +161,7 @@ class Account extends Component {
                                     ]
                                 })(
                                     <Input 
+                                        disabled={viewState}
                                         placeholder="Surname" 
                                     />
                                 )}
@@ -168,6 +178,7 @@ class Account extends Component {
                                     ]
                                 })(
                                     <Input 
+                                        disabled={viewState}
                                         placeholder="Username" 
                                     />
                                 )}
@@ -181,23 +192,43 @@ class Account extends Component {
                                 rules: [{ required: false }]
                                 })(
                                 <TextArea
+                                    disabled={viewState}
                                     autosize={{ minRows: 6 }}
                                     maxLength="3000"
                                 />)}
                             </FormItem>
                         </Col>
                     </Row>
-                    <Row span="12" style={{padding: '10px'}}> 
-                        <Button
-                            type="primary"
-                            style={{marginRight: '10px'}}
-                        >
-                            Save
-                        </Button>
-                        <Button>
-                            Reset
-                        </Button>
-                    </Row>
+                    {
+                        editState &&
+                        <Row span="12" style={{padding: '10px'}}> 
+                            <Button
+                                type="primary"
+                                style={{marginRight: '10px'}}
+                                onClick={() => setUserFormViewState(true)}
+                            >
+                                Save
+                            </Button>
+                            <Button
+                                type="danger"
+                                onClick={() => setUserFormViewState(true)}
+                            >
+                                Cancel
+                            </Button>
+                        </Row>
+                    }
+                    {
+                        viewState &&
+                        <Row span="12" style={{padding: '10px'}}> 
+                            <Button
+                                type="primary"
+                                style={{marginRight: '10px'}}
+                                onClick={() => setUserFormEditState(true)}
+                            >
+                                Edit
+                            </Button>
+                        </Row>
+                    }
                 </Form>
             </div>
         );
@@ -205,7 +236,13 @@ class Account extends Component {
 }
 
 Account.propTypes = {
-    image: PropTypes.string.isRequired
+    image: PropTypes.string.isRequired,
+    formState: PropTypes.shape({
+        edit: PropTypes.bool,
+        view: PropTypes.bool
+    }).isRequired,
+    setUserFormViewState: PropTypes.func.isRequired,
+    setUserFormEditState: PropTypes.func.isRequired
 };
 
 export default Form.create()(Account);

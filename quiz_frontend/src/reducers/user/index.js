@@ -1,32 +1,36 @@
-import {
-    USER_SIGNIN,
-    USER_SIGNOUT,
-    USER_REGISTER
-} from './../../constants/user';
+import * as types from './../../constants/user';
 
 const initialState = {
     loading: false,
     error: null,
     data: { name: 'Artem' },
+    formState: {
+        edit: false,
+        view: true,
+    },
     loggedIn: true
 };
 
 export default function (state = initialState, action){
     switch (action.type) {
-        case USER_SIGNIN.REQUEST: 
-        case USER_SIGNOUT.REQUEST:
-        case USER_REGISTER.REQUEST:
+        case types.USER_SIGNIN.REQUEST: 
+        case types.USER_SIGNOUT.REQUEST:
+        case types.USER_REGISTER.REQUEST:
             return {...state, error: null, loading: true};
-        case USER_SIGNIN.SUCCESS:
+        case types.USER_SIGNIN.SUCCESS:
             return {...state, error: null, loading: false, data: action.data, loggedIn: true};
-        case USER_SIGNOUT.SUCCESS: 
+        case types.USER_SIGNOUT.SUCCESS: 
             return {...state, error: null, loading: false, data: null, loggedIn: false};
-        case USER_REGISTER.SUCCESS: 
+        case types.USER_REGISTER.SUCCESS: 
             return {...state, error: null, loading: false};
-        case USER_SIGNIN.ERROR: 
-        case USER_SIGNOUT.ERROR:
-        case USER_REGISTER.ERROR:
+        case types.USER_SIGNIN.ERROR: 
+        case types.USER_SIGNOUT.ERROR:
+        case types.USER_REGISTER.ERROR:
             return {...state, error: action.error, loading: false};
+        case types.CHANGE_FORM_EDIT_STATE:
+            return { ...state, formState: { edit: action.state, view: !action.state } };
+        case types.CHANGE_FORM_VIEW_STATE:
+            return { ...state, formState: { view: action.state, edit: !action.state } };
         default:
             return state;
     }
