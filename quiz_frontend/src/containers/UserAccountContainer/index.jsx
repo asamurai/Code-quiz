@@ -28,6 +28,24 @@ import {
 
 class UserAccountContainer extends Component {
 
+    handlePasswordUpdate = (data) => {
+        console.log('password update');
+        console.log(data);
+    }
+
+    handlePasswordDataReset = () => {
+        console.log('password reset');
+    }
+
+    handleEmailUpdate = (data) => {
+        console.log('email update');
+        console.log(data);
+    }
+
+    handleEmailDataReset = () => {
+        console.log('email reset');
+    }
+
     render () {
         const {
             user: {
@@ -59,7 +77,14 @@ class UserAccountContainer extends Component {
                                             />
                                         );
                                     case 'settings':
-                                        return <UserProfileSettings/>;
+                                        return (
+                                            <UserProfileSettings
+                                                onPasswordUpdate={this.handleEmailUpdate}
+                                                onPasswordDataReset={this.handlePasswordDataReset}
+                                                onEmailUpdate={this.handleEmailUpdate}
+                                                onEmailDataReset={this.handleEmailDataReset}
+                                            />
+                                        );
                                     case 'statistics':
                                         return <UserProfileStatstics/>;            
                                     default:
