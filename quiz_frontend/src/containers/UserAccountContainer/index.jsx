@@ -1,13 +1,21 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
 import { 
     Route,
     Redirect
 } from 'react-router-dom';
+import PropTypes from 'prop-types';
 
 import {
     Row,
     Col
 } from 'antd';
+
+import { 
+    setUserFormEditState,
+    setUserFormViewState
+} from './../../actions/user';
 
 import UserAccountMenu from './../../components/User/UserAccountMenu';
 import UserProfileAccount from './../../components/User/UserProfile/Account';
@@ -19,7 +27,34 @@ import {
 } from './../../routes';
 
 class UserAccountContainer extends Component {
+
+    handlePasswordUpdate = (data) => {
+        console.log('password update');
+        console.log(data);
+    }
+
+    handlePasswordDataReset = () => {
+        console.log('password reset');
+    }
+
+    handleEmailUpdate = (data) => {
+        console.log('email update');
+        console.log(data);
+    }
+
+    handleEmailDataReset = () => {
+        console.log('email reset');
+    }
+
     render () {
+        const {
+            user: {
+                formState
+            },
+            setUserFormViewState,
+            setUserFormEditState
+        } = this.props;
+
         return (
             <Row span="12" style={{ marginTop: '50px'}} >
                 <Col span="8">
@@ -33,11 +68,23 @@ class UserAccountContainer extends Component {
                                 const component = routeProps.match.params.component || '';
                                 switch (component) {
                                     case 'account':
-                                        return <UserProfileAccount
-                                            image={''}
-                                        />;
+                                        return (
+                                            <UserProfileAccount
+                                                image={''}
+                                                formState={formState}
+                                                setUserFormEditState={setUserFormEditState}
+                                                setUserFormViewState={setUserFormViewState}
+                                            />
+                                        );
                                     case 'settings':
-                                        return <UserProfileSettings/>;
+                                        return (
+                                            <UserProfileSettings
+                                                onPasswordUpdate={this.handleEmailUpdate}
+                                                onPasswordDataReset={this.handlePasswordDataReset}
+                                                onEmailUpdate={this.handleEmailUpdate}
+                                                onEmailDataReset={this.handleEmailDataReset}
+                                            />
+                                        );
                                     case 'statistics':
                                         return <UserProfileStatstics/>;            
                                     default:
@@ -52,4 +99,21 @@ class UserAccountContainer extends Component {
     }
 }
 
-export default UserAccountContainer;
+UserAccountContainer.propTypes = {
+    user: PropTypes.objectOf(PropTypes.any).isRequired
+};
+
+const mapStateToProps = (state) => ({
+    user: state.user
+});
+  
+const mapDispatchToProps = (dispatch) => {
+    return {
+        setUserFormEditState: bindActionCreators(setUserFormEditState, dispatch),
+        setUserFormViewState: bindActionCreators(setUserFormViewState, dispatch)
+    };
+};
+  
+export default connect(mapStateToProps, mapDispatchToProps)(UserAccountContainer);
+
+

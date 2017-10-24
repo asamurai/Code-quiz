@@ -1,35 +1,34 @@
-import {
-    USER_SIGNIN,
-    USER_SIGNOUT,
-    USER_REGISTER
-} from './../../constants/user';
-import { 
-    NOTIFICATION_SHOW_ERROR_MESSAGE
-} from './../../constants/notifications';
+import * as userTypes from './../../constants/user';
+import * as notifyTypes from './../../constants/notifications';
 import { 
     saveToken,
     removeToken,
     withAuth 
 } from './../../api';
 
+const types = {
+    ...userTypes,
+    ...notifyTypes
+};
+
 export const signIn = credentials => async dispatch => {
     try {
         await dispatch({
-            type: USER_SIGNIN.REQUEST
+            type: types.USER_SIGNIN.REQUEST
         });
         const { data } = await withAuth('post','/api-token-auth/', credentials);
         await saveToken(data.token);
         await dispatch({
-            type: USER_SIGNIN.SUCCESS,
+            type: types.USER_SIGNIN.SUCCESS,
             data
         });
     } catch (error) {
         await dispatch({
-            type: USER_SIGNIN.ERROR,
+            type: types.USER_SIGNIN.ERROR,
             error: error.message
         });  
         await dispatch({
-            type: NOTIFICATION_SHOW_ERROR_MESSAGE,
+            type: types.NOTIFICATION_SHOW_ERROR_MESSAGE,
             message: error.message
         });        
     }
@@ -38,20 +37,20 @@ export const signIn = credentials => async dispatch => {
 export const signUp = credentials => async dispatch => {
     try {
         await dispatch({
-            type: USER_REGISTER.REQUEST
+            type: types.USER_REGISTER.REQUEST
         });
         const { data } = await withAuth('post','/register/', credentials);
         await dispatch({
-            type: USER_REGISTER.SUCCESS,
+            type: types.USER_REGISTER.SUCCESS,
             data
         });
     } catch (error) {
         await dispatch({
-            type: USER_SIGNIN.ERROR,
+            type: types.USER_SIGNIN.ERROR,
             error: error.message
         });  
         await dispatch({
-            type: NOTIFICATION_SHOW_ERROR_MESSAGE,
+            type: types.NOTIFICATION_SHOW_ERROR_MESSAGE,
             message: error.message
         });         
     }
@@ -60,21 +59,35 @@ export const signUp = credentials => async dispatch => {
 export const signOut = credentials => async dispatch => {
     try {
         await dispatch({
-            type: USER_SIGNOUT.REQUEST
+            type: types.USER_SIGNOUT.REQUEST
         }); 
         await withAuth('post','/logout/', credentials);
         await removeToken();
         await dispatch({
-            type: USER_SIGNOUT.SUCCESS
+            type: types.USER_SIGNOUT.SUCCESS
         });        
     } catch (error) {
         await dispatch({
-            type: USER_SIGNIN.ERROR,
+            type: types.USER_SIGNIN.ERROR,
             error: error.message
         });  
         await dispatch({
-            type: NOTIFICATION_SHOW_ERROR_MESSAGE,
+            type: types.NOTIFICATION_SHOW_ERROR_MESSAGE,
             message: error.message
         });     
     }
+};
+
+export const setUserFormEditState = state => async dispatch => {
+    dispatch({
+        type: types.CHANGE_FORM_EDIT_STATE,
+        state
+    });
+};
+
+export const setUserFormViewState = state => dispatch => {
+    dispatch({
+        type: types.CHANGE_FORM_VIEW_STATE,
+        state
+    }); 
 };
