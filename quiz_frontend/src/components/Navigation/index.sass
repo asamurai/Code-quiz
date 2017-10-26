@@ -1,8 +1,12 @@
-$link_color: #c9c9c9
-$link_hover_color: #ffffff
-$background_color: #0e0e0e
+$link_color: #6980b0
+$link_hover_color: #4c67a1
+$background_color: #ffffff
+
 .header
     &_nav
+        display: flex
+        justify-content: space-between
+        align-items: center
         background-color: $background_color
     &_wrapper
         display: flex
@@ -13,15 +17,17 @@ $background_color: #0e0e0e
         &_nav
             justify-content: space-between
             margin: 0 auto
-            padding: 10px 0px
             width: 100%
             max-width: 1024px
 .link
     font-family: RobotoMedium
+    padding: 10px 0px
     margin: 0px 5px
     color: $link_color
     transition: all .35s
+    text-decoration: none !important
     &:hover
         color: $link_hover_color
     &_active
         color: $link_hover_color
+        transition: all .35s

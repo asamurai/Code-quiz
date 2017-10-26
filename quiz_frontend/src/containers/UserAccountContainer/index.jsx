@@ -1,24 +1,51 @@
 import React, { Component } from 'react';
-import { Switch, Route } from 'react-router-dom';
-import {
-    USER_ACCOUNT_PATH,
-    USER_STATISTICS_PATH
-} from './../../routes';
+import { 
+    Route,
+    Redirect
+} from 'react-router-dom';
 
-/**
- * ToDo: user account component with settings;
- * ToDo: user statistics component with his test results;
- */
-const Account = () => <div>User Account</div>;
-const Statistics = () => <div>User statistics</div>;
+import {
+    Row,
+    Col
+} from 'antd';
+
+import UserAccountMenu from './../../components/User/UserAccountMenu';
+import UserProfileAccount from './../../components/User/UserProfile/Account';
+import UserProfileSettings from './../../components/User/UserProfile/Settings';
+import UserProfileStatstics from './../../components/User/UserProfile/Statistics';
+
+import {
+    USER_ACCOUNT_PATH
+} from './../../routes';
 
 class UserAccountContainer extends Component {
     render () {
         return (
-            <Switch>
-                <Route exact path={USER_ACCOUNT_PATH} component={Account}/>
-                <Route path={USER_STATISTICS_PATH} component={Statistics}/>
-            </Switch>
+            <Row span="12" style={{ marginTop: '50px'}} >
+                <Col span="8">
+                    <UserAccountMenu/>                  
+                </Col>
+                <Col span="16" style={{ padding: '0px 50px' }}>
+                    <Route
+                        exact
+                        path="/user/:component"
+                        render={(routeProps) => {
+                                const component = routeProps.match.params.component || '';
+                                switch (component) {
+                                    case 'account':
+                                        return <UserProfileAccount/>;
+                                    case 'settings':
+                                        return <UserProfileSettings/>;
+                                    case 'statistics':
+                                        return <UserProfileStatstics/>;            
+                                    default:
+                                        return <Redirect to={USER_ACCOUNT_PATH} />;
+                                }
+                            }
+                        }
+                    />
+                </Col>
+            </Row>
         );
     }
 }
