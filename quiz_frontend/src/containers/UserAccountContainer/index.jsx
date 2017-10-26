@@ -79,7 +79,7 @@ class UserAccountContainer extends Component {
                                     case 'settings':
                                         return (
                                             <UserProfileSettings
-                                                onPasswordUpdate={this.handleEmailUpdate}
+                                                onPasswordUpdate={this.handlePasswordUpdate}
                                                 onPasswordDataReset={this.handlePasswordDataReset}
                                                 onEmailUpdate={this.handleEmailUpdate}
                                                 onEmailDataReset={this.handleEmailDataReset}

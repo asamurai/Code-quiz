@@ -35,7 +35,13 @@ class Settings extends Component {
             onEmailDataReset
         } = this.props;
         return (
-            <Collapse accordion>
+            <Collapse 
+                accordion
+                onChange={() => {
+                    onEmailDataReset();
+                    onPasswordDataReset();
+                }}
+            >
                 <Panel header={PANELS[0].header} key={PANELS[0].key}>
                     <Form>
                         <FormItem
@@ -110,12 +116,15 @@ class Settings extends Component {
                         <Row span="12">
                             <Button
                                 type="primary"
-                                onClick={() => onPasswordUpdate}
+                                style={{
+                                    marginRight: '20px'
+                                }}
+                                onClick={onPasswordUpdate}
                             >
                                 Save
                             </Button>
                             <Button
-                                onClick={() => onPasswordDataReset}
+                                onClick={onPasswordDataReset}
                             >
                                 Reset
                             </Button>
@@ -150,12 +159,15 @@ class Settings extends Component {
                         <Row span="12">
                             <Button
                                 type="primary"
-                                onClick={() => onEmailUpdate}
+                                style={{
+                                    marginRight: '20px'
+                                }}
+                                onClick={onEmailUpdate}
                             >
                                 Save
                             </Button>
                             <Button
-                                onClick={() => onEmailDataReset}
+                                onClick={onEmailDataReset}
                             >
                                 Reset
                             </Button>
