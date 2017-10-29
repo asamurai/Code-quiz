@@ -4,10 +4,105 @@ const types = {
     ...userTypes
 };
 
+const mockUserStatisticsData = [
+    {
+        id: 1,
+        testId: 1,
+        test: {
+            name: 'Python basics',
+            imageUrl: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTHMdsvCwKqIJxU1U-pt6YLZ-iMapbCoWvamcnarpreAa_3xpcd'
+        },
+        testResult: {
+            score: 0.85,
+            correct: 85,
+            incorrect: 15,
+            total: 100
+        },
+        date: 'Mon Oct 30 2017 00:31:59 GMT+0200 (EET)'
+    },
+    {
+        id: 2,
+        testId: 1,
+        test: {
+            name: 'Python basics',
+            imageUrl: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTHMdsvCwKqIJxU1U-pt6YLZ-iMapbCoWvamcnarpreAa_3xpcd'
+        },
+        testResult: {
+            score: 0.7,
+            correct: 70,
+            incorrect: 30,
+            total: 100
+        },
+        date: 'Mon Oct 30 2017 00:31:59 GMT+0200 (EET)'
+    },
+    {
+        id: 3,
+        testId: 1,
+        test: {
+            name: 'Python basics',
+            imageUrl: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTHMdsvCwKqIJxU1U-pt6YLZ-iMapbCoWvamcnarpreAa_3xpcd'
+        },
+        testResult: {
+            score: 0.65,
+            correct: 65,
+            incorrect: 35,
+            total: 100
+        },
+        date: 'Mon Oct 30 2017 00:31:59 GMT+0200 (EET)'
+    },
+    {
+        id: 4,
+        testId: 1,
+        test: {
+            name: 'Javascript basics',
+            imageUrl: 'https://upload.wikimedia.org/wikipedia/commons/thumb/9/99/Unofficial_JavaScript_logo_2.svg/1200px-Unofficial_JavaScript_logo_2.svg.png'
+        },
+        testResult: {
+            score: 0.75,
+            correct: 75,
+            incorrect: 25,
+            total: 100
+        },
+        date: 'Mon Oct 30 2017 00:31:59 GMT+0200 (EET)'
+    },
+    {
+        id: 5,
+        testId: 1,
+        test: {
+            name: 'Java basics',
+            imageUrl: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS2yRwrZFKJNJ3NV4modFoVbbVOJfTxfmOPbmEN2oi8xcXy3XmjFg'
+        },
+        testResult: {
+            score: 0.35,
+            correct: 35,
+            incorrect: 65,
+            total: 100
+        },
+        date: 'Mon Oct 30 2017 00:31:59 GMT+0200 (EET)'
+    },
+    {
+        id: 6,
+        testId: 1,
+        test: {
+            name: 'Javascript basics',
+            imageUrl: 'https://upload.wikimedia.org/wikipedia/commons/thumb/9/99/Unofficial_JavaScript_logo_2.svg/1200px-Unofficial_JavaScript_logo_2.svg.png'
+        },
+        testResult: {
+            score: 0.45,
+            correct: 45,
+            incorrect: 55,
+            total: 100
+        },
+        date: 'Mon Oct 30 2017 00:31:59 GMT+0200 (EET)'
+    }
+];
+
 const initialState = {
     loading: false,
     error: null,
     data: { id: 1, name: 'Artem' },
+    testStatistics: mockUserStatisticsData,
+    // testStatistics: [],
     formState: {
         edit: false,
         view: true
