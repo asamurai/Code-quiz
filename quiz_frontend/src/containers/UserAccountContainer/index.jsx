@@ -26,6 +26,7 @@ import UserAccountMenu from './../../components/User/UserAccountMenu';
 import UserProfileAccount from './../../components/User/UserProfile/Account';
 import UserProfileSettings from './../../components/User/UserProfile/Settings';
 import UserProfileStatstics from './../../components/User/UserProfile/Statistics';
+import TestStatisticsPage from './../../components/User/UserProfile/Statistics/TestStatisticsPage';
 
 import {
     USER_ACCOUNT_PATH
@@ -141,11 +142,28 @@ class UserAccountContainer extends Component {
         formUserSettingsValues: this.defFormUserSettingsValues
     });
 
+    genereteRowForTable = (type, entity) => {
+        switch (type) {
+          case 'test':
+            return {
+              key: entity.id,
+              action: entity.id,
+              testName: entity.test.name,
+              testImage: entity.test.imageUrl,
+              testScore: `${entity.testResult.score*100}%`,
+              date: new Date(entity.date).toISOString()
+            };
+          default:
+            break;
+        }
+      }
+
     render () {
         const {
             user: {
                 formState,
-                modals
+                modals,
+                testStatistics
             },
             setUserFormViewState,
             setUserFormEditState
@@ -159,9 +177,10 @@ class UserAccountContainer extends Component {
                 <Col span="16" style={{ padding: '0px 50px' }}>
                     <Route
                         exact
-                        path="/user/:component"
+                        path="/user/:component?/:id?"
                         render={(routeProps) => {
                                 const component = routeProps.match.params.component || '';
+                                const id = routeProps.match.params.id || null;
                                 switch (component) {
                                     case 'account':
                                         return (
@@ -191,7 +210,20 @@ class UserAccountContainer extends Component {
                                             />
                                         );
                                     case 'statistics':
-                                        return <UserProfileStatstics/>;            
+                                        switch (!!id) {
+                                            case true:
+                                                return (
+                                                    <TestStatisticsPage
+                                                        testId={id}
+                                                    />
+                                                );  
+                                            default:
+                                                return (
+                                                    <UserProfileStatstics
+                                                        testStatistics={testStatistics.map(test => this.genereteRowForTable('test', test))}
+                                                    />
+                                                );  
+                                        }       
                                     default:
                                         return <Redirect to={USER_ACCOUNT_PATH} />;
                                 }
