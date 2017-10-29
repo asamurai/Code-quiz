@@ -35,7 +35,8 @@ class Account extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            imageToUpload: null
+            imageToUpload: null,
+            imageFileToUpload: null
         };
     }
 
@@ -53,21 +54,24 @@ class Account extends Component {
         onAccountSave();
     }
 
+    handlePictureUpload = () => {
+        const { onPictureUpload } = this.props;
+        const { imageFileToUpload } = this.state;
+        onPictureUpload(imageFileToUpload);
+    }
+
     readPreviewFile = (e) => {
         const input = e.target.files;
         if (input && input[0]) {
             const reader = new FileReader();
             reader.onload = () => {
                 this.setState({
-                    imageToUpload: reader.result
+                    imageToUpload: reader.result,
+                    imageFileToUpload: input[0]
                 });
             };
             reader.readAsDataURL(input[0]);
         }
-    }
-
-    handleUploadNewImage = () => {
-        console.log('handle upload image');
     }
 
     handleCancelUploadImageDialog = () => {
@@ -99,7 +103,7 @@ class Account extends Component {
                 <Modal
                     title="Upload new profile image"
                     visible={!!imageToUpload && editState}
-                    onOk={this.handleUploadNewImage}
+                    onOk={this.handlePictureUpload}
                     okText={'Upload'}
                     onCancel={this.handleCancelUploadImageDialog}
                     cancelText={'Cancel'}
@@ -275,7 +279,8 @@ Account.propTypes = {
     }).isRequired,
     setUserFormViewState: PropTypes.func.isRequired,
     setUserFormEditState: PropTypes.func.isRequired,
-    onAccountSave: PropTypes.func.isRequired
+    onAccountSave: PropTypes.func.isRequired,
+    onPictureUpload: PropTypes.func.isRequired
 };
 
 export default AccountHOC;

@@ -146,6 +146,37 @@ export const updateUserEmail = (id, userData) => async dispatch => {
     }
 };
 
+export const updateUserPicture = (id, newPicture, isPrevPicture) => async dispatch => {
+    try {
+        await dispatch({
+            type: types.USER_SET_PICTURE.REQUEST
+        }); 
+        if (isPrevPicture) {
+            await dispatch({
+                type: types.USER_DELETE_PICTURE.REQUEST
+            }); 
+            await withAuth('delete',`/user/id/${id}/image/`);
+            await dispatch({
+                type: types.USER_DELETE_PICTURE.SUCCESS
+            }); 
+        }
+        const data = await withAuth('post',`/user/id/${id}/image/`, newPicture);
+        await dispatch({
+            type: types.USER_SET_PICTURE.SUCCESS,
+            data
+        });                 
+    } catch (error) {
+        await dispatch({
+            type: types.USER_SET_PICTURE.ERROR,
+            error: error.message
+        });  
+        await dispatch({
+            type: types.NOTIFICATION_SHOW_ERROR_MESSAGE,
+            message: error.message
+        });     
+    }
+};
+
 export const setUserFormEditState = state => async dispatch => {
     dispatch({
         type: types.CHANGE_FORM_EDIT_STATE,

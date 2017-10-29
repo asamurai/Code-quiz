@@ -82,6 +82,12 @@ class UserAccountContainer extends Component {
         updateUser(userId, data);
     }
 
+    handlePictureUpload = (pictureFile) => {
+        const formData = new FormData();
+        formData.append('file', pictureFile);
+        
+    };
+
     handleSettingsUpdate = (changeField) => {
         const { formUserSettingsValues } = this.state;
         const {
@@ -147,6 +153,7 @@ class UserAccountContainer extends Component {
 
                                                 onChange={this.handleFormChange('formUserProfileValues')}
                                                 onAccountSave={this.handleAccountSave}
+                                                onPictureUpload={this.handlePictureUpload}
                                                 setUserFormEditState={setUserFormEditState}
                                                 setUserFormViewState={setUserFormViewState}
                                             />
