@@ -15,6 +15,8 @@ const TextArea = Input.TextArea;
 
 import ProfileImage from './ProfileImage';
 
+import { getPropsObject } from './../../../../helpers/hocHelpers';
+
 /**
  * Profile account component
  * 
@@ -42,6 +44,13 @@ class Account extends Component {
             setUserFormViewState
         } = this.props;
         setUserFormViewState(true);
+    }
+
+    handleSaveAccount = () => {
+        const {
+            onAccountSave
+        } = this.props;
+        onAccountSave();
     }
 
     readPreviewFile = (e) => {
@@ -117,7 +126,7 @@ class Account extends Component {
                                 {getFieldDecorator('name', {
                                     rules: [
                                         { 
-                                            required: true, 
+                                            required: false, 
                                             message: 'Please input your name.' 
                                         }
                                     ]
@@ -134,7 +143,7 @@ class Account extends Component {
                                 {getFieldDecorator('surname', {
                                     rules: [
                                         { 
-                                            required: true, 
+                                            required: false, 
                                             message: 'Please input your surname.' 
                                         }
                                     ]
@@ -214,7 +223,7 @@ class Account extends Component {
                             <Button
                                 type="primary"
                                 style={{marginRight: '10px'}}
-                                onClick={() => setUserFormViewState(true)}
+                                onClick={this.handleSaveAccount}
                             >
                                 Save
                             </Button>
@@ -244,6 +253,20 @@ class Account extends Component {
     }
 }
 
+const AccountHOC = Form.create({
+  onFieldsChange(props, changedFields) {
+    props.onChange(changedFields);
+  },
+  mapPropsToFields(props) {
+    return getPropsObject(props.fields, [
+      'name',
+      'surname',
+      'username',
+      'bio'
+    ]);
+  }
+})(Account);
+
 Account.propTypes = {
     image: PropTypes.string.isRequired,
     formState: PropTypes.shape({
@@ -251,7 +274,8 @@ Account.propTypes = {
         view: PropTypes.bool
     }).isRequired,
     setUserFormViewState: PropTypes.func.isRequired,
-    setUserFormEditState: PropTypes.func.isRequired
+    setUserFormEditState: PropTypes.func.isRequired,
+    onAccountSave: PropTypes.func.isRequired
 };
 
-export default Form.create()(Account);
+export default AccountHOC;
