@@ -2,11 +2,13 @@ import hashlib
 import random
 import re
 import datetime
+
 from rest_framework.views import exception_handler
 from django.conf import settings
 from django.utils.timezone import now as datetime_now
 from django.contrib.auth import get_user_model
 from django.contrib.sites.models import Site
+from django.http import JsonResponse
 
 from .models import RegistrationProfile
 
@@ -93,15 +95,8 @@ class EmailActivation(object):
         self.send_activation_email(new_user, site)
         return new_user
 
-
 def custom_exception_handler(exc, context):
     # Call REST framework's default exception handler first,
     # to get the standard error response.
     response = exception_handler(exc, context)
-
-    # Now add the HTTP status code to the response.
-    if response is not None:
-        print(exc.get_full_details(), exc.get_codes(), exc.default_detail)
-        response.data['status_code'] = response.status_code
-        # response.data['errors'] = exc.get_full_details()
-    return response
+    return JsonResponse({'error': {'errors': [response.data]}, 'statusCode': response.status_code})

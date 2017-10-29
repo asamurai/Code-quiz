@@ -11,12 +11,10 @@ email_activation = EmailActivation()
 @api_view(['POST'])
 def register(request):
     serialized = UserSerializer(data=request.data)
-    if serialized.is_valid():
+    if serialized.is_valid(raise_exception=True):
         email_activation.create_inactive_user(**request.data)
         return Response(email_activation.get_days(),
                         status=status.HTTP_201_CREATED)
-    else:
-        return Response(serialized._errors, status=status.HTTP_400_BAD_REQUEST)
 
 
 @api_view(['GET'])
