@@ -14,7 +14,12 @@ import {
 
 import { 
     setUserFormEditState,
-    setUserFormViewState
+    setUserFormViewState,
+    updateUser,
+    updateUserPassword,
+    updateUserEmail,
+    setUserImage,
+    setUserFormModalsState
 } from './../../actions/user';
 
 import UserAccountMenu from './../../components/User/UserAccountMenu';
@@ -26,30 +31,121 @@ import {
     USER_ACCOUNT_PATH
 } from './../../routes';
 
+import { 
+    getValuesFromForm,
+    getPropsFromForm
+} from './../../helpers/hocHelpers';
+
 class UserAccountContainer extends Component {
-
-    handlePasswordUpdate = (data) => {
-        console.log('password update');
-        console.log(data);
+    constructor(props) {
+        super(props);
+        this.defFormUserProfileValues = {
+            name: { value: '' },
+            surname: { value: '' },
+            username: { value: '' },
+            bio: { value: '' }
+        };
+        this.defFormUserSettingsValues = {
+            oldPassword: { value: '' },
+            newPassword: { value: '' },
+            confirmPassword: { value: '' },
+            newEmail: { value: '' }
+        };
+        this.state = {
+            formUserProfileValues: {
+                ...this.defFormUserProfileValues
+            },
+            formUserSettingsValues: {
+                ...this.defFormUserSettingsValues
+            }
+        };
     }
 
-    handlePasswordDataReset = () => {
-        console.log('password reset');
+    handleFormChange = (formName) => (changedFields) => {
+        this.setState({
+            [formName]: { 
+                ...this.state[formName], 
+                ...changedFields 
+            }
+        });
+    };
+
+    handleAccountSave = () => {
+        const { formUserProfileValues } = this.state;
+        const { 
+            updateUser, 
+            user:{
+                data: {
+                    id: userId
+                }
+            } 
+        } = this.props;
+        const data = getValuesFromForm(formUserProfileValues);
+        updateUser(userId, data);
     }
 
-    handleEmailUpdate = (data) => {
-        console.log('email update');
-        console.log(data);
+    handlePictureUpload = (pictureFile) => {
+        const {
+            user: {
+                data: {
+                    id: userId,
+                    imageId
+                }
+            },
+            setUserImage
+        } = this.props;
+        const formData = new FormData();
+        formData.append('file', pictureFile);
+        setUserImage(userId, formData, imageId);
+    };
+
+    handleChangeUserModalState = (modalName, state) => {
+        const {
+            setUserFormModalsState
+        } = this.props;
+        setUserFormModalsState(modalName, state);
     }
 
-    handleEmailDataReset = () => {
-        console.log('email reset');
+    handleSettingsUpdate = (changeField) => {
+        const { formUserSettingsValues } = this.state;
+        const {
+            user: {
+                data: {
+                    id: userId
+                }
+            },
+            updateUserEmail,
+            updateUserPassword
+        } = this.props;
+        let neededProps = [],
+        updateFunction = () => {};
+        switch (changeField) {
+            case 'password':
+                neededProps = ['oldPassword', 'newPassword', 'confirmPassword'];
+                updateFunction = updateUserPassword;
+                break;
+            case 'email':
+                neededProps = ['newEmail'];
+                updateFunction = updateUserEmail;
+                break;       
+            default:
+                break;
+        }
+        if (neededProps.length > 0) {
+            const data = getPropsFromForm(formUserSettingsValues, neededProps);
+            updateFunction(userId, data);
+        }
     }
+
+    handleSettingsReset = () => this.setState({
+        formUserSettingsValues: this.defFormUserSettingsValues
+    });
 
     render () {
         const {
             user: {
-                formState
+                formState,
+                modals
             },
             setUserFormViewState,
             setUserFormEditState
@@ -72,17 +168,26 @@ class UserAccountContainer extends Component {
                                             <UserProfileAccount
                                                 image={''}
                                                 formState={formState}
+                                                modals={modals}
+                                                fields={this.state.formUserProfileValues}
+
+                                                onChange={this.handleFormChange('formUserProfileValues')}
+                                                onAccountSave={this.handleAccountSave}
+                                                onPictureUpload={this.handlePictureUpload}
                                                 setUserFormEditState={setUserFormEditState}
                                                 setUserFormViewState={setUserFormViewState}
+                                                onChangeModalState={this.handleChangeUserModalState}
                                             />
                                         );
                                     case 'settings':
                                         return (
                                             <UserProfileSettings
-                                                onPasswordUpdate={this.handleEmailUpdate}
-                                                onPasswordDataReset={this.handlePasswordDataReset}
-                                                onEmailUpdate={this.handleEmailUpdate}
-                                                onEmailDataReset={this.handleEmailDataReset}
+                                                fields={this.state.formUserSettingsValues}
+
+                                                onChange={this.handleFormChange('formUserSettingsValues')}
+                                                onPasswordUpdate={() => this.handleSettingsUpdate('password')}
+                                                onEmailUpdate={() => this.handleSettingsUpdate('email')}
+                                                onFormReset={this.handleSettingsReset}
                                             />
                                         );
                                     case 'statistics':
@@ -110,7 +215,12 @@ const mapStateToProps = (state) => ({
 const mapDispatchToProps = (dispatch) => {
     return {
         setUserFormEditState: bindActionCreators(setUserFormEditState, dispatch),
-        setUserFormViewState: bindActionCreators(setUserFormViewState, dispatch)
+        setUserFormViewState: bindActionCreators(setUserFormViewState, dispatch),
+        updateUser: bindActionCreators(updateUser, dispatch),
+        updateUserPassword: bindActionCreators(updateUserPassword, dispatch),
+        updateUserEmail: bindActionCreators(updateUserEmail, dispatch),
+        setUserImage: bindActionCreators(setUserImage, dispatch),
+        setUserFormModalsState: bindActionCreators(setUserFormModalsState, dispatch)
     };
 };
   

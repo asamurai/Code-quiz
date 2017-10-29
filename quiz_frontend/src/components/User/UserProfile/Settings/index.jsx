@@ -9,6 +9,8 @@ import {
     Input
 } from 'antd';
 
+import { getPropsObject } from './../../../../helpers/hocHelpers';
+
 const Panel = Collapse.Panel;
 const FormItem = Form.Item;
 
@@ -24,18 +26,52 @@ const PANELS = [
 ];
 
 class Settings extends Component {
+
+    handleSettingsUpdate = (changeField) => {
+        const {
+            form: {
+                validateFields
+            },
+            onPasswordUpdate,
+            onEmailUpdate
+        } = this.props;
+        let neededFields = [],
+        updateFunction = () => {};
+        switch (changeField) {
+            case 'password':
+                neededFields = ['oldPassword', 'newPassword', 'confirmPassword'];
+                updateFunction = onPasswordUpdate;
+                break;
+            case 'email':
+                neededFields = ['newEmail'];
+                updateFunction = onEmailUpdate;
+                break;       
+            default:
+                break;
+        }
+        if (neededFields.length > 0) {
+            validateFields(neededFields, (err) => {
+                if (!err) {
+                    updateFunction();
+                }
+            });
+        }
+    }
+
     render () {
         const {
             form: {
                 getFieldDecorator
             },
-            onPasswordUpdate,
-            onPasswordDataReset,
-            onEmailUpdate,
-            onEmailDataReset
+            onFormReset
         } = this.props;
         return (
-            <Collapse accordion>
+            <Collapse 
+                accordion
+                onChange={() => {
+                    onFormReset();
+                }}
+            >
                 <Panel header={PANELS[0].header} key={PANELS[0].key}>
                     <Form>
                         <FormItem
@@ -110,12 +146,15 @@ class Settings extends Component {
                         <Row span="12">
                             <Button
                                 type="primary"
-                                onClick={() => onPasswordUpdate}
+                                style={{
+                                    marginRight: '20px'
+                                }}
+                                onClick={() => this.handleSettingsUpdate('password')}
                             >
                                 Save
                             </Button>
                             <Button
-                                onClick={() => onPasswordDataReset}
+                                onClick={onFormReset}
                             >
                                 Reset
                             </Button>
@@ -150,12 +189,15 @@ class Settings extends Component {
                         <Row span="12">
                             <Button
                                 type="primary"
-                                onClick={() => onEmailUpdate}
+                                style={{
+                                    marginRight: '20px'
+                                }}
+                                onClick={() => this.handleSettingsUpdate('email')}
                             >
                                 Save
                             </Button>
                             <Button
-                                onClick={() => onEmailDataReset}
+                                onClick={onFormReset}
                             >
                                 Reset
                             </Button>
@@ -167,11 +209,24 @@ class Settings extends Component {
     }
 }
 
+const SettingsHOC = Form.create({
+  onFieldsChange(props, changedFields) {
+    props.onChange(changedFields);
+  },
+  mapPropsToFields(props) {
+    return getPropsObject(props.fields, [
+      'oldPassword',
+      'newPassword',
+      'confirmPassword',
+      'newEmail'
+    ]);
+  }
+})(Settings);
+
 Settings.propTypes = {
     onPasswordUpdate: PropTypes.func.isRequired,
-    onPasswordDataReset: PropTypes.func.isRequired,
     onEmailUpdate: PropTypes.func.isRequired,
-    onEmailDataReset: PropTypes.func.isRequired
+    onFormReset: PropTypes.func.isRequired
 };
 
-export default Form.create()(Settings);
+export default SettingsHOC;
