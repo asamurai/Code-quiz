@@ -111,34 +111,6 @@ class Account extends Component {
                 <Form>  
                     <Row span="12">
                         <Col span="12">
-                            <input id="profilePhoto" style={{ display: 'none' }} type="file" onChange={this.readPreviewFile} accept="image/*"/>
-                            <div
-                                style={{
-                                    display: 'flex',
-                                    flexDirection: 'column',
-                                    alignItems: 'center'
-                                }}
-                            >
-                                <ProfileImage
-                                    url={image}
-                                    mode={'full'}
-                                />
-                                <Button
-                                    icon="upload"
-                                    type="primary"
-                                    disabled={viewState}
-                                    style={{
-                                        margin: '10px auto',
-                                        visibility:  `${viewState ? 'hidden' : 'visible'}`
-                                    }}
-                                >
-                                    <label htmlFor="profilePhoto" style={{ width: '100%', height: '100%', cursor: 'pointer' }}>
-                                        {`   Upload profile Photo`}
-                                    </label>
-                                </Button>
-                            </div>
-                        </Col>
-                        <Col span="12">
                             <FormItem
                                 label="Name"
                             >
@@ -191,9 +163,39 @@ class Account extends Component {
                                 )}
                             </FormItem>
                         </Col>
+                        <Col span="12">
+                            <input id="profilePhoto" style={{ display: 'none' }} type="file" onChange={this.readPreviewFile} accept="image/*"/>
+                            <div
+                                style={{
+                                    display: 'flex',
+                                    flexDirection: 'column',
+                                    alignItems: 'flex-end'
+                                }}
+                            >
+                                <ProfileImage
+                                    url={image}
+                                    mode={'full'}
+                                />
+                                <Button
+                                    icon="upload"
+                                    type="primary"
+                                    disabled={viewState}
+                                    style={{
+                                        width: '200px',
+                                        marginTop: '10px',
+                                        marginBottom: '10px',
+                                        visibility:  `${viewState ? 'hidden' : 'visible'}`
+                                    }}
+                                >
+                                    <label htmlFor="profilePhoto" style={{ width: '100%', height: '100%', cursor: 'pointer' }}>
+                                        {`   Upload profile Photo`}
+                                    </label>
+                                </Button>
+                            </div>
+                        </Col>
                     </Row>
                     <Row span="12">
-                        <Col span="20">
+                        <Col span="24">
                             <FormItem label="Biograpgy" hasFeedback >
                                 {getFieldDecorator('bio', {
                                 rules: [{ required: false }]
