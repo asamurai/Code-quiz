@@ -89,7 +89,7 @@ export const updateUser = (id, userData) => async dispatch => {
             data
         });       
         await dispatch({
-            type: types.CHANGE_FORM_EDIT_STATE,
+            type: types.CHANGE_USER_PROFILE_EDIT_STATE,
             state: false
         });             
     } catch (error) {
@@ -146,7 +146,7 @@ export const updateUserEmail = (id, userData) => async dispatch => {
     }
 };
 
-export const updateUserPicture = (id, newPicture, isPrevPicture) => async dispatch => {
+export const setUserImage = (id, newPicture, isPrevPicture) => async dispatch => {
     try {
         await dispatch({
             type: types.USER_SET_PICTURE.REQUEST
@@ -155,16 +155,22 @@ export const updateUserPicture = (id, newPicture, isPrevPicture) => async dispat
             await dispatch({
                 type: types.USER_DELETE_PICTURE.REQUEST
             }); 
-            await withAuth('delete',`/user/id/${id}/image/`);
+            await withAuth('delete',`/photo/user/${id}`);
             await dispatch({
                 type: types.USER_DELETE_PICTURE.SUCCESS
             }); 
         }
-        const data = await withAuth('post',`/user/id/${id}/image/`, newPicture);
+        const data = await withAuth('post',`/photo/upload/user/${id}`, newPicture);
         await dispatch({
             type: types.USER_SET_PICTURE.SUCCESS,
             data
-        });                 
+        }); 
+        await dispatch({
+            type: types.CHANGE_USER_PROFILE_FORM_MODAL_STATE,
+            modalState: {
+                imageUpload: false
+            }
+        });              
     } catch (error) {
         await dispatch({
             type: types.USER_SET_PICTURE.ERROR,
@@ -179,15 +185,24 @@ export const updateUserPicture = (id, newPicture, isPrevPicture) => async dispat
 
 export const setUserFormEditState = state => async dispatch => {
     dispatch({
-        type: types.CHANGE_FORM_EDIT_STATE,
+        type: types.CHANGE_USER_PROFILE_FORM_EDIT_STATE,
         state
     });
 };
 
 export const setUserFormViewState = state => dispatch => {
     dispatch({
-        type: types.CHANGE_FORM_VIEW_STATE,
+        type: types.CHANGE_USER_PROFILE_FORM_VIEW_STATE,
         state
+    }); 
+};
+
+export const setUserFormModalsState = (modalName, state)=> dispatch => {
+    dispatch({
+        type: types.CHANGE_USER_PROFILE_FORM_MODAL_STATE,
+        modalState: {
+            [modalName]: state
+        }
     }); 
 };
 

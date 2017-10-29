@@ -10,7 +10,10 @@ const initialState = {
     data: { id: 1, name: 'Artem' },
     formState: {
         edit: false,
-        view: true,
+        view: true
+    },
+    modals: {
+        imageUpload: false,
     },
     loggedIn: true
 };
@@ -39,10 +42,12 @@ export default function (state = initialState, action){
         case types.USER_EMAIL_CHANGE.ERROR:
         case types.USER_PASSWORD_CHANGE.ERROR:
             return {...state, error: action.error, loading: false};
-        case types.CHANGE_FORM_EDIT_STATE:
+        case types.CHANGE_USER_PROFILE_FORM_EDIT_STATE:
             return { ...state, formState: { edit: action.state, view: !action.state } };
-        case types.CHANGE_FORM_VIEW_STATE:
+        case types.CHANGE_USER_PROFILE_FORM_VIEW_STATE:
             return { ...state, formState: { view: action.state, edit: !action.state } };
+        case types.CHANGE_USER_PROFILE_FORM_MODAL_STATE:
+            return { ...state, modals: { ...state.modals, ...action.modalState } };
         case types.RESET_USER_ERRORS: 
             return { ...state, error: null };
         default:

@@ -17,7 +17,9 @@ import {
     setUserFormViewState,
     updateUser,
     updateUserPassword,
-    updateUserEmail
+    updateUserEmail,
+    setUserImage,
+    setUserFormModalsState
 } from './../../actions/user';
 
 import UserAccountMenu from './../../components/User/UserAccountMenu';
@@ -83,10 +85,26 @@ class UserAccountContainer extends Component {
     }
 
     handlePictureUpload = (pictureFile) => {
+        const {
+            user: {
+                data: {
+                    id: userId,
+                    imageId
+                }
+            },
+            setUserImage
+        } = this.props;
         const formData = new FormData();
         formData.append('file', pictureFile);
-        
+        setUserImage(userId, formData, imageId);
     };
+
+    handleChangeUserModalState = (modalName, state) => {
+        const {
+            setUserFormModalsState
+        } = this.props;
+        setUserFormModalsState(modalName, state);
+    }
 
     handleSettingsUpdate = (changeField) => {
         const { formUserSettingsValues } = this.state;
@@ -126,7 +144,8 @@ class UserAccountContainer extends Component {
     render () {
         const {
             user: {
-                formState
+                formState,
+                modals
             },
             setUserFormViewState,
             setUserFormEditState
@@ -149,6 +168,7 @@ class UserAccountContainer extends Component {
                                             <UserProfileAccount
                                                 image={''}
                                                 formState={formState}
+                                                modals={modals}
                                                 fields={this.state.formUserProfileValues}
 
                                                 onChange={this.handleFormChange('formUserProfileValues')}
@@ -156,6 +176,7 @@ class UserAccountContainer extends Component {
                                                 onPictureUpload={this.handlePictureUpload}
                                                 setUserFormEditState={setUserFormEditState}
                                                 setUserFormViewState={setUserFormViewState}
+                                                onChangeModalState={this.handleChangeUserModalState}
                                             />
                                         );
                                     case 'settings':
@@ -197,7 +218,9 @@ const mapDispatchToProps = (dispatch) => {
         setUserFormViewState: bindActionCreators(setUserFormViewState, dispatch),
         updateUser: bindActionCreators(updateUser, dispatch),
         updateUserPassword: bindActionCreators(updateUserPassword, dispatch),
-        updateUserEmail: bindActionCreators(updateUserEmail, dispatch)
+        updateUserEmail: bindActionCreators(updateUserEmail, dispatch),
+        setUserImage: bindActionCreators(setUserImage, dispatch),
+        setUserFormModalsState: bindActionCreators(setUserFormModalsState, dispatch)
     };
 };
   

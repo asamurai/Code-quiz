@@ -23,6 +23,10 @@ const initialState = {
         edit: false,
         view: true
     },
+    modals: {
+        imageUpload: false,
+        userDelete: false
+    },
     loggedIn: false
 };
 
@@ -67,9 +71,9 @@ describe('Reducer user test', () => {
             reducer(initialState, {type: types.USER_REGISTER.ERROR, ...error})
         ).toEqual({...initialState, ...error});               
     });
-    it('CHANGE_FORM_EDIT_STATE action test', () => {
+    it('CHANGE_USER_PROFILE_FORM_EDIT_STATE action test', () => {
         expect(
-            reducer(initialState, {type: types.CHANGE_FORM_EDIT_STATE, state: false })
+            reducer(initialState, {type: types.CHANGE_USER_PROFILE_FORM_EDIT_STATE, state: false })
         ).toEqual({
             ...initialState,
             formState: { 
@@ -78,7 +82,7 @@ describe('Reducer user test', () => {
             }
         });
         expect(
-            reducer(initialState, {type: types.CHANGE_FORM_EDIT_STATE, state: true })
+            reducer(initialState, {type: types.CHANGE_USER_PROFILE_FORM_EDIT_STATE, state: true })
         ).toEqual({
             ...initialState,
             formState: {
@@ -87,9 +91,9 @@ describe('Reducer user test', () => {
             }
         });
     });
-    it('CHANGE_FORM_VIEW_STATE action test', () => {
+    it('CHANGE_USER_PROFILE_FORM_VIEW_STATE action test', () => {
         expect(
-            reducer(initialState, {type: types.CHANGE_FORM_VIEW_STATE, state: false })
+            reducer(initialState, {type: types.CHANGE_USER_PROFILE_FORM_VIEW_STATE, state: false })
         ).toEqual({
             ...initialState,
             formState: { 
@@ -98,12 +102,32 @@ describe('Reducer user test', () => {
             }
         });
         expect(
-            reducer(initialState, {type: types.CHANGE_FORM_VIEW_STATE, state: true })
+            reducer(initialState, {type: types.CHANGE_USER_PROFILE_FORM_VIEW_STATE, state: true })
         ).toEqual({
             ...initialState,
             formState: {
                 view: true,
                 edit: false
+            }
+        }); 
+    });
+    it('CHANGE_USER_PROFILE_FORM_MODAL_STATE action test', () => {
+        expect(
+            reducer(initialState, {type: types.CHANGE_USER_PROFILE_FORM_MODAL_STATE, modalState: { imageUpload: true } })
+        ).toEqual({
+            ...initialState,
+            modals: {
+                imageUpload: true,
+                userDelete: false
+            }
+        });
+        expect(
+            reducer(initialState, {type: types.CHANGE_USER_PROFILE_FORM_MODAL_STATE, modalState: { userDelete: true } })
+        ).toEqual({
+            ...initialState,
+            modals: {
+                imageUpload: false,
+                userDelete: true
             }
         }); 
     });

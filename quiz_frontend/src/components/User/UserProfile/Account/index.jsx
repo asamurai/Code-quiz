@@ -61,10 +61,14 @@ class Account extends Component {
     }
 
     readPreviewFile = (e) => {
+        const {
+            onChangeModalState
+        } = this.props;
         const input = e.target.files;
         if (input && input[0]) {
             const reader = new FileReader();
             reader.onload = () => {
+                onChangeModalState('imageUpload', true);
                 this.setState({
                     imageToUpload: reader.result,
                     imageFileToUpload: input[0]
@@ -75,9 +79,13 @@ class Account extends Component {
     }
 
     handleCancelUploadImageDialog = () => {
+        const {
+            onChangeModalState
+        } = this.props;
         this.setState({
             imageToUpload: null
         });
+        onChangeModalState('imageUpload', false);
     }
 
     render () {
@@ -94,6 +102,9 @@ class Account extends Component {
                 edit: editState,
                 view: viewState
             },
+            modals: {
+                imageUpload: imageUploadModalState
+            },
             setUserFormViewState,
             setUserFormEditState
         } = this.props;
@@ -102,7 +113,7 @@ class Account extends Component {
             <div>
                 <Modal
                     title="Upload new profile image"
-                    visible={!!imageToUpload && editState}
+                    visible={imageUploadModalState && editState}
                     onOk={this.handlePictureUpload}
                     okText={'Upload'}
                     onCancel={this.handleCancelUploadImageDialog}
@@ -277,10 +288,12 @@ Account.propTypes = {
         edit: PropTypes.bool,
         view: PropTypes.bool
     }).isRequired,
+    modals: PropTypes.objectOf(PropTypes.any).isRequired,
     setUserFormViewState: PropTypes.func.isRequired,
     setUserFormEditState: PropTypes.func.isRequired,
     onAccountSave: PropTypes.func.isRequired,
-    onPictureUpload: PropTypes.func.isRequired
+    onPictureUpload: PropTypes.func.isRequired,
+    onChangeModalState: PropTypes.func.isRequired
 };
 
 export default AccountHOC;
