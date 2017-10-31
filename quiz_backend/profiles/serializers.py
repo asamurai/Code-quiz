@@ -1,7 +1,7 @@
-# from django.contrib.auth import get_user_model
 from django.contrib.auth.models import User
 from rest_framework import serializers
 from .models import UserProfile
+
 
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
@@ -15,9 +15,11 @@ class UserBaseSerializer(serializers.ModelSerializer):
         fields = ('id','username', 'email', 'first_name', 'last_name')
 
 
-class UserProfileSerializer(serializers.ModelSerializer):
-    user = UserBaseSerializer()
-
+class UserProfileSerializer(serializers.HyperlinkedModelSerializer):
+    username = serializers.CharField(source='user.username')
+    first_name = serializers.CharField(source='user.first_name')
+    last_name = serializers.CharField(source='user.last_name')
+    email = serializers.CharField(source='user.email')
     class Meta:
         model = UserProfile
-        fields = ('user, 'profile_image', 'bio')
+        fields = ('email', 'profile_image', 'bio', 'username','first_name', 'last_name')

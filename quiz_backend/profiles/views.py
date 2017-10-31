@@ -1,10 +1,14 @@
+from django.contrib.auth.models import User
 from django.core.exceptions import ObjectDoesNotExist
 from rest_framework import status
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework.authtoken.models import Token
+from rest_framework.views import APIView
+
 from .utils import EmailActivation
-from .serializers import UserSerializer
+from .serializers import UserSerializer, UserProfileSerializer
+from .models import UserProfile
 
 email_activation = EmailActivation()
 
@@ -47,3 +51,24 @@ def restore_password(request):
         return Response(status=status.HTTP_200_OK)
     except Exception as e:
         return Response(status=status.HTTP_400_BAD_REQUEST)
+
+
+class UserView(APIView):
+    """
+    List all users, or create a new snippet.
+    """
+
+    def get_object(self, pk):
+        try:
+            user = User.objects.get(id=pk)
+            return user
+        except Exception:
+            return False
+
+    def get(self, request, id):
+        user = self.get_object(id)
+        if not user:
+            return Response(status=status.HTTP_400_BAD_REQUEST)
+        queryset = UserProfile.objects.get(user=user)
+        serializer = UserProfileSerializer(queryset)
+        return Response(serializer.data, status=status.HTTP_200_OK)

@@ -10,7 +10,7 @@ from django.contrib.auth import get_user_model
 from django.contrib.sites.models import Site
 from django.http import JsonResponse
 
-from .models import RegistrationProfile
+from .models import RegistrationProfile, UserProfile
 
 
 class EmailActivation(object):
@@ -39,6 +39,7 @@ class EmailActivation(object):
         activation_key = self.create_activation_key(user)
         registration_profile = RegistrationProfile.objects.create(
             user=user, activation_key=activation_key)
+        UserProfile.objects.create(user=user)
         return registration_profile
 
     def create_activation_key(self, user):
@@ -95,8 +96,10 @@ class EmailActivation(object):
         self.send_activation_email(new_user, site)
         return new_user
 
+
 def custom_exception_handler(exc, context):
     # Call REST framework's default exception handler first,
     # to get the standard error response.
     response = exception_handler(exc, context)
-    return JsonResponse({'error': {'errors': [response.data]}, 'statusCode': response.status_code})
+    if response is not None:
+        return JsonResponse({'error': {'errors': [response.data]}, 'statusCode': response.status_code})
