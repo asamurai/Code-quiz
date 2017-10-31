@@ -128,3 +128,7 @@ SITE_ID = 1
 STATIC_URL = '/static/'
 
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+
+REST_FRAMEWORK = {
+    'EXCEPTION_HANDLER': 'profiles.utils.custom_exception_handler'
+}
