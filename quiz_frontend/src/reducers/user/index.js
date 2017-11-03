@@ -120,7 +120,8 @@ const initialState = {
             },
             pages: {
 
-            }
+            },
+            statistic: null
         }
     },
     loggedIn: true

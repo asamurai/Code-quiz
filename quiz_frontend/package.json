@@ -69,8 +69,10 @@
   "dependencies": {
     "antd": "^2.13.4",
     "axios": "^0.16.2",
+    "chart.js": "^2.7.1",
     "classnames": "^2.2.5",
     "react": "^15.6.1",
+    "react-chartjs-2": "^2.6.4",
     "react-cookies": "^0.1.0",
     "react-dom": "^15.6.1",
     "react-hot-loader": "next",
