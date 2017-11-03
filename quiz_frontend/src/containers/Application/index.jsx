@@ -102,13 +102,12 @@ class Application extends Component {
 
     render () {
         const { user } = this.props;
-        const { data, loggedIn } = user;
+        const { loggedIn } = user;
         return (
             <div>
                 <BackTop />
                 <HeaderNavigation
                     loggedIn={loggedIn}
-                    userName={data && data.name ? data.name : null}
                     signOutFunction={() => this.signOut()}
                 />
                 <Main

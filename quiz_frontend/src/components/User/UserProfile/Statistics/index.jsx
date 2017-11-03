@@ -64,7 +64,8 @@ class Statistics extends Component {
         } = this.props;
         return (
             <div>
-                <h4>User Statistics</h4>
+                <h3>User Statistics</h3>
+                <hr/>
                 <Table
                     columns={this.statisticsColumns}
                     dataSource={testStatistics}

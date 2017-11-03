@@ -19,13 +19,28 @@ const initialState = {
     loading: false,
     error: null,
     data: null,
-    formState: {
-        edit: false,
-        view: true
-    },
-    modals: {
-        imageUpload: false,
-        userDelete: false
+    forms: {
+        profile: {
+            state: {
+                edit: false,
+                view: true
+            },
+            modals: {
+                imageUpload: false
+            }
+        },
+        settings: {
+        },
+        statistics: {
+            register: [],
+            requestBody: {
+                limit: 10
+            },
+            pages: {
+                currentPage: 0,
+                totalFinded: 0
+            }
+        }
     },
     loggedIn: false
 };
@@ -76,18 +91,30 @@ describe('Reducer user test', () => {
             reducer(initialState, {type: types.CHANGE_USER_PROFILE_FORM_EDIT_STATE, state: false })
         ).toEqual({
             ...initialState,
-            formState: { 
-                view: true,
-                edit: false
+            forms: {
+                ...initialState.forms,
+                profile: {
+                    ...initialState.forms.profile,
+                    state: {
+                        edit: false,
+                        view: true
+                    }
+                }
             }
         });
         expect(
             reducer(initialState, {type: types.CHANGE_USER_PROFILE_FORM_EDIT_STATE, state: true })
         ).toEqual({
             ...initialState,
-            formState: {
-                view: false,
-                edit: true
+            forms: {
+                ...initialState.forms,
+                profile: {
+                    ...initialState.forms.profile,
+                    state: {
+                        edit: true,
+                        view: false
+                    }
+                }
             }
         });
     });
@@ -96,18 +123,30 @@ describe('Reducer user test', () => {
             reducer(initialState, {type: types.CHANGE_USER_PROFILE_FORM_VIEW_STATE, state: false })
         ).toEqual({
             ...initialState,
-            formState: { 
-                view: false,
-                edit: true
+            forms: {
+                ...initialState.forms,
+                profile: {
+                    ...initialState.forms.profile,
+                    state: {
+                        edit: true,
+                        view: false
+                    }
+                }
             }
         });
         expect(
             reducer(initialState, {type: types.CHANGE_USER_PROFILE_FORM_VIEW_STATE, state: true })
         ).toEqual({
             ...initialState,
-            formState: {
-                view: true,
-                edit: false
+            forms: {
+                ...initialState.forms,
+                profile: {
+                    ...initialState.forms.profile,
+                    state: {
+                        edit: false,
+                        view: true
+                    }
+                }
             }
         }); 
     });
@@ -116,18 +155,28 @@ describe('Reducer user test', () => {
             reducer(initialState, {type: types.CHANGE_USER_PROFILE_FORM_MODAL_STATE, modalState: { imageUpload: true } })
         ).toEqual({
             ...initialState,
-            modals: {
-                imageUpload: true,
-                userDelete: false
+            forms: {
+                ...initialState.forms,
+                profile: {
+                    ...initialState.forms.profile,
+                    modals: {
+                        imageUpload: true
+                    }
+                }
             }
         });
         expect(
-            reducer(initialState, {type: types.CHANGE_USER_PROFILE_FORM_MODAL_STATE, modalState: { userDelete: true } })
+            reducer(initialState, {type: types.CHANGE_USER_PROFILE_FORM_MODAL_STATE, modalState: { imageUpload: false } })
         ).toEqual({
             ...initialState,
-            modals: {
-                imageUpload: false,
-                userDelete: true
+            forms: {
+                ...initialState.forms,
+                profile: {
+                    ...initialState.forms.profile,
+                    modals: {
+                        imageUpload: false
+                    }
+                }
             }
         }); 
     });

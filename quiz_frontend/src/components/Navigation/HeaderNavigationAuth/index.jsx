@@ -29,7 +29,7 @@ class HeaderNavigationAuth extends Component {
     }
 
     render () {
-        const { loggedIn, userName } = this.props;
+        const { loggedIn } = this.props;
 
         const AuthMenu = (
             <Menu>
@@ -56,7 +56,7 @@ class HeaderNavigationAuth extends Component {
             </Menu>
         );
 
-        if(loggedIn && userName){
+        if(loggedIn){
             return (
                 <Dropdown overlay={AuthMenu} placement="bottomRight">
                     <Avatar style={{ backgroundColor: '#6980b0' }} icon="user" />
