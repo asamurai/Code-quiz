@@ -1,5 +1,6 @@
 const path = require('path');
 const webpackEnvConfig = require('./webpack');
+const FaviconsWebpackPlugin = require('favicons-webpack-plugin');
 
 const webpackConfig = {
   entry: webpackEnvConfig.entry,
@@ -12,7 +13,9 @@ const webpackConfig = {
   resolve: {
     extensions: ['.js', '.jsx']
   },
-  plugins: webpackEnvConfig.plugins,
+  plugins: webpackEnvConfig.plugins.concat([
+    new FaviconsWebpackPlugin('./assets/favicon.png')
+  ]),
   module:{
     rules: webpackEnvConfig.rules
   },
