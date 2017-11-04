@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { bindActionCreators } from 'redux';
+// import { bindActionCreators } from 'redux';
 import { 
     Route,
     Redirect
@@ -10,10 +10,6 @@ import PropTypes from 'prop-types';
 import {
     Row
 } from 'antd';
-
-import {
-    setFullQuizzesActiveKey
-} from './../../actions/fullquizzes';
 
 import FullQuizzesNavigation from './../../components/FullQuizzes/Navigation';
 import FullQuizzesRegister from './../../components/FullQuizzes/Register';
@@ -32,16 +28,16 @@ class FullQuizzesContainer extends Component {
 
     render () {
         const {
-            setFullQuizzesActiveKey
+            fullquizzes: {
+                registers
+            }
         } = this.props;
+
         return (
             <Row span="12">
-                <FullQuizzesNavigation
-                    onSetFullQuizzesActiveKey={setFullQuizzesActiveKey}
-                />
+                <FullQuizzesNavigation />
                 <Route
-                    exact
-                    path={`/${FULL_QUIZZES_PATH}/:quizType?/:quizId?`}
+                    path={`${FULL_QUIZZES_PATH}/:quizType?/:quizId?`}
                     render={(routeProps) => {
                         const quizType = routeProps.match.params.quizType || '';
                         const quizId = routeProps.match.params.quizId || null;
@@ -65,6 +61,7 @@ class FullQuizzesContainer extends Component {
                                 return (
                                     <FullQuizzesRegister
                                         quizType={quizType}
+                                        registers={registers}
                                     />
                                 );               
                             default:    
@@ -72,7 +69,6 @@ class FullQuizzesContainer extends Component {
                         }
                     }}
                 />
-                <FullQuizzesRegister />
             </Row>
         );
     }
@@ -86,9 +82,8 @@ const mapStateToProps = (state) => ({
     fullquizzes: state.fullquizzes
 });
   
-const mapDispatchToProps = (dispatch) => {
+const mapDispatchToProps = () => {
     return {
-        setFullQuizzesActiveKey: bindActionCreators(setFullQuizzesActiveKey, dispatch)
     };
 };
   

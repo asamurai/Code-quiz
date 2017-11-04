@@ -13,6 +13,7 @@ import {
 import fullQuizzesRoutes from './../../../routes/fullQuizzesRoutes';
 
 class FullQuizzesNavigation extends Component {
+
     render () {
         const {
             location: {

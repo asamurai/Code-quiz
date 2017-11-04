@@ -4,7 +4,7 @@ class QuizDetailedInfo extends Component {
     render () {
         return (
             <div>
-                DetailedInfo
+                Detailed Info about quiz and technology
             </div>
         );
     }

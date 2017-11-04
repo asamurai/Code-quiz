@@ -30,10 +30,3 @@ export const getFullQuizzesByType = type => async dispatch => {
         });        
     }
 };
-
-export const setFullQuizzesActiveKey = key => dispatch => {
-    dispatch({
-        type: types.SET_FULL_QUIZZES_ACTIVE_KEY,
-        key
-    });
-};
