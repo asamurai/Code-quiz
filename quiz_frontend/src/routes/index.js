@@ -1,3 +1,4 @@
+import * as quizCategoryNames from './../constants/quizzesCategoryNames';
 /**
  * PUBLIC ROUTES
  * 
@@ -13,6 +14,12 @@ export const FAQ_PATH = '/faq';
  */
 
 export const FULL_QUIZZES_PATH = '/full-quizzes';
+export const FULL_QUIZZES_QUIZ_DETAILS_PATH = '/full-quizzes/quiz';
+export const FULL_QUIZZES_FRAMEWORK_PATH = `/full-quizzes/${quizCategoryNames.FRAMEWORK}`;
+export const FULL_QUIZZES_LIBRARY_PATH = `/full-quizzes/${quizCategoryNames.LIBRARY}`;
+export const FULL_QUIZZES_LANGUAGE_PATH = `/full-quizzes/${quizCategoryNames.LANGUAGE}`;
+export const FULL_QUIZZES_TOOL_PATH = `/full-quizzes/${quizCategoryNames.TOOL}`;
+export const FULL_QUIZZES_PLATFORM_PATH = `/full-quizzes/${quizCategoryNames.PLATFORM}`;
 
 /**
  * PRIVATE ROUTES
