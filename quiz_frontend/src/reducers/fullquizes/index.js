@@ -18,13 +18,15 @@ const initialState = {
 
 export default function (state = initialState, action){
     switch (action.type) {
-        case types.GET_QUIZZES_BY_TYPE_REQUEST: 
+        case types.GET_QUIZZES_BY_TYPE.REQUEST: 
             return {
+                ...state,
                 error: null,
                 loading: true
             };
-        case types.GET_QUIZZES_BY_TYPE_SUCCESS: 
+        case types.GET_QUIZZES_BY_TYPE.SUCCESS: 
             return {
+                ...state,
                 error: null,
                 loading: false,
                 registers: {
@@ -32,8 +34,10 @@ export default function (state = initialState, action){
                     [action.data.type]: action.data.content
                 }
             };
-        case types.GET_QUIZZES_BY_TYPE_FAILURE: 
+        case types.GET_QUIZZES_BY_TYPE.FAILURE: 
+            console.log(action);
             return {
+                ...state,
                 error: action.error,
                 loading: false
             };
