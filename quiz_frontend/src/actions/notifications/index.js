@@ -3,7 +3,7 @@ import {
     NOTIFICATION_SHOW_ERROR_MESSAGE,
     NOTIFICATION_SHOW_INFO_MESSAGE,
     NOTIFICATION_SHOW_SUCCESS_MESSAGE
-} from './../../constants/notifications';
+} from './../../constants/container_constants/notifications';
 
 export const showSuccessMessage = ({ message }) => ({
     type: NOTIFICATION_SHOW_SUCCESS_MESSAGE,

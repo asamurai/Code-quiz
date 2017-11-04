@@ -20,7 +20,7 @@ export const getValuesFromForm = formState =>
         {}
     );
 
-export const getPropsFromForm = (formState, keys) => 
+export const getCertainValuesFromForm = (formState, keys) => 
     Object.entries(formState)
     .filter((entry) => keys.includes(entry[0]))
     .reduce((prev, curr) => ({

@@ -34,7 +34,7 @@ import {
 
 import { 
     getValuesFromForm,
-    getPropsFromForm
+    getCertainValuesFromForm
 } from './../../helpers/hocHelpers';
 
 class UserAccountContainer extends Component {
@@ -133,7 +133,7 @@ class UserAccountContainer extends Component {
                 break;
         }
         if (neededProps.length > 0) {
-            const data = getPropsFromForm(formUserSettingsValues, neededProps);
+            const data = getCertainValuesFromForm(formUserSettingsValues, neededProps);
             updateFunction(userId, data);
         }
     }
@@ -161,9 +161,15 @@ class UserAccountContainer extends Component {
     render () {
         const {
             user: {
-                formState,
-                modals,
-                testStatistics
+                forms: {
+                    profile: {
+                        state: profileFormState,
+                        modals
+                    },
+                    statistics: {
+                        register: statisticsRegister
+                    }
+                }
             },
             setUserFormViewState,
             setUserFormEditState
@@ -186,7 +192,7 @@ class UserAccountContainer extends Component {
                                         return (
                                             <UserProfileAccount
                                                 image={''}
-                                                formState={formState}
+                                                formState={profileFormState}
                                                 modals={modals}
                                                 fields={this.state.formUserProfileValues}
 
@@ -220,7 +226,7 @@ class UserAccountContainer extends Component {
                                             default:
                                                 return (
                                                     <UserProfileStatstics
-                                                        testStatistics={testStatistics.map(test => this.genereteRowForTable('test', test))}
+                                                        testStatistics={statisticsRegister.map(test => this.genereteRowForTable('test', test))}
                                                     />
                                                 );  
                                         }       

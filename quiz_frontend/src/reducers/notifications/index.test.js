@@ -1,4 +1,4 @@
-import * as notificationsTypes from './../../constants/notifications';
+import * as notificationsTypes from './../../constants/container_constants/notifications';
 
 import reducer from './../notifications';
 
