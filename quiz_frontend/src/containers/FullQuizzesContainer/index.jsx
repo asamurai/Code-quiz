@@ -1,13 +1,43 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
+// import { bindActionCreators } from 'redux';
+// import { 
+//     Route,
+//     Redirect
+// } from 'react-router-dom';
+import PropTypes from 'prop-types';
 
-class FullQuizzesContainer extends Component {
+import {
+    Row
+} from 'antd';
+
+class UserAccountContainer extends Component {
+    constructor(props) {
+        super(props);
+    }
+
     render () {
         return (
-            <div>
-                Full Quizzes Container
-            </div>
+            <Row span="12">
+                Full quizzes
+            </Row>
         );
     }
 }
 
-export default FullQuizzesContainer;
+UserAccountContainer.propTypes = {
+    user: PropTypes.objectOf(PropTypes.any).isRequired
+};
+
+const mapStateToProps = (state) => ({
+    user: state.user
+});
+  
+const mapDispatchToProps = () => {
+    return {
+    };
+};
+  
+export default connect(mapStateToProps, mapDispatchToProps)(UserAccountContainer);
+
+

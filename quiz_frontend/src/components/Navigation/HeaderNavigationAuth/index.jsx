@@ -12,6 +12,7 @@ import {
 import ProfileRoutes from './../../../routes/userAccountRoutes';
 
 import * as routes from './../../../routes';
+import * as navigationTopNames from './../../../constants/navigationTopNames';
 
 import styles from './../index.sass';
 
@@ -65,8 +66,8 @@ class HeaderNavigationAuth extends Component {
         }
         return (
             <div>
-                <Link to={routes.SIGNIN_PATH} className={styles.link}>Sign in</Link>
-                <Link to={routes.SIGNUP_PATH} className={styles.link}>Create account</Link>
+                <Link to={routes.SIGNIN_PATH} className={styles.link}>{navigationTopNames.SIGN_IN}</Link>
+                <Link to={routes.SIGNUP_PATH} className={styles.link}>{navigationTopNames.SIGN_UP}</Link>
             </div>
         );
     }

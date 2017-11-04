@@ -3,6 +3,7 @@ import { Link, NavLink } from 'react-router-dom';
 
 
 import * as routes from './../../../routes';
+import * as navigationTopNames from './../../../constants/navigationTopNames'; 
 
 import styles from './../index.sass';
 
@@ -24,9 +25,9 @@ class HeaderNavigationLinks extends Component {
                         width={60}
                     />   
                 </Link>
-                <NavLink to={routes.FULL_QUIZZES_PATH} className={styles.link} activeClassName={styles.link_active}>Full quizzes</NavLink>
-                <NavLink to={routes.FREE_QUIZZES_PATH} className={styles.link} activeClassName={styles.link_active}>Free quizzes</NavLink>
-                <NavLink to={routes.FAQ_PATH} className={styles.link} activeClassName={styles.link_active}>FAQ</NavLink>
+                <NavLink to={routes.FULL_QUIZZES_PATH} className={styles.link} activeClassName={styles.link_active}>{navigationTopNames.FULL_QUIZZES}</NavLink>
+                <NavLink to={routes.FREE_QUIZZES_PATH} className={styles.link} activeClassName={styles.link_active}>{navigationTopNames.FREE_QUIZZES}</NavLink>
+                <NavLink to={routes.FAQ_PATH} className={styles.link} activeClassName={styles.link_active}>{navigationTopNames.FAQ}</NavLink>
             </div>
         );
     }

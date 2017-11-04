@@ -13,7 +13,8 @@ const initialState = {
         platfowm: [],
         tool: [],
         language: []
-    }
+    },
+    activeKey: 0
 };
 
 export default function (state = initialState, action){
@@ -35,11 +36,15 @@ export default function (state = initialState, action){
                 }
             };
         case types.GET_QUIZZES_BY_TYPE.FAILURE: 
-            console.log(action);
             return {
                 ...state,
                 error: action.error,
                 loading: false
+            };
+        case types.SET_FULL_QUIZZES_ACTIVE_KEY:
+            return {
+                ...state,
+                activeKey: action.key
             };
         default:
             return state;

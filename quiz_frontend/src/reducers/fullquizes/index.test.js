@@ -23,7 +23,8 @@ const initialState = {
         platform: [],
         tool: [],
         language: []
-    }
+    },
+    activeKey: 0
 };
 
 describe('Reducer fullquizzes test', () => {
@@ -71,5 +72,16 @@ describe('Reducer fullquizzes test', () => {
                 error: dummyError
             }
         );
+    });
+    it('SET_FULL_QUIZZES_ACTIVE_KEY test' ,() => {
+        expect(
+            reducer(initialState, {
+                type: types.SET_FULL_QUIZZES_ACTIVE_KEY,
+                key: 1
+            })
+        ).toEqual({
+            ...initialState,
+            activeKey: 1
+        });
     });
 });
