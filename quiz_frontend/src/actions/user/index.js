@@ -1,5 +1,5 @@
-import * as userTypes from './../../constants/user';
-import * as notifyTypes from './../../constants/notifications';
+import * as userTypes from './../../constants/container_constants/user';
+import * as notifyTypes from './../../constants/container_constants/notifications';
 import { 
     saveToken,
     removeToken,

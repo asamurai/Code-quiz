@@ -1,4 +1,4 @@
-import * as fullquizzesTypes from './../../constants/fullquizzes';
+import * as fullquizzesTypes from './../../constants/container_constants/fullquizzes';
 
 const types = {
     ...fullquizzesTypes

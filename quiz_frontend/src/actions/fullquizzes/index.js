@@ -1,5 +1,5 @@
-import * as fullquizzesTypes from './../../constants/fullquizzes';
-import * as notifyTypes from './../../constants/notifications';
+import * as fullquizzesTypes from './../../constants/container_constants/fullquizzes';
+import * as notifyTypes from './../../constants/container_constants/notifications';
 import { 
     withAuth 
 } from './../../api';

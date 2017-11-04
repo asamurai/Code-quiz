@@ -1,4 +1,4 @@
-import * as userTypes from './../../constants/user';
+import * as userTypes from './../../constants/container_constants/user';
 
 import reducer from './../user';
 

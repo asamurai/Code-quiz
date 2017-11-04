@@ -1,4 +1,4 @@
-import * as userTypes from './../../constants/user';
+import * as userTypes from './../../constants/container_constants/user';
 
 const types = {
     ...userTypes
@@ -116,10 +116,11 @@ const initialState = {
         statistics: {
             register: mockUserStatisticsData,
             requestBody: {
-
+                limit: 10
             },
             pages: {
-
+                currentPage: 0,
+                totalFinded: 0
             },
             statistic: null
         }
