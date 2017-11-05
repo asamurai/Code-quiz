@@ -21,12 +21,8 @@ export const getFullQuizzesByType = type => async dispatch => {
         });
     } catch (error) {
         await dispatch({
-            type: types.GET_QUIZZES_BY_TYPE.ERROR,
+            type: types.GET_QUIZZES_BY_TYPE.FAILURE,
             error: error.message
-        });  
-        await dispatch({
-            type: types.NOTIFICATION_SHOW_ERROR_MESSAGE,
-            message: error.message
-        });        
+        });         
     }
 };

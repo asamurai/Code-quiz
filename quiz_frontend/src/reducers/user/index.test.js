@@ -57,7 +57,7 @@ describe('Reducer user test', () => {
             reducer(initialState, {type: types.USER_SIGNIN.SUCCESS, ...data})
         ).toEqual({...initialState, ...data, loggedIn: true});
         expect(
-            reducer(initialState, {type: types.USER_SIGNIN.ERROR, ...error})
+            reducer(initialState, {type: types.USER_SIGNIN.FAILURE, ...error})
         ).toEqual({...initialState, ...error});
     });
     it('USER_SIGNOUT action test', () => {
@@ -70,7 +70,7 @@ describe('Reducer user test', () => {
         ).toEqual({...initialState});
 
         expect(
-            reducer(initialState, {type: types.USER_SIGNOUT.ERROR, ...error})
+            reducer(initialState, {type: types.USER_SIGNOUT.FAILURE, ...error})
         ).toEqual({...initialState, ...error});       
     });
     it('USER_REGISTER action test', () => {
@@ -83,7 +83,7 @@ describe('Reducer user test', () => {
         ).toEqual({...initialState});
         
         expect(
-            reducer(initialState, {type: types.USER_REGISTER.ERROR, ...error})
+            reducer(initialState, {type: types.USER_REGISTER.FAILURE, ...error})
         ).toEqual({...initialState, ...error});               
     });
     it('CHANGE_USER_PROFILE_FORM_EDIT_STATE action test', () => {

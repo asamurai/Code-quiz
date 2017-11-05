@@ -1,5 +1,4 @@
 import * as userTypes from './../../constants/container_constants/user';
-import * as notifyTypes from './../../constants/container_constants/notifications';
 import { 
     saveToken,
     removeToken,
@@ -7,8 +6,7 @@ import {
 } from './../../api';
 
 const types = {
-    ...userTypes,
-    ...notifyTypes
+    ...userTypes
 };
 
 export const signIn = credentials => async dispatch => {
@@ -24,12 +22,8 @@ export const signIn = credentials => async dispatch => {
         });
     } catch (error) {
         await dispatch({
-            type: types.USER_SIGNIN.ERROR,
+            type: types.USER_SIGNIN.FAILURE,
             error: error.message
-        });  
-        await dispatch({
-            type: types.NOTIFICATION_SHOW_ERROR_MESSAGE,
-            message: error.message
         });        
     }
 };
@@ -46,13 +40,9 @@ export const signUp = credentials => async dispatch => {
         });
     } catch (error) {
         await dispatch({
-            type: types.USER_SIGNIN.ERROR,
+            type: types.USER_SIGNIN.FAILURE,
             error: error.message
-        });  
-        await dispatch({
-            type: types.NOTIFICATION_SHOW_ERROR_MESSAGE,
-            message: error.message
-        });         
+        });        
     }
 };
 
@@ -68,13 +58,9 @@ export const signOut = credentials => async dispatch => {
         });        
     } catch (error) {
         await dispatch({
-            type: types.USER_SIGNIN.ERROR,
+            type: types.USER_SIGNIN.FAILURE,
             error: error.message
-        });  
-        await dispatch({
-            type: types.NOTIFICATION_SHOW_ERROR_MESSAGE,
-            message: error.message
-        });     
+        });   
     }
 };
 
@@ -94,13 +80,9 @@ export const updateUser = (id, userData) => async dispatch => {
         });             
     } catch (error) {
         await dispatch({
-            type: types.USER_UPDATE.ERROR,
+            type: types.USER_UPDATE.FAILURE,
             error: error.message
         });  
-        await dispatch({
-            type: types.NOTIFICATION_SHOW_ERROR_MESSAGE,
-            message: error.message
-        });     
     }
 };
 
@@ -115,13 +97,9 @@ export const updateUserPassword = (id, userData) => async dispatch => {
         });                 
     } catch (error) {
         await dispatch({
-            type: types.USER_PASSWORD_CHANGE.ERROR,
+            type: types.USER_PASSWORD_CHANGE.FAILURE,
             error: error.message
-        });  
-        await dispatch({
-            type: types.NOTIFICATION_SHOW_ERROR_MESSAGE,
-            message: error.message
-        });     
+        });    
     }
 };
 
@@ -136,12 +114,8 @@ export const updateUserEmail = (id, userData) => async dispatch => {
         });                 
     } catch (error) {
         await dispatch({
-            type: types.USER_EMAIL_CHANGE.ERROR,
+            type: types.USER_EMAIL_CHANGE.FAILURE,
             error: error.message
-        });  
-        await dispatch({
-            type: types.NOTIFICATION_SHOW_ERROR_MESSAGE,
-            message: error.message
         });     
     }
 };
@@ -173,13 +147,9 @@ export const setUserImage = (id, newPicture, isPrevPicture) => async dispatch =>
         });              
     } catch (error) {
         await dispatch({
-            type: types.USER_SET_PICTURE.ERROR,
+            type: types.USER_SET_PICTURE.FAILURE,
             error: error.message
-        });  
-        await dispatch({
-            type: types.NOTIFICATION_SHOW_ERROR_MESSAGE,
-            message: error.message
-        });     
+        });    
     }
 };
 

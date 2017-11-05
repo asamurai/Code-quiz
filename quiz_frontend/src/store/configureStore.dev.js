@@ -4,11 +4,17 @@ import thunk from 'redux-thunk';
 
 import rootReducer from './../reducers';
 
+import { notificationMiddleware } from './../middleware/notification';
+
 const configureStore = initialState => {
     const logger = createLogger();
     
     const enhancer = compose(
-        applyMiddleware(thunk, logger),
+        applyMiddleware(
+            thunk,
+            logger,
+            notificationMiddleware
+        ),
         window.devToolsExtension ? window.devToolsExtension() : f => f
     );
 

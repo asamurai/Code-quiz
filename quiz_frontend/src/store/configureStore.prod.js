@@ -3,12 +3,17 @@ import thunk from 'redux-thunk';
 
 import rootReducer from './../reducers';
 
+import { notificationMiddleware } from './../middleware/notification';
+
 const configureStore = initialState => {
 
     const store = createStore(
         rootReducer,
         initialState,
-        applyMiddleware(thunk)
+        applyMiddleware(
+            thunk,
+            notificationMiddleware
+        )
     );
 
     return store;

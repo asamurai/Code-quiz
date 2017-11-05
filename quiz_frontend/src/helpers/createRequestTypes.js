@@ -1,6 +1,6 @@
 const REQUEST = 'REQUEST';
 const SUCCESS = 'SUCCESS';
-const ERROR = 'ERROR';
+const FAILURE = 'FAILURE';
 
 /**
  * Function for creating 3 types of async handling:  
@@ -9,7 +9,7 @@ const ERROR = 'ERROR';
  * 
  * SUCCESS - for gaining success response; 
  * 
- * ERROR - for handling errors response; 
+ * FAILURE - for handling errors response; 
  * 
  * 
  * Put action name as a param.
@@ -21,7 +21,7 @@ const ERROR = 'ERROR';
 
 const createRequestTypes = action => {
   const results = {};
-  [REQUEST, SUCCESS, ERROR].forEach(type => results[type] = `${action}_${type}`);
+  [REQUEST, SUCCESS, FAILURE].forEach(type => results[type] = `${action}_${type}`);
   return results;
 };
 

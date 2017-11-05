@@ -145,12 +145,12 @@ export default function (state = initialState, action){
             return {...state, error: null, loading: false};
         case types.USER_UPDATE.SUCCESS:
             return { ...state, data: action.data, loading: false, error: null };
-        case types.USER_SIGNIN.ERROR: 
-        case types.USER_SIGNOUT.ERROR:
-        case types.USER_REGISTER.ERROR:
-        case types.USER_UPDATE.ERROR:
-        case types.USER_EMAIL_CHANGE.ERROR:
-        case types.USER_PASSWORD_CHANGE.ERROR:
+        case types.USER_SIGNIN.FAILURE: 
+        case types.USER_SIGNOUT.FAILURE:
+        case types.USER_REGISTER.FAILURE:
+        case types.USER_UPDATE.FAILURE:
+        case types.USER_EMAIL_CHANGE.FAILURE:
+        case types.USER_PASSWORD_CHANGE.FAILURE:
             return {...state, error: action.error, loading: false};
         case types.CHANGE_USER_PROFILE_FORM_EDIT_STATE:
             return {
