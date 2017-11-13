@@ -22,6 +22,15 @@ export const FULL_QUIZZES_TOOL_PATH = `/full-quizzes/${quizCategoryNames.TOOL}`;
 export const FULL_QUIZZES_PLATFORM_PATH = `/full-quizzes/${quizCategoryNames.PLATFORM}`;
 
 /**
+ * QUIZ ROUTE
+ */
+
+export const QUIZ_ROUTE = '/quiz';
+export const QUIZ_ROUTE_PASSING_PATH = `${QUIZ_ROUTE}/pass`;
+export const QUIZ_ROUTE_CREATE_PATH = `${QUIZ_ROUTE}/create`;
+export const QUIZ_ROUTE_EDIT_PATH = `${QUIZ_ROUTE}/edit`;
+
+/**
  * PRIVATE ROUTES
  * 
  */
