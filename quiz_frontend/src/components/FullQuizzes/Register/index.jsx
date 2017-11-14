@@ -11,6 +11,7 @@ import {
 } from 'antd';
 
 import _ from 'lodash';
+import uuid from 'uuid';
 
 import {
     FULL_QUIZZES_PATH
@@ -26,13 +27,13 @@ class FullQuizzesRegister extends Component {
         return (
             <div style={{ background: '#ECECEC', padding: '10px' }}>
                 {
-                    _.chunk(register, 4).map((chunk, chunkNum) => {
+                    _.chunk(register, 4).map((chunk) => {
                         return (
-                            <Row key={chunkNum} style={{ display: 'flex' }}>
+                            <Row key={uuid()} style={{ display: 'flex' }}>
                                 {
-                                    chunk.map((quiz, quizNum) => {
+                                    chunk.map((quiz) => {
                                         return (
-                                            <Col key={quizNum} style={{ width: '25%' }}>
+                                            <Col key={uuid()} style={{ width: '25%' }}>
                                                 <Card>
                                                     <Link to={`${FULL_QUIZZES_PATH}/quiz/${quiz.id}`}>
                                                         <div
