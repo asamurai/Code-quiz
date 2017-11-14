@@ -9,7 +9,8 @@ const types = {
 const data = {
     data: {
         name: 'Artem'
-    }
+    },
+    role: 2
 };
 const error = {
     error: 'Fail'
@@ -18,6 +19,7 @@ const error = {
 const initialState = {
     loading: false,
     error: null,
+    role: null,
     data: null,
     forms: {
         profile: {

@@ -100,6 +100,7 @@ const mockUserStatisticsData = [
 const initialState = {
     loading: false,
     error: null,
+    role: null,
     data: { id: 1, name: 'Artem' },
     forms: {
         profile: {
@@ -138,7 +139,7 @@ export default function (state = initialState, action){
         case types.USER_EMAIL_CHANGE.REQUEST:
             return {...state, error: null, loading: true};
         case types.USER_SIGNIN.SUCCESS:
-            return {...state, error: null, loading: false, data: action.data, loggedIn: true};
+            return {...state, error: null, loading: false, role: action.role, data: action.data, loggedIn: true};
         case types.USER_SIGNOUT.SUCCESS: 
             return {...state, error: null, loading: false, data: null, loggedIn: false};
         case types.USER_REGISTER.SUCCESS: 
