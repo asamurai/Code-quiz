@@ -6,6 +6,8 @@ import {
     Table
 } from 'antd';
 
+import moment from 'moment';
+
 import {
     USER_STATISTICS_PATH
 } from './../../../../routes';
@@ -45,7 +47,7 @@ class Statistics extends Component {
                 title: 'Date',
                 dataIndex: 'date',
                 key: 'date',
-                render: (key) => new Date(key).toLocaleDateString()
+                render: (key) => moment(key).format('l')
             },      
             {
                 title: 'Action',

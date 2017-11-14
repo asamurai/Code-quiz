@@ -12,6 +12,8 @@ import {
     Col
 } from 'antd';
 
+import moment from 'moment';
+
 import { 
     setUserFormEditState,
     setUserFormViewState,
@@ -151,7 +153,7 @@ class UserAccountContainer extends Component {
               testName: entity.test.name,
               testImage: entity.test.imageUrl,
               testScore: `${entity.testResult.score*100}%`,
-              date: new Date(entity.date).toISOString()
+              date: moment(entity.date).format('l')
             };
           default:
             break;

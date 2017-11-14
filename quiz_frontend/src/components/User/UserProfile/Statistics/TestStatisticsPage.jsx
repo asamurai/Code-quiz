@@ -8,6 +8,8 @@ import {
     Doughnut
 } from 'react-chartjs-2';
 
+import moment from 'moment';
+
 const mockStatisticData = {
     id: 1,
     testId: 1,
@@ -86,7 +88,7 @@ class TestStatisticsPage extends Component {
                     />
                     <b>Score:</b> {mockStatisticData.testResult.score*100}%
                     <br/>
-                    <b>Date:</b> {new Date(mockStatisticData.date).toLocaleDateString()}
+                    <b>Date:</b> {moment(mockStatisticData.date).format('l')}
                     <br/>
                 </div>
             </div>

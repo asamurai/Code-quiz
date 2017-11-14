@@ -11,6 +11,7 @@ export const FAQ_PATH = '/faq';
 
 /**
  * FULL QUIZZES ROUTES
+ * 
  */
 
 export const FULL_QUIZZES_PATH = '/full-quizzes';
@@ -23,10 +24,11 @@ export const FULL_QUIZZES_PLATFORM_PATH = `/full-quizzes/${quizCategoryNames.PLA
 
 /**
  * QUIZ ROUTE
+ * 
  */
 
 export const QUIZ_ROUTE = '/quiz';
-export const QUIZ_ROUTE_PASSING_PATH = `${QUIZ_ROUTE}/pass`;
+export const QUIZ_ROUTE_TRAINING_PATH = `${QUIZ_ROUTE}/training`;
 export const QUIZ_ROUTE_CREATE_PATH = `${QUIZ_ROUTE}/create`;
 export const QUIZ_ROUTE_EDIT_PATH = `${QUIZ_ROUTE}/edit`;
 

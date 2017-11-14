@@ -20,7 +20,13 @@ class Rater extends Component {
     }
     render() {
         const { value } = this.state;
-        return (<Rate onChange={this.handleChange} value={value} />);
+        return (
+            <Rate 
+                allowHalf	
+                onChange={this.handleChange} 
+                value={value} 
+            />
+        );
     }
 }
 

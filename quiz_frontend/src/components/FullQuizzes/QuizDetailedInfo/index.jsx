@@ -63,7 +63,7 @@ const mockTestList = [
         ],
         createdBy: 'Dan Abramov',
         created: 'Mon Nov 13 2017 22:03:10 GMT+0200 (EET)',
-        rating: 123,
+        rating: 135,
         ratedBy: 30
     }
 ];
