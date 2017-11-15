@@ -22,14 +22,17 @@ class HeaderNavigation extends Component {
         this.signOutFunction = this.props.signOutFunction.bind(this);
     }
     render () {
-        const { loggedIn, userName } = this.props;
+        const {
+            user: {
+                loggedIn
+            }
+        } = this.props;
         return (
             <header className={styles.header_nav}>
                 <div className={`${styles.header_wrapper} ${styles.header_wrapper_nav}`}>
                     <HeaderNavigationLinks/>
                     <HeaderNavigationAuth
                         loggedIn={loggedIn}
-                        userName={userName}
                         signOutFunction={this.signOutFunction}
                     />
                 </div>
@@ -39,16 +42,8 @@ class HeaderNavigation extends Component {
 }
 
 HeaderNavigation.propTypes = {
-    loggedIn: PropTypes.bool.isRequired,
-    userName: PropTypes.oneOfType([
-        PropTypes.string,
-        PropTypes.object
-    ]),
+    user: PropTypes.objectOf(PropTypes.any).isRequired,
     signOutFunction: PropTypes.func.isRequired
-};
-
-HeaderNavigation.defaultProps = {
-    userName: null
 };
 
 export default HeaderNavigation;

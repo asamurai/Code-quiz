@@ -10,7 +10,7 @@ import {
 } from './../../common/ui';
 
 import {
-    QUIZ_ROUTE_TRAINING_PATH
+    QUIZ_TRAINING_PATH
 } from './../../../routes';
 
 class CategoryQiozList extends Component {
@@ -40,7 +40,7 @@ class CategoryQiozList extends Component {
                                 }}
                             >
                                 <Link
-                                    to={`${QUIZ_ROUTE_TRAINING_PATH}/${test.id}`}
+                                    to={`${QUIZ_TRAINING_PATH}/${test.id}`}
                                 >
                                     <div>
                                         {test.title}

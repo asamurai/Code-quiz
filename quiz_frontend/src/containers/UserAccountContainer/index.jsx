@@ -179,7 +179,7 @@ class UserAccountContainer extends Component {
 
         return (
             <Row span="12" style={{ marginTop: '50px'}} >
-                <Col span="8">
+                <Col span="5">
                     <UserAccountMenu/>                  
                 </Col>
                 <Col span="16" style={{ padding: '0px 50px' }}>
@@ -187,7 +187,7 @@ class UserAccountContainer extends Component {
                         exact
                         path="/user/:component?/:id?"
                         render={(routeProps) => {
-                                const component = routeProps.match.params.component || '';
+                                const component = routeProps.match.params.component || null;
                                 const id = routeProps.match.params.id || null;
                                 switch (component) {
                                     case 'account':
@@ -231,7 +231,7 @@ class UserAccountContainer extends Component {
                                                         testStatistics={statisticsRegister.map(test => this.genereteRowForTable('test', test))}
                                                     />
                                                 );  
-                                        }       
+                                        } 
                                     default:
                                         return <Redirect to={USER_ACCOUNT_PATH} />;
                                 }
