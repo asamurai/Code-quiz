@@ -103,6 +103,11 @@ export const getQuizListByUserId = (userId, requestBody, pages) => async dispatc
     }
 };
 
+export const setQuizCreateFormState = state => dispatch => dispatch({
+    type: types.CHANGE_QUIZZES_CREATE_FORM_STATE,
+    state
+});
+
 export const resetQuizzesErrors = () => dispatch => dispatch({
     type: types.RESET_QUIZZES_ERRORS
 });
@@ -120,7 +125,7 @@ export const resetQuizzesCreateForm = () => dispatch => dispatch({
 });
 
 export const setQuizzesRequestBody = requestBody => dispatch => dispatch({
-    type: types.RESET_QUIZ_CREATE_FORM,
+    type: types.SET_QUIZZES_REQUEST_BODY,
     requestBody
 });
 

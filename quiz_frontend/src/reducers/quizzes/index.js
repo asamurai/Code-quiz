@@ -21,7 +21,7 @@ const initialState = {
     },
     formCreation: {
         data: null,
-        status: {
+        state: {
             create: true,
             edit: false,
             view: false
@@ -33,8 +33,8 @@ const initialState = {
         results: null,
         isFinished: false
     },
-    loading: null,
-    error: false
+    loading: false,
+    error: null
 };
 
 const quizList = (state = initialState.quizList, action) => {
@@ -77,6 +77,15 @@ const formCreation = (state = initialState.formCreation, action) => {
     switch (action.type) {
         case types.RESET_QUIZ_CREATE_FORM:
             return initialState.formCreation;
+        case types.CHANGE_QUIZZES_CREATE_FORM_STATE:
+            return {
+                ...state,
+                state: {
+                    ...state.state,
+                    create: false,
+                    ...action.state,
+                }
+            };
         default:
             return state;
     }
@@ -90,13 +99,13 @@ const formTraining = (state = initialState.formTraining, action) => {
         case types.CREATE_QUIZ_SESSION.SUCCESS:
             return {
                 ...state,
-                quizSessionId: action.data
+                quizSessionId: action.data.quizSessionId
             };
         case types.GET_QUIZ_LEVEL.SUCCESS:
             return {
                 ...state,
-                data: action.data,
-                isFinished: action.isFinished
+                data: action.data.content,
+                isFinished: action.data.isFinished
             };
         case types.GET_QUIZ_RESULTS.SUCCESS:
             return {
@@ -158,4 +167,4 @@ export default combineReducers({
     formTraining,
     loading,
     error
-  });
+});
