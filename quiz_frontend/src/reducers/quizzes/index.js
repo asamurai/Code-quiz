@@ -86,6 +86,12 @@ const formCreation = (state = initialState.formCreation, action) => {
                     ...action.state,
                 }
             };
+        case types.GET_QUIZ_BY_ID.SUCCESS:
+            return {
+                ...state,
+                data: action.data
+            };
+        case types.GET_QUIZ_BY_ID.FAILURE:
         default:
             return state;
     }
@@ -127,6 +133,7 @@ const error = (state = initialState.error, action) => {
     switch (action.type) {
         case types.RESET_QUIZZES_ERRORS:
             return null;
+        case types.GET_QUIZ_BY_ID.FAILURE:
         case types.GET_QUIZZES_BY_USER_ID.FAILURE:
         case types.GET_QUIZ_RESULTS.FAILURE:
         case types.CREATE_QUIZ_SESSION.FAILURE:
@@ -140,6 +147,7 @@ const error = (state = initialState.error, action) => {
 
 const loading = (state = initialState.loading, action) => {
     switch (action.type) {
+        case types.GET_QUIZ_BY_ID.REQUEST:
         case types.CREATE_QUIZ_SESSION.REQUEST:
         case types.GET_QUIZ_LEVEL.REQUEST:
         case types.GET_QUIZ_RESULTS.REQUEST:
@@ -151,10 +159,12 @@ const loading = (state = initialState.loading, action) => {
         case types.GET_QUIZ_RESULTS.SUCCESS:
         case types.CREATE_QUIZ_SESSION.SUCCESS:
         case types.GET_QUIZ_LEVEL.SUCCESS:
+        case types.GET_QUIZ_BY_ID.SUCCESS:
         case types.GET_QUIZ_RESULTS.FAILURE:
         case types.CREATE_QUIZ_SESSION.FAILURE:
         case types.GET_QUIZ_LEVEL.FAILURE:
         case types.DELETE_QUIZ_SESSION.FAILURE:
+        case types.GET_QUIZ_BY_ID.FAILURE:
             return false;
         default:
             return state;

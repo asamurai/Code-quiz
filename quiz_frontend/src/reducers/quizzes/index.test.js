@@ -21,11 +21,9 @@ const dummyQuizListResponse = {
     totalFinded: 3
 };
 
-// const dummyQuizCreateData = {
-//     data: {
-//         name: 'Quiz name'
-//     }
-// };
+const dummyQuizCreateData = {
+    name: 'Quiz name'
+};
 
 const dummyQuizTrainingData = {
     quizSessionId: 33,
@@ -215,6 +213,35 @@ describe('Reducer quizzes test', () => {
                 initialState,
                 { 
                     type: types.GET_QUIZZES_BY_USER_ID.FAILURE,
+                    error: dummyError.message
+                }
+            )
+        ).toEqual({ ...initialState, error: dummyError.message });
+    });
+    it('GET_QUIZ_BY_ID action test', () => {
+        expect(
+            reducer(initialState, { type: types.GET_QUIZ_BY_ID.REQUEST })
+        ).toEqual({ ...initialState, loading: true });
+        expect(
+            reducer(
+                initialState,
+                {
+                    type: types.GET_QUIZ_BY_ID.SUCCESS,
+                    data: dummyQuizCreateData
+                }
+            )
+        ).toEqual({
+            ...initialState,
+            formCreation: {
+                ...initialState.formCreation,
+                data: dummyQuizCreateData
+            }
+        });
+        expect(
+            reducer(
+                initialState,
+                { 
+                    type: types.GET_QUIZ_BY_ID.FAILURE,
                     error: dummyError.message
                 }
             )

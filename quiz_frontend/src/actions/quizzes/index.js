@@ -103,6 +103,24 @@ export const getQuizListByUserId = (userId, requestBody, pages) => async dispatc
     }
 };
 
+export const getQuizByQuizId = (quizId) => async dispatch => {
+    try {
+        await dispatch({
+            type: types.GET_QUIZ_BY_ID.REQUEST
+        });
+        const { data } = await withAuth('get',`/quizzes/quiz/${quizId}`);
+        await dispatch({
+            type: types.GET_QUIZ_BY_ID.SUCCESS,
+            data
+        });
+    } catch (error) {
+        await dispatch({
+            type: types.GET_QUIZ_BY_ID.FAILURE,
+            error: error.message
+        });         
+    }
+};
+
 export const setQuizCreateFormState = state => dispatch => dispatch({
     type: types.CHANGE_QUIZZES_CREATE_FORM_STATE,
     state

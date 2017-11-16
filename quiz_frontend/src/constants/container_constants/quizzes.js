@@ -10,6 +10,8 @@ export const GET_QUIZ_RESULTS = createRequestTypes('GET_QUIZ_RESULTS');
 
 export const GET_QUIZZES_BY_USER_ID = createRequestTypes('GET_QUIZZES_BY_USER_ID');
 
+export const GET_QUIZ_BY_ID = createRequestTypes('GET_QUIZ_BY_ID');
+
 export const CHANGE_QUIZZES_CREATE_FORM_STATE = 'CHANGE_QUIZZES_CREATE_FORM_STATE';
 
 export const SET_QUIZZES_REQUEST_BODY = 'SET_QUIZZES_REQUEST_BODY';
