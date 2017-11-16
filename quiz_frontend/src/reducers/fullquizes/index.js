@@ -67,7 +67,7 @@ const initialState = {
     }
 };
 
-export default function (state = initialState, action){
+export default (state = initialState, action) => {
     switch (action.type) {
         case types.GET_QUIZZES_BY_TYPE.REQUEST: 
             return {
