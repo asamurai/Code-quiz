@@ -4,11 +4,13 @@ import * as roles from './../constants/userRoles';
 import user from './user';
 import notifications from './notifications';
 import fullquizzes from './fullquizes';
+import quizzes from './quizzes';
 
 export default combineReducers({
     user,
     fullquizzes,
-    notifications
+    notifications,
+    quizzes
 });
 
 export const isUserHavePermissions = (state, role) => {

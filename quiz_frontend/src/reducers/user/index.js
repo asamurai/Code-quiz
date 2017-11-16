@@ -129,7 +129,7 @@ const initialState = {
     loggedIn: true
 };
 
-export default function (state = initialState, action){
+export default (state = initialState, action) => {
     switch (action.type) {
         case types.USER_SIGNIN.REQUEST: 
         case types.USER_SIGNOUT.REQUEST:
@@ -200,6 +200,7 @@ export default function (state = initialState, action){
         default:
             return state;
     }
-}
+};
+
 
 

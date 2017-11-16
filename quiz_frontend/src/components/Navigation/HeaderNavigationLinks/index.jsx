@@ -1,9 +1,13 @@
 import React, { Component } from 'react';
 import { Link, NavLink } from 'react-router-dom';
 
+import uuid from 'uuid';
 
-import * as routes from './../../../routes';
-import * as navigationTopNames from './../../../constants/navigationTopNames'; 
+import headerNavigationLinks from './../../../routes/headerNavigation.js';
+
+import {
+    HOME_PATH
+} from './../../../routes';
 
 import styles from './../index.sass';
 
@@ -17,7 +21,7 @@ class HeaderNavigationLinks extends Component {
     render () {
         return (
             <div className={`${styles.header_wrapper} ${styles.header_wrapper_links}`}>
-                <Link to={routes.HOME_PATH}>
+                <Link to={HOME_PATH}>
                     <img
                         src={require('./../../images/logo.png')}
                         alt="logo"
@@ -25,9 +29,18 @@ class HeaderNavigationLinks extends Component {
                         width={60}
                     />   
                 </Link>
-                <NavLink to={routes.FULL_QUIZZES_PATH} className={styles.link} activeClassName={styles.link_active}>{navigationTopNames.FULL_QUIZZES}</NavLink>
-                <NavLink to={routes.FREE_QUIZZES_PATH} className={styles.link} activeClassName={styles.link_active}>{navigationTopNames.FREE_QUIZZES}</NavLink>
-                <NavLink to={routes.FAQ_PATH} className={styles.link} activeClassName={styles.link_active}>{navigationTopNames.FAQ}</NavLink>
+                {
+                    headerNavigationLinks.map((link) => (
+                        <NavLink 
+                            key={uuid()}
+                            to={link.route}
+                            className={styles.link}
+                            activeClassName={styles.link_active}
+                        >
+                            {link.label}
+                        </NavLink>
+                    ))
+                }
             </div>
         );
     }
