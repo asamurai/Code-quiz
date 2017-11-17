@@ -40,11 +40,18 @@ class CategoryQuizElement extends Component {
                 </Link>
                 <div>
                     <div>
-                        {moment(test.created).format('l')}
+                        <b>Date created</b>: {`     ${moment(test.created).format('l')}`}
                     </div>
-                    <div>
+                    <div
+                        style={{
+                            display: 'flex',
+                            alignItems: 'center'
+                        }}
+                    >
+                        <b>Сomplexity rating</b>:
                         <Rater
                             value={+(test.rating / (test.ratedBy)).toFixed(1)}
+                            disabled
                         />
                     </div>
                 </div>
