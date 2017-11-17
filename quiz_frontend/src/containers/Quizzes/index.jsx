@@ -45,6 +45,7 @@ class Quizzes extends Component {
                                 return (
                                     <QuizCreate/>
                                 );
+                            case 'view':
                             case 'edit':
                                 if (id) {
                                     return (

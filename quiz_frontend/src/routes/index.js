@@ -31,6 +31,7 @@ export const QUIZ_FULL_PATH = `${QUIZ_PATH}/:component?/:id?`;
 export const QUIZ_TRAINING_PATH = `${QUIZ_PATH}/training`;
 export const QUIZ_CREATE_PATH = `${QUIZ_PATH}/create`;
 export const QUIZ_EDIT_PATH = `${QUIZ_PATH}/edit`;
+export const QUIZ_VIEW_PATH = `${QUIZ_PATH}/view`;
 export const QUIZ_LIST_PATH = `${QUIZ_PATH}/list`;
 
 /**
