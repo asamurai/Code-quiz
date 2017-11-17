@@ -22,7 +22,7 @@ const initialState = {
     formCreation: {
         data: null,
         state: {
-            create: true,
+            create: false,
             edit: false,
             view: false
         }
@@ -82,7 +82,6 @@ const formCreation = (state = initialState.formCreation, action) => {
                 ...state,
                 state: {
                     ...state.state,
-                    create: false,
                     ...action.state,
                 }
             };

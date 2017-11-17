@@ -1,4 +1,6 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
 import { 
     Route,
     Redirect
@@ -7,6 +9,7 @@ import {
     Row
 } from 'antd';
 
+import QuizControlPanel from './../../components/Quizzes/QuizControlPanel';
 import QuizzesList from './../../components/Quizzes/QuizzesList';
 import QuizCreate from './../../components/Quizzes/QuizCreate';
 import QuizEdit from './../../components/Quizzes/QuizEdit';
@@ -19,8 +22,14 @@ import {
 
 class Quizzes extends Component {
     render () {
+        const {
+            state
+        } = this.props;
         return (
             <Row span="12">
+                <QuizControlPanel
+                    state={state}
+                />
                 <Route
                     exact
                     path={QUIZ_FULL_PATH}
@@ -67,4 +76,17 @@ class Quizzes extends Component {
     }
 }
 
-export default Quizzes;
+Quizzes.propTypes = {
+    state: PropTypes.objectOf(PropTypes.bool).isRequired
+};
+
+const mapStateToProps = (state) => ({
+    state: state.quizzes.formCreation.state
+});
+  
+const mapDispatchToProps = () => {
+    return {
+    };
+};
+  
+export default connect(mapStateToProps, mapDispatchToProps)(Quizzes);
