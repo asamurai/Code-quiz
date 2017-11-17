@@ -19,10 +19,16 @@ class Rater extends Component {
         }
     }
     render() {
-        const { value } = this.state;
+        const { 
+            value
+        } = this.state;
+        const {
+            disabled
+        } = this.props;
         return (
             <Rate 
-                allowHalf	
+                allowHalf
+                disabled={disabled}
                 onChange={this.handleChange} 
                 value={value} 
             />
@@ -32,12 +38,14 @@ class Rater extends Component {
 
 Rater.defaultProps = {
     handleSetValue: null,
-    value: 0
+    value: 0,
+    disabled: false
 };
 
 Rater.propTypes = {
     handleSetValue: PropTypes.func,
-    value: PropTypes.number
+    value: PropTypes.number,
+    disabled: PropTypes.bool
 };
 
 export default Rater;

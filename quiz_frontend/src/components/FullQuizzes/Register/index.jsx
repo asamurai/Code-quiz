@@ -1,21 +1,10 @@
 import React, { Component } from 'react';
-import {
-    Link
-} from 'react-router-dom';
 import PropTypes from 'prop-types';
-
-import {
-    Row,
-    Col,
-    Card
-} from 'antd';
 
 import _ from 'lodash';
 import uuid from 'uuid';
 
-import {
-    FULL_QUIZZES_PATH
-} from './../../../routes';
+import RegisterFullQuizzesRow from './../RegisterFullQuizzesRow';
 
 class FullQuizzesRegister extends Component {
     render () {
@@ -27,36 +16,12 @@ class FullQuizzesRegister extends Component {
         return (
             <div style={{ background: '#ECECEC', padding: '10px' }}>
                 {
-                    _.chunk(register, 4).map((chunk) => {
-                        return (
-                            <Row key={uuid()} style={{ display: 'flex' }}>
-                                {
-                                    chunk.map((quiz) => {
-                                        return (
-                                            <Col key={uuid()} style={{ width: '25%' }}>
-                                                <Card>
-                                                    <Link to={`${FULL_QUIZZES_PATH}/quiz/${quiz.id}`}>
-                                                        <div
-                                                            style={{
-                                                                display: 'flex',
-                                                                justifyContent: 'space-between',
-                                                                alignItems: 'center'
-                                                            }}
-                                                        >
-                                                            <div>
-                                                                {quiz.title}
-                                                            </div>
-                                                            <img src={quiz.image} width="50" height="50" alt={quiz.title} />
-                                                        </div>
-                                                    </Link>
-                                                </Card>
-                                            </Col>             
-                                        );
-                                    })
-                                }
-                            </Row>
-                        );
-                    })
+                    _.chunk(register, 4).map((chunk) => (
+                        <RegisterFullQuizzesRow
+                            key={uuid()}
+                            chunk={chunk}
+                        />
+                    ))
                 }
             </div>
         );

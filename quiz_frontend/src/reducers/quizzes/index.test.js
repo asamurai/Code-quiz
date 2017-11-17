@@ -50,7 +50,7 @@ const initialState = {
     formCreation: {
         data: null,
         state: {
-            create: true,
+            create: false,
             edit: false,
             view: false
         }
@@ -264,7 +264,6 @@ describe('Reducer quizzes test', () => {
                 ...initialState.formCreation,
                 state: {
                     ...initialState.formCreation.state,
-                    create: false,
                     edit: true
                 }
             }
@@ -305,8 +304,7 @@ describe('Reducer quizzes test', () => {
                 ...initialState.formCreation,
                 state: {
                     ...initialState.formCreation.state,
-                    view: true,
-                    create: false
+                    view: true
                 }
             }
         });
