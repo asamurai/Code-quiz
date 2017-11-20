@@ -1,6 +1,6 @@
 import {
     isUserHavePermissions
-} from './index';
+} from './user';
 
 import * as roles from './../constants/userRoles';
 
