@@ -8,7 +8,8 @@ from django.conf import settings
 from django.utils.timezone import now as datetime_now
 from django.contrib.auth import get_user_model
 from django.contrib.sites.models import Site
-from django.http import JsonResponse
+from rest_framework.response import Response
+from rest_framework import status
 
 from .models import RegistrationProfile, UserProfile
 
@@ -102,4 +103,5 @@ def custom_exception_handler(exc, context):
     # to get the standard error response.
     response = exception_handler(exc, context)
     if response is not None:
-        return JsonResponse({'error': {'errors': [response.data]}, 'statusCode': response.status_code})
+        return Response({'error': {'errors': [response.data]}, 'statusCode': response.status_code},
+                        status=status.HTTP_400_BAD_REQUEST)

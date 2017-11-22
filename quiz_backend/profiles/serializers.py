@@ -16,10 +16,12 @@ class UserBaseSerializer(serializers.ModelSerializer):
 
 
 class UserProfileSerializer(serializers.HyperlinkedModelSerializer):
-    username = serializers.CharField(source='user.username')
+    username = serializers.CharField(source='user.username',required=None)
     first_name = serializers.CharField(source='user.first_name')
     last_name = serializers.CharField(source='user.last_name')
     email = serializers.CharField(source='user.email')
+    user_id = serializers.CharField(source='user.id')
+
     class Meta:
         model = UserProfile
-        fields = ('email', 'profile_image', 'bio', 'username','first_name', 'last_name')
+        fields = ('user_id', 'email', 'profile_image', 'bio', 'username', 'first_name', 'last_name')
