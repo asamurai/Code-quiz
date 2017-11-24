@@ -41,7 +41,7 @@ def logout(request):
         Token.objects.get(key=request.data['token']).delete()
         return Response(status=status.HTTP_200_OK)
     except ObjectDoesNotExist:
-        return Response({'error': {'errors': 'Bad token'}},status=status.HTTP_400_BAD_REQUEST)
+        return Response({'error': {'errors': 'Bad token'}}, status=status.HTTP_400_BAD_REQUEST)
 
 
 @api_view(['POST'])
@@ -50,7 +50,7 @@ def restore_password(request):
         email_activation.re_activate(request.data['email'])
         return Response(status=status.HTTP_200_OK)
     except Exception as e:
-        return Response({'error': {'errors': 'Bad e-mail'}}, status=status.HTTP_400_BAD_REQUEST)
+        return Response({'error': {'errors': 'Incorrect e-mail'}}, status=status.HTTP_400_BAD_REQUEST)
 
 
 class UserView(APIView):
@@ -79,7 +79,10 @@ class UserView(APIView):
         serializer = UserProfileSerializer(queryset)
         return Response(serializer.data, status=status.HTTP_200_OK)
 
-    def post(self, request, id):
-        serialized = UserProfileSerializer(data=request.data)
-        if serialized.is_valid(raise_exception=True):
-            print('ok')
+    def put(self, request, id):
+        print(request.user)
+        print(UserProfile.objects.get(user=request.user))
+        if UserProfileSerializer(data=request.data).is_valid(raise_exception=True):
+            print(UserProfile.objects.get(user=user).id)
+
+        return Response({'asdf':'ok'}, status=status.HTTP_200_OK)
