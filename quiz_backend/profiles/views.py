@@ -80,9 +80,22 @@ class UserView(APIView):
         return Response(serializer.data, status=status.HTTP_200_OK)
 
     def put(self, request, id):
-        print(request.user)
-        print(UserProfile.objects.get(user=request.user))
-        if UserProfileSerializer(data=request.data).is_valid(raise_exception=True):
-            print(UserProfile.objects.get(user=user).id)
+        print(request.data)
+        print(type(UserProfile.objects.get(user=request.user).user_id))
+        print(type(id))
+        serialized = UserProfileSerializer(data=request.data).is_valid(raise_exception=True)
+        if serialized:
+            if int(id) != UserProfile.objects.get(user=request.user).user_id:
+                return Response({'error': {'errors': 'You do not have permission to change user info'}},
+                                status=status.HTTP_200_OK)
+            else:
+                profile = UserProfile.objects.get(user_id=int(id))
+                print(profile.user.username)
+                profile.user.last_name = request.data['last_name']
+                profile.user.first_name = request.data['first_name']
+                profile.user.username = request.data['username']
+                profile.user.email = request.data['email']
+                profile.user.save()
 
-        return Response({'asdf':'ok'}, status=status.HTTP_200_OK)
+                UserProfile.objects.filter(user_id=int(id)).update(bio=request.data['bio'])
+                return Response({'asdf':'ok'}, status=status.HTTP_200_OK)
