@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { bindActionCreators } from 'redux';
 import { 
     Route,
     Redirect
@@ -14,15 +13,7 @@ import {
 
 import moment from 'moment';
 
-import { 
-    setUserFormEditState,
-    setUserFormViewState,
-    updateUser,
-    updateUserPassword,
-    updateUserEmail,
-    setUserImage,
-    setUserFormModalsState
-} from './../../actions/user';
+import * as userActions from './../../actions/user';
 
 import UserAccountMenu from './../../components/User/UserAccountMenu';
 import UserProfileAccount from './../../components/User/UserProfile/Account';
@@ -38,6 +29,10 @@ import {
     getValuesFromForm,
     getCertainValuesFromForm
 } from './../../helpers/hocHelpers';
+
+const ACTIONS = {
+    ...userActions
+};
 
 class UserAccountContainer extends Component {
     constructor(props) {
@@ -252,18 +247,6 @@ const mapStateToProps = (state) => ({
     user: state.user
 });
   
-const mapDispatchToProps = (dispatch) => {
-    return {
-        setUserFormEditState: bindActionCreators(setUserFormEditState, dispatch),
-        setUserFormViewState: bindActionCreators(setUserFormViewState, dispatch),
-        updateUser: bindActionCreators(updateUser, dispatch),
-        updateUserPassword: bindActionCreators(updateUserPassword, dispatch),
-        updateUserEmail: bindActionCreators(updateUserEmail, dispatch),
-        setUserImage: bindActionCreators(setUserImage, dispatch),
-        setUserFormModalsState: bindActionCreators(setUserFormModalsState, dispatch)
-    };
-};
-  
-export default connect(mapStateToProps, mapDispatchToProps)(UserAccountContainer);
+export default connect(mapStateToProps, ACTIONS)(UserAccountContainer);
 
 

@@ -9,6 +9,8 @@ import {
     Row
 } from 'antd';
 
+import * as quizzesActions from './../../actions/quizzes';
+
 import QuizControlPanel from './../../components/Quizzes/QuizControlPanel';
 import QuizzesList from './../../components/Quizzes/QuizzesList';
 import QuizCreate from './../../components/Quizzes/QuizCreate';
@@ -16,15 +18,37 @@ import QuizEdit from './../../components/Quizzes/QuizEdit';
 import QuizTraining from './../../components/Quizzes/QuizTraining';
 
 import {
-    QUIZ_FULL_PATH,
+    QUIZ_FULL_PATH ,
     QUIZ_LIST_PATH
 } from './../../routes';
 
+const ACTIONS = {
+    ...quizzesActions
+};
+
 class Quizzes extends Component {
+
+    handleChangeListPage = (page) => {
+        const {
+            setQuizzesPages,
+            pages
+        } = this.props;
+        setQuizzesPages({
+            ...pages,
+            currentPage: page
+        });
+    }
+
     render () {
         const {
-            state
+            state,
+            register,
+            pages,
+            requestBody: {
+                limit
+            }
         } = this.props;
+
         return (
             <Row span="12">
                 <QuizControlPanel
@@ -39,7 +63,12 @@ class Quizzes extends Component {
                         switch (component) {
                             case 'list':
                                 return (
-                                    <QuizzesList/>
+                                    <QuizzesList
+                                        dataSource={register}
+                                        pages={pages}
+                                        limit={limit}
+                                        onPageChange={this.handleChangeListPage}
+                                    />
                                 );
                             case 'create':
                                 return (
@@ -78,16 +107,22 @@ class Quizzes extends Component {
 }
 
 Quizzes.propTypes = {
-    state: PropTypes.objectOf(PropTypes.bool).isRequired
+    state: PropTypes.objectOf(PropTypes.bool).isRequired,
+    register: PropTypes.arrayOf(PropTypes.any).isRequired,
+    requestBody: PropTypes.shape({
+        limit: PropTypes.number
+    }).isRequired,
+    pages: PropTypes.shape({
+        currentPage: PropTypes.number,
+        totalFinded: PropTypes.number
+    }).isRequired,
 };
 
 const mapStateToProps = (state) => ({
-    state: state.quizzes.formCreation.state
+    state: state.quizzes.formCreation.state,
+    register: state.quizzes.quizList.register,
+    requestBody: state.quizzes.quizList.requestBody,
+    pages: state.quizzes.quizList.pages
 });
   
-const mapDispatchToProps = () => {
-    return {
-    };
-};
-  
-export default connect(mapStateToProps, mapDispatchToProps)(Quizzes);
+export default connect(mapStateToProps, ACTIONS)(Quizzes);
