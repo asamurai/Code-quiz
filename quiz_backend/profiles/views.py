@@ -32,7 +32,7 @@ def activate(request, activation_key=None):
         token = Token.objects.update_or_create(user=user)[0]
         return Response({'token': token.key},status=status.HTTP_201_CREATED)
     else:
-        return Response(status=status.HTTP_400_BAD_REQUEST)
+        return Response({'error': {'errors': 'Bad token'}}, status=status.HTTP_400_BAD_REQUEST)
 
 
 @api_view(['POST'])
@@ -41,7 +41,7 @@ def logout(request):
         Token.objects.get(key=request.data['token']).delete()
         return Response(status=status.HTTP_200_OK)
     except ObjectDoesNotExist:
-        return Response(status=status.HTTP_400_BAD_REQUEST)
+        return Response({'error': {'errors': 'Bad token'}},status=status.HTTP_400_BAD_REQUEST)
 
 
 @api_view(['POST'])
@@ -50,25 +50,36 @@ def restore_password(request):
         email_activation.re_activate(request.data['email'])
         return Response(status=status.HTTP_200_OK)
     except Exception as e:
-        return Response(status=status.HTTP_400_BAD_REQUEST)
+        return Response({'error': {'errors': 'Bad e-mail'}}, status=status.HTTP_400_BAD_REQUEST)
 
 
 class UserView(APIView):
     """
     List all users, or create a new snippet.
     """
+    def check_token(self, token):
+        try:
+            Token.objects.get(key=token)
+            return True
+        except ObjectDoesNotExist:
+            return False
 
     def get_object(self, pk):
         try:
             user = User.objects.get(id=pk)
             return user
-        except Exception:
+        except ObjectDoesNotExist:
             return False
 
     def get(self, request, id):
         user = self.get_object(id)
         if not user:
-            return Response(status=status.HTTP_400_BAD_REQUEST)
+            return Response({'error': {'errors': 'User does not exist'}},status=status.HTTP_400_BAD_REQUEST)
         queryset = UserProfile.objects.get(user=user)
         serializer = UserProfileSerializer(queryset)
         return Response(serializer.data, status=status.HTTP_200_OK)
+
+    def post(self, request, id):
+        serialized = UserProfileSerializer(data=request.data)
+        if serialized.is_valid(raise_exception=True):
+            print('ok')
