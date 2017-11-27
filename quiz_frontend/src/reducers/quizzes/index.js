@@ -8,18 +8,239 @@ const types = {
     ...quizzesTypes
 };
 
+const mockQuizzesList = [
+    {
+        testId: 1,
+        test: {
+            name: 'Python basics',
+            categoryId: 1,
+            category: {
+                name: 'Python'
+            },
+            imageUrl: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTHMdsvCwKqIJxU1U-pt6YLZ-iMapbCoWvamcnarpreAa_3xpcd',
+            description: 'Python is powerful... and fast; plays well with others; runs everywhere; is friendly & easy to learn; is Open.',
+            created: 'Mon Nov 27 2017 23:51:55 GMT+0200 (EET)',
+            modified: 'Mon Nov 27 2017 23:51:55 GMT+0200 (EET)'
+        }
+    },
+    {
+        testId: 2,
+        test: {
+            name: 'Javascript basics',
+            categoryId: 1,
+            category: {
+                name: 'Javascript'
+            },
+            imageUrl: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQFaF2ofRdW6mNISv6H0rt2JjU7XisKBq5a_ks8fvzhpdmR9cvGUA',
+            description: 'JavaScript (JS) is a lightweight interpreted or JIT-compiled programming language with first-class functions. While it is most well-known as the scripting language for Web pages, many non-browser environments also use it, such as Node.js, Apache CouchDB and Adobe Acrobat. JavaScript is a prototype-based, multi-paradigm, dynamic language, supporting object-oriented, imperative, and declarative (e.g. functional programming) styles. Read more about JavaScript.',
+            created: 'Mon Nov 22 2017 23:51:55 GMT+0200 (EET)',
+            modified: 'Mon Nov 27 2017 23:51:55 GMT+0200 (EET)'
+        }
+    },
+    {
+        testId: 3,
+        test: {
+            name: 'Python basics',
+            categoryId: 1,
+            category: {
+                name: 'Python'
+            },
+            imageUrl: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTHMdsvCwKqIJxU1U-pt6YLZ-iMapbCoWvamcnarpreAa_3xpcd',
+            description: 'Python is powerful... and fast; plays well with others; runs everywhere; is friendly & easy to learn; is Open.',
+            created: 'Mon Nov 25 2017 23:51:55 GMT+0200 (EET)',
+            modified: 'Mon Nov 27 2017 23:51:55 GMT+0200 (EET)'
+        }
+    },
+    {
+        testId: 4,
+        test: {
+            name: 'Javascript basics',
+            categoryId: 1,
+            category: {
+                name: 'Javascript'
+            },
+            imageUrl: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQFaF2ofRdW6mNISv6H0rt2JjU7XisKBq5a_ks8fvzhpdmR9cvGUA',
+            description: 'JavaScript (JS) is a lightweight interpreted or JIT-compiled programming language with first-class functions. While it is most well-known as the scripting language for Web pages, many non-browser environments also use it, such as Node.js, Apache CouchDB and Adobe Acrobat. JavaScript is a prototype-based, multi-paradigm, dynamic language, supporting object-oriented, imperative, and declarative (e.g. functional programming) styles. Read more about JavaScript.',
+            created: 'Mon Nov 21 2017 23:51:55 GMT+0200 (EET)',
+            modified: 'Mon Nov 27 2017 23:51:55 GMT+0200 (EET)'
+        }
+    },
+    {
+        testId: 5,
+        test: {
+            name: 'Python basics',
+            categoryId: 1,
+            category: {
+                name: 'Python'
+            },
+            imageUrl: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTHMdsvCwKqIJxU1U-pt6YLZ-iMapbCoWvamcnarpreAa_3xpcd',
+            description: 'Python is powerful... and fast; plays well with others; runs everywhere; is friendly & easy to learn; is Open.',
+            created: 'Mon Nov 25 2017 23:51:55 GMT+0200 (EET)',
+            modified: 'Mon Nov 27 2017 23:51:55 GMT+0200 (EET)'
+        }
+    },
+    {
+        testId: 6,
+        test: {
+            name: 'Javascript basics',
+            categoryId: 1,
+            category: {
+                name: 'Javascript'
+            },
+            imageUrl: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQFaF2ofRdW6mNISv6H0rt2JjU7XisKBq5a_ks8fvzhpdmR9cvGUA',
+            description: 'JavaScript (JS) is a lightweight interpreted or JIT-compiled programming language with first-class functions. While it is most well-known as the scripting language for Web pages, many non-browser environments also use it, such as Node.js, Apache CouchDB and Adobe Acrobat. JavaScript is a prototype-based, multi-paradigm, dynamic language, supporting object-oriented, imperative, and declarative (e.g. functional programming) styles. Read more about JavaScript.',
+            created: 'Mon Nov 21 2017 23:51:55 GMT+0200 (EET)',
+            modified: 'Mon Nov 27 2017 23:51:55 GMT+0200 (EET)'
+        }
+    },
+    {
+        testId: 7,
+        test: {
+            name: 'Python basics',
+            categoryId: 1,
+            category: {
+                name: 'Python'
+            },
+            imageUrl: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTHMdsvCwKqIJxU1U-pt6YLZ-iMapbCoWvamcnarpreAa_3xpcd',
+            description: 'Python is powerful... and fast; plays well with others; runs everywhere; is friendly & easy to learn; is Open.',
+            created: 'Mon Nov 25 2017 23:51:55 GMT+0200 (EET)',
+            modified: 'Mon Nov 27 2017 23:51:55 GMT+0200 (EET)'
+        }
+    },
+    {
+        testId: 8,
+        test: {
+            name: 'Javascript basics',
+            categoryId: 1,
+            category: {
+                name: 'Javascript'
+            },
+            imageUrl: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQFaF2ofRdW6mNISv6H0rt2JjU7XisKBq5a_ks8fvzhpdmR9cvGUA',
+            description: 'JavaScript (JS) is a lightweight interpreted or JIT-compiled programming language with first-class functions. While it is most well-known as the scripting language for Web pages, many non-browser environments also use it, such as Node.js, Apache CouchDB and Adobe Acrobat. JavaScript is a prototype-based, multi-paradigm, dynamic language, supporting object-oriented, imperative, and declarative (e.g. functional programming) styles. Read more about JavaScript.',
+            created: 'Mon Nov 21 2017 23:51:55 GMT+0200 (EET)',
+            modified: 'Mon Nov 27 2017 23:51:55 GMT+0200 (EET)'
+        }
+    },
+    {
+        testId: 9,
+        test: {
+            name: 'Python basics',
+            categoryId: 1,
+            category: {
+                name: 'Python'
+            },
+            imageUrl: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTHMdsvCwKqIJxU1U-pt6YLZ-iMapbCoWvamcnarpreAa_3xpcd',
+            description: 'Python is powerful... and fast; plays well with others; runs everywhere; is friendly & easy to learn; is Open.',
+            created: 'Mon Nov 25 2017 23:51:55 GMT+0200 (EET)',
+            modified: 'Mon Nov 27 2017 23:51:55 GMT+0200 (EET)'
+        }
+    },
+    {
+        testId: 10,
+        test: {
+            name: 'Javascript basics',
+            categoryId: 1,
+            category: {
+                name: 'Javascript'
+            },
+            imageUrl: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQFaF2ofRdW6mNISv6H0rt2JjU7XisKBq5a_ks8fvzhpdmR9cvGUA',
+            description: 'JavaScript (JS) is a lightweight interpreted or JIT-compiled programming language with first-class functions. While it is most well-known as the scripting language for Web pages, many non-browser environments also use it, such as Node.js, Apache CouchDB and Adobe Acrobat. JavaScript is a prototype-based, multi-paradigm, dynamic language, supporting object-oriented, imperative, and declarative (e.g. functional programming) styles. Read more about JavaScript.',
+            created: 'Mon Nov 21 2017 23:51:55 GMT+0200 (EET)',
+            modified: 'Mon Nov 27 2017 23:51:55 GMT+0200 (EET)'
+        }
+    },
+    {
+        testId: 11,
+        test: {
+            name: 'Python basics',
+            categoryId: 1,
+            category: {
+                name: 'Python'
+            },
+            imageUrl: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTHMdsvCwKqIJxU1U-pt6YLZ-iMapbCoWvamcnarpreAa_3xpcd',
+            description: 'Python is powerful... and fast; plays well with others; runs everywhere; is friendly & easy to learn; is Open.',
+            created: 'Mon Nov 27 2017 23:51:55 GMT+0200 (EET)',
+            modified: 'Mon Nov 27 2017 23:51:55 GMT+0200 (EET)'
+        }
+    },
+    {
+        testId: 12,
+        test: {
+            name: 'Javascript basics',
+            categoryId: 1,
+            category: {
+                name: 'Javascript'
+            },
+            imageUrl: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQFaF2ofRdW6mNISv6H0rt2JjU7XisKBq5a_ks8fvzhpdmR9cvGUA',
+            description: 'JavaScript (JS) is a lightweight interpreted or JIT-compiled programming language with first-class functions. While it is most well-known as the scripting language for Web pages, many non-browser environments also use it, such as Node.js, Apache CouchDB and Adobe Acrobat. JavaScript is a prototype-based, multi-paradigm, dynamic language, supporting object-oriented, imperative, and declarative (e.g. functional programming) styles. Read more about JavaScript.',
+            created: 'Mon Nov 22 2017 23:51:55 GMT+0200 (EET)',
+            modified: 'Mon Nov 27 2017 23:51:55 GMT+0200 (EET)'
+        }
+    },
+    {
+        testId: 13,
+        test: {
+            name: 'Python basics',
+            categoryId: 1,
+            category: {
+                name: 'Python'
+            },
+            imageUrl: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTHMdsvCwKqIJxU1U-pt6YLZ-iMapbCoWvamcnarpreAa_3xpcd',
+            description: 'Python is powerful... and fast; plays well with others; runs everywhere; is friendly & easy to learn; is Open.',
+            created: 'Mon Nov 25 2017 23:51:55 GMT+0200 (EET)',
+            modified: 'Mon Nov 27 2017 23:51:55 GMT+0200 (EET)'
+        }
+    },
+    {
+        testId: 14,
+        test: {
+            name: 'Javascript basics',
+            categoryId: 1,
+            category: {
+                name: 'Javascript'
+            },
+            imageUrl: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQFaF2ofRdW6mNISv6H0rt2JjU7XisKBq5a_ks8fvzhpdmR9cvGUA',
+            description: 'JavaScript (JS) is a lightweight interpreted or JIT-compiled programming language with first-class functions. While it is most well-known as the scripting language for Web pages, many non-browser environments also use it, such as Node.js, Apache CouchDB and Adobe Acrobat. JavaScript is a prototype-based, multi-paradigm, dynamic language, supporting object-oriented, imperative, and declarative (e.g. functional programming) styles. Read more about JavaScript.',
+            created: 'Mon Nov 21 2017 23:51:55 GMT+0200 (EET)',
+            modified: 'Mon Nov 27 2017 23:51:55 GMT+0200 (EET)'
+        }
+    },
+    {
+        testId: 15,
+        test: {
+            name: 'Python basics',
+            categoryId: 1,
+            category: {
+                name: 'Python'
+            },
+            imageUrl: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTHMdsvCwKqIJxU1U-pt6YLZ-iMapbCoWvamcnarpreAa_3xpcd',
+            description: 'Python is powerful... and fast; plays well with others; runs everywhere; is friendly & easy to learn; is Open.',
+            created: 'Mon Nov 25 2017 23:51:55 GMT+0200 (EET)',
+            modified: 'Mon Nov 27 2017 23:51:55 GMT+0200 (EET)'
+        }
+    }
+];
+
 const initialState = {
     quizList: {
         pages: {
-            current: 1,
+            currentPage: 1,
             totalFinded: 0
+            // totalFinded: mockQuizzesList.length
         },
         requestBody: {
             limit: 10
         },
         register: []
+        // register: mockQuizzesList
+    },
+    modalStatus: {
+        deleteQuiz: false,
+        createQuiz: false,
+        createQuestion: false
     },
     formCreation: {
+        selectedQuizId: null,
         data: null,
         state: {
             create: false,
@@ -128,6 +349,13 @@ const formTraining = (state = initialState.formTraining, action) => {
     }
 };
 
+const modalStatus = (state = initialState.modalStatus, action) => {
+    switch (action.type) {
+        default:
+            return state;
+    }
+};
+
 const error = (state = initialState.error, action) => {
     switch (action.type) {
         case types.RESET_QUIZZES_ERRORS:
@@ -175,5 +403,6 @@ export default combineReducers({
     formCreation,
     formTraining,
     loading,
-    error
+    error,
+    modalStatus
 });

@@ -17,7 +17,7 @@ const dummyQuizListResponse = {
         3
     ],
     limit: 100,
-    current: 1,
+    currentPage: 1,
     totalFinded: 3
 };
 
@@ -39,7 +39,7 @@ const dummyQuizTrainingData = {
 const initialState = {
     quizList: {
         pages: {
-            current: 1,
+            currentPage: 1,
             totalFinded: 0
         },
         requestBody: {
@@ -47,7 +47,13 @@ const initialState = {
         },
         register: []
     },
+    modalStatus: {
+        deleteQuiz: false,
+        createQuiz: false,
+        createQuestion: false
+    },
     formCreation: {
+        selectedQuizId: null,
         data: null,
         state: {
             create: false,
@@ -191,7 +197,7 @@ describe('Reducer quizzes test', () => {
                     type: types.GET_QUIZZES_BY_USER_ID.SUCCESS,
                     data: {
                         content: dummyQuizListResponse.content,
-                        currentPage: dummyQuizListResponse.current,
+                        currentPage: dummyQuizListResponse.currentPage,
                         totalFinded: dummyQuizListResponse.totalFinded
                     }
                 }
@@ -202,7 +208,7 @@ describe('Reducer quizzes test', () => {
                 ...initialState.quizList,
                 pages: {
                     ...initialState.quizList.pages,
-                    currentPage: dummyQuizListResponse.current,
+                    currentPage: dummyQuizListResponse.currentPage,
                     totalFinded: dummyQuizListResponse.totalFinded
                 },
                 register: dummyQuizListResponse.content
@@ -378,7 +384,7 @@ describe('Reducer quizzes test', () => {
                 {
                     type: types.SET_QUIZZES_PAGES,
                     pages: {
-                        currentPage: dummyQuizListResponse.current,
+                        currentPage: dummyQuizListResponse.currentPage,
                         totalFinded: dummyQuizListResponse.totalFinded
                     }
                 }
@@ -389,7 +395,7 @@ describe('Reducer quizzes test', () => {
                 ...initialState.quizList,
                 pages: {
                     ...initialState.quizList.pages,
-                    currentPage: dummyQuizListResponse.current,
+                    currentPage: dummyQuizListResponse.currentPage,
                     totalFinded: dummyQuizListResponse.totalFinded
                 }
             }
