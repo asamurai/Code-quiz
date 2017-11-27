@@ -13,9 +13,9 @@ const emailValidator = (rule, value = '', callback) => {
     return;
 };
 
-const linkValidator = (rule, value = '', callback) => {
+const urlValidator = (rule, value = '', callback) => {
     if (value.length > 0) {
-        const regex = regEx.LINK_REGEX;
+        const regex = regEx.URL_REGEX;
         if (!regex.test(value)) {
             callback('Link should be valid.');
         }
@@ -26,5 +26,5 @@ const linkValidator = (rule, value = '', callback) => {
 
 export default {
     emailValidator,
-    linkValidator
+    urlValidator
 };
