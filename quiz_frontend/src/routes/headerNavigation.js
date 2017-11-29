@@ -9,12 +9,6 @@ export default [
         auth: false
     },
     {
-        route: routes.FREE_QUIZZES_PATH,
-        label: navNames.FREE_QUIZZES,
-        permitions: '*',
-        auth: false
-    },
-    {
         route: routes.FAQ_PATH,
         label: navNames.FAQ,
         permitions: '*',

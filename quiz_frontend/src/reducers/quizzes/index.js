@@ -221,6 +221,8 @@ const mockQuizzesList = [
     }
 ];
 
+console.log(mockQuizzesList);
+
 const initialState = {
     quizList: {
         pages: {

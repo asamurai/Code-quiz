@@ -4,7 +4,6 @@ import * as quizCategoryNames from './../constants/quizzesCategoryNames';
  * 
  */
 export const HOME_PATH = '/';
-export const FREE_QUIZZES_PATH = '/free-quizzes';
 export const SIGNIN_PATH = '/signin';
 export const SIGNUP_PATH = '/signup';
 export const FAQ_PATH = '/faq';

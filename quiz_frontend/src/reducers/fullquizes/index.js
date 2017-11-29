@@ -52,6 +52,7 @@ const mockLibraryRegister = [
 const initialState = {
     loading: false,
     error: null,
+    isFreeMode: false,
     registers: {
         // library: [],
         // framework: [],
