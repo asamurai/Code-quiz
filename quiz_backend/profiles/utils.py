@@ -6,10 +6,14 @@ import datetime
 from rest_framework.views import exception_handler
 from django.conf import settings
 from django.utils.timezone import now as datetime_now
+from django.core.mail import send_mail
 from django.contrib.auth import get_user_model
 from django.contrib.sites.models import Site
+from django.template.loader import render_to_string
+
 from rest_framework.response import Response
 from rest_framework import status
+
 
 from .models import RegistrationProfile, UserProfile
 
@@ -55,9 +59,10 @@ class EmailActivation(object):
         ctx_dict = {'activation_key': user.api_registration_profile.activation_key,
                     'expiration_days': self.days,
                     'site': site}
-        subject = 'ACTIVATION KEY'
-        message = str(ctx_dict)
-        user.email_user(subject, message, settings.DEFAULT_FROM_EMAIL)
+        subject = 'ChainsQuizzes activation key'
+        message = render_to_string('mail.html', ctx_dict)
+        send_mail(subject=subject, from_email=settings.DEFAULT_FROM_EMAIL,
+                  message="", recipient_list=[user.email], html_message=message)
 
     def activate_user(self, activation_key):
         if self.SHA1_RE.search(activation_key):
@@ -99,8 +104,6 @@ class EmailActivation(object):
 
 
 def custom_exception_handler(exc, context):
-    # Call REST framework's default exception handler first,
-    # to get the standard error response.
     response = exception_handler(exc, context)
     if response is not None:
         return Response({'error': {'errors': [response.data]}, 'statusCode': response.status_code},
