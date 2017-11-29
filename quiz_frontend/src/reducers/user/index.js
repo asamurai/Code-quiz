@@ -1,3 +1,7 @@
+import {
+    combineReducers
+} from 'redux';
+
 import * as userTypes from './../../constants/container_constants/user';
 
 const types = {
@@ -130,7 +134,7 @@ const initialState = {
     loggedIn: true
 };
 
-export default (state = initialState, action) => {
+const error = (state = initialState.error, action) => {
     switch (action.type) {
         case types.USER_SIGNIN.REQUEST: 
         case types.USER_SIGNOUT.REQUEST:
@@ -138,70 +142,125 @@ export default (state = initialState, action) => {
         case types.USER_UPDATE.REQUEST:
         case types.USER_PASSWORD_CHANGE.REQUEST:
         case types.USER_EMAIL_CHANGE.REQUEST:
-            return {...state, error: null, loading: true};
         case types.USER_SIGNIN.SUCCESS:
-            return {...state, error: null, loading: false, role: action.role, data: action.data, loggedIn: true};
-        case types.USER_SIGNOUT.SUCCESS: 
-            return {...state, error: null, loading: false, data: null, loggedIn: false};
-        case types.USER_REGISTER.SUCCESS: 
-            return {...state, error: null, loading: false};
+        case types.USER_SIGNOUT.SUCCESS:
+        case types.USER_REGISTER.SUCCESS:
         case types.USER_UPDATE.SUCCESS:
-            return { ...state, data: action.data, loading: false, error: null };
+            return null;
         case types.USER_SIGNIN.FAILURE: 
         case types.USER_SIGNOUT.FAILURE:
         case types.USER_REGISTER.FAILURE:
         case types.USER_UPDATE.FAILURE:
         case types.USER_EMAIL_CHANGE.FAILURE:
         case types.USER_PASSWORD_CHANGE.FAILURE:
-            return {...state, error: action.error, loading: false};
-        case types.CHANGE_USER_PROFILE_FORM_EDIT_STATE:
-            return {
-                ...state,
-                forms: {
-                    ...state.forms,
-                    profile: {
-                        ...state.forms.profile,
-                        state: {
-                            edit: action.state,
-                            view: !action.state
-                        }
-                    }
-                } 
-            };
-        case types.CHANGE_USER_PROFILE_FORM_VIEW_STATE:
-        return {
-            ...state,
-            forms: {
-                ...state.forms,
-                profile: {
-                    ...state.forms.profile,
-                    state: {
-                        edit: !action.state,
-                        view: action.state
-                    }
-                }
-            } 
-        };
-        case types.CHANGE_USER_PROFILE_FORM_MODAL_STATE:
-        return {
-            ...state,
-            forms: {
-                ...state.forms,
-                profile: {
-                    ...state.forms.profile,
-                    modals: {
-                        ...state.forms.profile.modals,
-                        ...action.modalState
-                    }
-                }
-            } 
-        };
-        case types.RESET_USER_ERRORS: 
-            return { ...state, error: null };
+            return action.error;
         default:
             return state;
     }
 };
 
+const loading = (state = initialState.loading, action) => {
+    switch (action.type) {
+        case types.USER_SIGNIN.REQUEST: 
+        case types.USER_SIGNOUT.REQUEST:
+        case types.USER_REGISTER.REQUEST:
+        case types.USER_UPDATE.REQUEST:
+        case types.USER_PASSWORD_CHANGE.REQUEST:
+        case types.USER_EMAIL_CHANGE.REQUEST:
+            return true;
+        case types.USER_SIGNIN.SUCCESS:
+        case types.USER_SIGNOUT.SUCCESS: 
+        case types.USER_REGISTER.SUCCESS:
+        case types.USER_UPDATE.SUCCESS:
+        case types.USER_SIGNIN.FAILURE: 
+        case types.USER_SIGNOUT.FAILURE:
+        case types.USER_REGISTER.FAILURE:
+        case types.USER_UPDATE.FAILURE:
+        case types.USER_EMAIL_CHANGE.FAILURE:
+        case types.USER_PASSWORD_CHANGE.FAILURE:
+            return false;
+        default:
+            return state;
+    }
+};
 
+const role = (state = initialState.role, action) => {
+    switch (action.type) {
+        case types.USER_SIGNIN.SUCCESS:
+            return action.role;
+        default:
+            return state;
+    }
+};
 
+const data = (state = initialState.data, action) => {
+    switch (action.type) {
+        case types.USER_SIGNIN.SUCCESS:
+        case types.USER_UPDATE.SUCCESS:
+            return action.data;
+        case types.USER_SIGNOUT.SUCCESS: 
+            return null;
+        default:
+            return state;
+    }
+};
+
+const forms = (state = initialState.forms, action) => {
+    switch (action.type) {
+        case types.CHANGE_USER_PROFILE_FORM_EDIT_STATE:
+            return {
+                ...state,
+                profile: {
+                    ...state.profile,
+                    state: {
+                        edit: action.state,
+                        view: !action.state
+                    }
+                }
+            };
+        case types.CHANGE_USER_PROFILE_FORM_VIEW_STATE:
+            return {
+                ...state,
+                profile: {
+                    ...state.profile,
+                    state: {
+                        edit: !action.state,
+                        view: action.state
+                    }
+                }
+            };
+        case types.CHANGE_USER_PROFILE_FORM_MODAL_STATE:
+            return {
+                ...state,
+                profile: {
+                    ...state.profile,
+                    modals: {
+                        ...state.profile.modals,
+                        ...action.modalState
+                    }
+                }
+            };
+        default:
+            return state;
+    }
+};
+
+const loggedIn = (state = initialState.loggedIn, action) => {
+    switch (action.type) {
+        case types.USER_SIGNIN.SUCCESS:
+            return true;
+        case types.USER_SIGNOUT.SUCCESS: 
+            return false;
+        default:
+            return state;
+    }
+};
+
+export default combineReducers({
+    error,
+    loading,
+    role,
+    data,
+    forms,
+    loggedIn
+});

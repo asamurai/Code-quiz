@@ -11,7 +11,9 @@ import {
 
 const FormItem = Form.Item;
 
-import * as routes from './../../routes';
+import {
+    SIGNIN_PATH
+} from './../../routes';
 
 import styles from './signin.sass';
 
@@ -146,7 +148,7 @@ class SignUp extends Component {
                     </Button>
                     <div>
                         {`Have an account? `}
-                        <Link to={routes.SIGNIN_PATH}>
+                        <Link to={SIGNIN_PATH}>
                             Sign in
                         </Link>
                     </div>

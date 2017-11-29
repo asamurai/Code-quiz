@@ -2,8 +2,14 @@ import React, { Component } from 'react';
 import { Provider } from 'react-redux';
 import { BrowserRouter } from 'react-router-dom';
 
+import {
+    LocaleProvider
+} from 'antd';
+
 import Application from './containers/Application';
 import { ScrollToTopComponent } from './components/HOCs';
+
+import AntdLocalizationEn from './constants/locale/AntdLocalizationEn';
 
 import configureStore from './store';
 
@@ -22,9 +28,11 @@ class Providers extends Component {
         return (
             <Provider store={store}>
                 <BrowserRouter>
-                    <ScrollToTopComponent>
-                        <Application/>
-                    </ScrollToTopComponent>
+                    <LocaleProvider locale={AntdLocalizationEn} >
+                        <ScrollToTopComponent>
+                            <Application/>
+                        </ScrollToTopComponent>
+                    </LocaleProvider>
                 </BrowserRouter>
             </Provider>
         );

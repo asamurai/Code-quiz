@@ -5,7 +5,6 @@ import { PrivateRoute } from './../HOCs';
 import HomeContainer from './../../containers/HomeContainer';
 import AuthContainer from './../../containers/AuthContainer';
 import FullQuizzesContainer from './../../containers/FullQuizzesContainer';
-import FreeQuizzesContainer from './../../containers/FreeQuizzesContainer';
 import UserAccountContainer from './../../containers/UserAccountContainer';
 import RestErrorComponent from './../RestErrorComponent';
 import FAQ from './../../containers/FAQ';
@@ -32,7 +31,6 @@ class Main extends Component {
                     <Route path={routes.SIGNIN_PATH} component={AuthContainer}/>
                     <Route path={routes.SIGNUP_PATH} component={AuthContainer}/>
                     <Route path={routes.FULL_QUIZZES_PATH} component={FullQuizzesContainer}/>
-                    <Route path={routes.FREE_QUIZZES_PATH} component={FreeQuizzesContainer}/>
                     <Route path={routes.FAQ_PATH} component={FAQ}/>
                     <PrivateRoute authed={loggedIn} path={routes.QUIZ_FULL_PATH} component={Quizzes}/>
                     <PrivateRoute authed={loggedIn} path={routes.USER_FULL_PATH} component={UserAccountContainer}/>
