@@ -5,6 +5,8 @@ import {
     Row
 } from 'antd';
 
+import uuid from 'uuid';
+
 import {
     FULL_QUIZZES_PATH,
     SIGNUP_PATH
@@ -60,7 +62,7 @@ class HomeContainer extends Component {
                     <ul>
                         {
                             coreConceptsMock.map((concept, index) => (
-                                <li>{index + 1}. {concept}</li>
+                                <li key={uuid()}>{index + 1}. {concept}</li>
                             ))
                         }
                     </ul>
