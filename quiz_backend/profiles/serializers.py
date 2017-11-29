@@ -16,11 +16,13 @@ class UserBaseSerializer(serializers.ModelSerializer):
 
 
 class UserProfileSerializer(serializers.HyperlinkedModelSerializer):
-    username = serializers.CharField(source='user.username',required=None)
-    first_name = serializers.CharField(source='user.first_name')
-    last_name = serializers.CharField(source='user.last_name')
-    email = serializers.CharField(source='user.email')
-    user_id = serializers.CharField(source='user.id')
+    username = serializers.CharField(source='user.username')
+    first_name = serializers.CharField(source='user.first_name',required=False)
+    last_name = serializers.CharField(source='user.last_name',required=False)
+    email = serializers.CharField(source='user.email',required=False)
+    user_id = serializers.CharField(source='user.id',required=False)
+    profile_image = serializers.ImageField(source='user.profile_image',required=False)
+    # bio = serializers.TextField(source='user.bio', required=False)
 
     class Meta:
         model = UserProfile

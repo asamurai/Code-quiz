@@ -1,10 +1,12 @@
 from django.contrib.auth.models import User
 from django.core.exceptions import ObjectDoesNotExist
 from rest_framework import status
-from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework.authtoken.models import Token
 from rest_framework.views import APIView
+from rest_framework.decorators import api_view, permission_classes
+from rest_framework.permissions import IsAuthenticated
+
 
 from .utils import EmailActivation
 from .serializers import UserSerializer, UserProfileSerializer
@@ -41,7 +43,7 @@ def logout(request):
         Token.objects.get(key=request.data['token']).delete()
         return Response(status=status.HTTP_200_OK)
     except ObjectDoesNotExist:
-        return Response({'error': {'errors': 'Bad token'}},status=status.HTTP_400_BAD_REQUEST)
+        return Response({'error': {'errors': 'Bad token'}}, status=status.HTTP_400_BAD_REQUEST)
 
 
 @api_view(['POST'])
@@ -50,7 +52,7 @@ def restore_password(request):
         email_activation.re_activate(request.data['email'])
         return Response(status=status.HTTP_200_OK)
     except Exception as e:
-        return Response({'error': {'errors': 'Bad e-mail'}}, status=status.HTTP_400_BAD_REQUEST)
+        return Response({'error': {'errors': 'Incorrect e-mail'}}, status=status.HTTP_400_BAD_REQUEST)
 
 
 class UserView(APIView):
@@ -79,7 +81,24 @@ class UserView(APIView):
         serializer = UserProfileSerializer(queryset)
         return Response(serializer.data, status=status.HTTP_200_OK)
 
-    def post(self, request, id):
-        serialized = UserProfileSerializer(data=request.data)
-        if serialized.is_valid(raise_exception=True):
-            print('ok')
+    @permission_classes((IsAuthenticated,))
+    def put(self, request, id):
+        print(request.data)
+        print(type(UserProfile.objects.get(user=request.user).user_id))
+        print(type(id))
+        serialized = UserProfileSerializer(data=request.data).is_valid(raise_exception=True)
+        if serialized:
+            if int(id) != UserProfile.objects.get(user=request.user).user_id:
+                return Response({'error': {'errors': 'You do not have permission to change user info'}},
+                                status=status.HTTP_200_OK)
+            else:
+                profile = UserProfile.objects.get(user_id=int(id))
+                print(profile.user.username)
+                profile.user.last_name = request.data['last_name']
+                profile.user.first_name = request.data['first_name']
+                profile.user.username = request.data['username']
+                profile.user.email = request.data['email']
+                profile.user.save()
+
+                UserProfile.objects.filter(user_id=int(id)).update(bio=request.data['bio'])
+                return Response({'asdf':'ok'}, status=status.HTTP_200_OK)
