@@ -60,7 +60,7 @@ ROOT_URLCONF = 'quiz_backend.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [BASE_DIR + '/templates/', ],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -129,15 +129,15 @@ STATIC_URL = '/static/'
 
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 
-DEFAULT_FROM_EMAIL = 'chains.quizzes@rambler.ru'
+DEFAULT_FROM_EMAIL = 'mail@chainsquizzes.com'
 
-EMAIL_HOST = 'smtp.rambler.ru'
+EMAIL_HOST = 'smtp.sendgrid.net'
 
 EMAIL_PORT = 465
 
-EMAIL_HOST_USER = 'chains.quizzes@rambler.ru'
+EMAIL_HOST_USER = 'apikey'
 
-EMAIL_HOST_PASSWORD = 'chains'
+EMAIL_HOST_PASSWORD = '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'
 
 EMAIL_USE_SSL = True
 
