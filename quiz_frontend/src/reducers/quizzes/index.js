@@ -221,7 +221,7 @@ const mockQuizzesList = [
     }
 ];
 
-console.log(mockQuizzesList);
+console.log(!!mockQuizzesList);
 
 const initialState = {
     quizList: {

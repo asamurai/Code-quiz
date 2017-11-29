@@ -1,3 +1,7 @@
+import {
+    combineReducers
+} from 'redux';
+
 import * as fullquizzesTypes from './../../constants/container_constants/fullquizzes';
 
 const types = {
@@ -68,34 +72,54 @@ const initialState = {
     }
 };
 
-export default (state = initialState, action) => {
+const isFreeMode = (state = initialState.isFreeMode, action) => {
     switch (action.type) {
-        case types.GET_QUIZZES_BY_TYPE.REQUEST: 
-            return {
-                ...state,
-                error: null,
-                loading: true
-            };
+        default:
+            return state;
+    }
+};
+
+const registers = (state = initialState.registers, action) => {
+    switch (action.type) {
         case types.GET_QUIZZES_BY_TYPE.SUCCESS: 
             return {
                 ...state,
-                error: null,
-                loading: false,
-                registers: {
-                    ...state.registers,
-                    [action.data.type]: action.data.content
-                }
-            };
-        case types.GET_QUIZZES_BY_TYPE.FAILURE: 
-            return {
-                ...state,
-                error: action.error,
-                loading: false
+                [action.data.type]: action.data.content
             };
         default:
             return state;
     }
 };
 
+const loading = (state = initialState.loading, action) => {
+    switch (action.type) {
+        case types.GET_QUIZZES_BY_TYPE.REQUEST:
+            return true;
+        case types.GET_QUIZZES_BY_TYPE.SUCCESS:
+        case types.GET_QUIZZES_BY_TYPE.FAILURE:
+            return false;
+        default:
+            return state;
+    }
+};
+
+const error = (state = initialState.error, action) => {
+    switch (action.type) {
+        case types.GET_QUIZZES_BY_TYPE.REQUEST:
+        case types.GET_QUIZZES_BY_TYPE.SUCCESS:
+            return null;
+        case types.GET_QUIZZES_BY_TYPE.FAILURE:
+            return action.error;
+        default:
+            return state;
+    }
+};
+
+export default combineReducers({
+    registers,
+    isFreeMode,
+    loading,
+    error
+});
 
 
