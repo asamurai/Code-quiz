@@ -33,7 +33,7 @@ class EmailActivation(object):
         activated = RegistrationProfile.objects.get(user=user)
         date_joined = user.date_joined
         expiration_date = datetime.timedelta(days=self.days)
-        if date_joined + expirationuser.email_user_date <= datetime_now():
+        if date_joined + expiration_date <= datetime_now():
             activated.activation_key = self.ACTIVATED
             activated.save()
             return True
