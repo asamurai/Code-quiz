@@ -17,7 +17,7 @@ class RegistrationProfile(models.Model):
 
 
 class UserProfile(models.Model):
-    user = models.OneToOneField(settings.AUTH_USER_MODEL, unique=True, verbose_name='user',
+    user = models.OneToOneField(settings.AUTH_USER_MODEL, unique=True, verbose_name='user_profile',
                                 related_name='extended_profile')
     bio = models.TextField(blank=True, null=True)
-    profile_image = models.ImageField(blank=True, null=True)
+    profile_image = models.ImageField(blank=True, null=True, upload_to='profile_images')

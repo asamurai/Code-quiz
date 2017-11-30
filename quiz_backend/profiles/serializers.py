@@ -11,10 +11,10 @@ class UserSerializer(serializers.ModelSerializer):
         fields = ('username', 'email', 'password', 'password_confirm')
 
     def validate(self, data):
+
         if data['password'] != data['password_confirm']:
-            raise serializers.ValidationError({"password_confirm":"Passwords do not match"})
-        print(data.pop('password_confirm'))
-        return data.pop('password_confirm')
+            raise serializers.ValidationError({"password_confirm": "Passwords do not match"})
+        return data
 
 
 class UserBaseSerializer(serializers.ModelSerializer):
@@ -25,13 +25,12 @@ class UserBaseSerializer(serializers.ModelSerializer):
 
 class UserProfileSerializer(serializers.HyperlinkedModelSerializer):
     username = serializers.CharField(source='user.username')
-    first_name = serializers.CharField(source='user.first_name',required=False)
-    last_name = serializers.CharField(source='user.last_name',required=False)
-    email = serializers.CharField(source='user.email',required=False)
-    user_id = serializers.CharField(source='user.id',required=False)
-    profile_image = serializers.ImageField(source='user.profile_image',required=False)
-    # bio = serializers.TextField(source='user.bio', required=False)
+    first_name = serializers.CharField(source='user.first_name')
+    last_name = serializers.CharField(source='user.last_name')
+    email = serializers.CharField(source='user.email')
+    user_id = serializers.CharField(source='user.id')
 
     class Meta:
+
         model = UserProfile
         fields = ('user_id', 'email', 'profile_image', 'bio', 'username', 'first_name', 'last_name')

@@ -72,7 +72,6 @@ class EmailActivation(object):
             except RegistrationProfile.DoesNotExit:
                 return False
             if profile.user.is_active and not self.key_expired(profile.user):
-                print(profile.user.is_active)
                 return profile.user
             if not self.key_expired(profile.user):
                 user = profile.user
