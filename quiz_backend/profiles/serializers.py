@@ -4,9 +4,17 @@ from .models import UserProfile
 
 
 class UserSerializer(serializers.ModelSerializer):
+    password_confirm = serializers.CharField(style={'input_type': 'password'}, write_only=True)
+
     class Meta:
         model = User
-        fields = ('username', 'email', 'password')
+        fields = ('username', 'email', 'password', 'password_confirm')
+
+    def validate(self, data):
+        if data['password'] != data['password_confirm']:
+            raise serializers.ValidationError({"password_confirm":"Passwords do not match"})
+        print(data.pop('password_confirm'))
+        return data.pop('password_confirm')
 
 
 class UserBaseSerializer(serializers.ModelSerializer):
