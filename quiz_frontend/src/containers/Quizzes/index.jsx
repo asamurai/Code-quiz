@@ -12,7 +12,7 @@ import {
 import * as quizzesActions from './../../actions/quizzes';
 
 import QuizzesList from './../../components/Quizzes/QuizzesList';
-import QuizForm from './../../components/Quizzes/QuizForm';
+import QuizFormWrapper from './../../components/Quizzes/QuizFormWrapper';
 import QuizTraining from './../../components/Quizzes/QuizTraining';
 
 import {
@@ -43,10 +43,6 @@ class Quizzes extends Component {
 
     handleDeleteForm = (formName) => {
         console.log(`delete ${formName}`);
-    };
-
-    handleClearForm = (formName) => {
-        console.log(`clear ${formName}`);
     };
 
     render () {
@@ -81,13 +77,12 @@ class Quizzes extends Component {
                             case 'view':
                             case 'edit':
                                 return (
-                                    <QuizForm
+                                    <QuizFormWrapper
                                         state={state}
 
                                         onChangeState={setQuizCreateFormState}
                                         onSubmit={this.handleSubmitForm}
                                         onDelete={this.handleDeleteForm}
-                                        onClear={this.handleClearForm}
                                     />
                                 );
                             case 'training':

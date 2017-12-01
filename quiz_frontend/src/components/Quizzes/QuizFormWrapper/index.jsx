@@ -2,7 +2,13 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { withRouter } from 'react-router-dom';
 
+import {
+    Tabs
+} from 'antd';
+
 import QuizControlPanel from './../QuizControlPanel';
+import LevelQuestionForm from './../QuizForm/LevelQuestionForm';
+import QuizFormInfo from './../QuizForm/QuizFormInfo';
 
 import {
     QUIZ_CREATE_PATH,
@@ -10,7 +16,9 @@ import {
     QUIZ_VIEW_PATH
 } from './../../../routes';
 
-class QuizForm extends Component {    
+const TabPane = Tabs.TabPane;
+
+class QuizFormWrapper extends Component {    
     componentWillMount() {
         const {
             location: {
@@ -80,8 +88,7 @@ class QuizForm extends Component {
         const {
             state,
             onSubmit,
-            onDelete,
-            onClear
+            onDelete
         } = this.props;
 
         return (
@@ -90,24 +97,29 @@ class QuizForm extends Component {
                     state={state}
 
                     onSubmit={onSubmit}
-                    onClear={onClear}
                     onDelete={onDelete}
                 />
-                Quiz
+                <Tabs defaultActiveKey="1">
+                    <TabPane tab="Main info" key="1">
+                        <QuizFormInfo/>
+                    </TabPane>
+                    <TabPane tab={`Levels & questions`} key="2">
+                        <LevelQuestionForm/>
+                    </TabPane>
+                </Tabs>
             </div>
         );
     }
 }
 
-QuizForm.propTypes = {
+QuizFormWrapper.propTypes = {
     match: PropTypes.objectOf(PropTypes.any).isRequired,
     location: PropTypes.objectOf(PropTypes.any).isRequired,
     state: PropTypes.objectOf(PropTypes.bool).isRequired,
 
     onChangeState: PropTypes.func.isRequired,
     onSubmit: PropTypes.func.isRequired,
-    onDelete: PropTypes.func.isRequired,
-    onClear: PropTypes.func.isRequired,
+    onDelete: PropTypes.func.isRequired
 };
 
-export default withRouter(QuizForm);
+export default withRouter(QuizFormWrapper);

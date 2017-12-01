@@ -40,8 +40,7 @@ class QuizControlPanel extends Component {
         const {
             state,
             onSubmit,
-            onDelete,
-            onClear
+            onDelete
         } = this.props;
 
         if (state.create) {
@@ -54,12 +53,6 @@ class QuizControlPanel extends Component {
                         onClick={this.tryToGoQuizList}
                     >
                         Back to Quiz list
-                    </Button>
-                    <Button
-                        style={{ marginRight: '20px' }}
-                        onClick={onClear}
-                    >
-                        Clear form
                     </Button>
                     <Button
                         type="primary"
@@ -106,12 +99,6 @@ class QuizControlPanel extends Component {
                         Back to Quiz list
                     </Button>
                     <Button
-                        style={{ marginRight: '20px' }}
-                        onClick={onClear}
-                    >
-                        Clear form
-                    </Button>
-                    <Button
                         type="danger"
                         icon="delete"
                         style={{ marginRight: '20px' }}
@@ -138,8 +125,7 @@ QuizControlPanel.propTypes = {
     state: PropTypes.objectOf(PropTypes.bool).isRequired,
 
     onSubmit: PropTypes.func.isRequired,
-    onDelete: PropTypes.func.isRequired,
-    onClear: PropTypes.func.isRequired
+    onDelete: PropTypes.func.isRequired
 };
 
 export default withRouter(QuizControlPanel);
