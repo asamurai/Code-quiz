@@ -1,10 +1,16 @@
 import React, { Component } from 'react';
-import PropTypes from 'prop-types';
+// import PropTypes from 'prop-types';
+import { withRouter } from 'react-router-dom';
 
 class QuizTraining extends Component {
     render () {
+        console.log(this.props);
         const {
-            id
+            match: {
+                params: {
+                    id
+                }
+            }
         } = this.props;
         return (
             <div>
@@ -14,11 +20,6 @@ class QuizTraining extends Component {
     }
 }
 
-QuizTraining.propTypes = {
-    id: PropTypes.oneOfType([
-        PropTypes.number,
-        PropTypes.string
-    ]).isRequired
-};
 
-export default QuizTraining;
+
+export default withRouter(QuizTraining);

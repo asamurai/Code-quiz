@@ -304,7 +304,7 @@ const formCreation = (state = initialState.formCreation, action) => {
             return {
                 ...state,
                 state: {
-                    ...state.state,
+                    ...initialState.formCreation.state,
                     ...action.state,
                 }
             };
