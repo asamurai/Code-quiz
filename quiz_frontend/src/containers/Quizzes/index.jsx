@@ -11,10 +11,8 @@ import {
 
 import * as quizzesActions from './../../actions/quizzes';
 
-import QuizControlPanel from './../../components/Quizzes/QuizControlPanel';
 import QuizzesList from './../../components/Quizzes/QuizzesList';
-import QuizCreate from './../../components/Quizzes/QuizCreate';
-import QuizEdit from './../../components/Quizzes/QuizEdit';
+import QuizFormWrapper from './../../components/Quizzes/QuizFormWrapper';
 import QuizTraining from './../../components/Quizzes/QuizTraining';
 
 import {
@@ -39,6 +37,14 @@ class Quizzes extends Component {
         });
     }
 
+    handleSubmitForm = (formName) => {
+        console.log(`submit ${formName}`);
+    };
+
+    handleDeleteForm = (formName) => {
+        console.log(`delete ${formName}`);
+    };
+
     render () {
         const {
             state,
@@ -46,20 +52,17 @@ class Quizzes extends Component {
             pages,
             requestBody: {
                 limit
-            }
+            },
+            setQuizCreateFormState
         } = this.props;
 
         return (
             <Row span="12">
-                <QuizControlPanel
-                    state={state}
-                />
                 <Route
                     exact
                     path={QUIZ_FULL_PATH}
                     render={(routeProps) => {
                         const component = routeProps.match.params.component || null;
-                        const id = routeProps.match.params.id || null;
                         switch (component) {
                             case 'list':
                                 return (
@@ -71,34 +74,24 @@ class Quizzes extends Component {
                                     />
                                 );
                             case 'create':
-                                return (
-                                    <QuizCreate/>
-                                );
                             case 'view':
                             case 'edit':
-                                if (id) {
-                                    return (
-                                        <QuizEdit
-                                            id={id}
-                                        />
-                                    );
-                                }
-                                break;
+                                return (
+                                    <QuizFormWrapper
+                                        state={state}
+
+                                        onChangeState={setQuizCreateFormState}
+                                        onSubmit={this.handleSubmitForm}
+                                        onDelete={this.handleDeleteForm}
+                                    />
+                                );
                             case 'training':
-                                if (id) {
-                                    return (
-                                        <QuizTraining
-                                            id={id}
-                                        />
-                                    );
-                                }
-                                break;                     
+                                return (
+                                    <QuizTraining/>
+                                );                   
                             default:
                                 return <Redirect to={QUIZ_LIST_PATH} />;
                         }
-                        return (
-                            <div>Quizzes</div>
-                        );
                     }}
                 />
             </Row>
@@ -116,6 +109,8 @@ Quizzes.propTypes = {
         currentPage: PropTypes.number,
         totalFinded: PropTypes.number
     }).isRequired,
+
+    setQuizCreateFormState: PropTypes.func.isRequired
 };
 
 const mapStateToProps = (state) => ({

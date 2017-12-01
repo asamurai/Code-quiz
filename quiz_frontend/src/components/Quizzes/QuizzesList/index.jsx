@@ -12,7 +12,8 @@ import moment from 'moment';
 
 import {
     QUIZ_EDIT_PATH,
-    QUIZ_VIEW_PATH
+    QUIZ_VIEW_PATH,
+    QUIZ_CREATE_PATH
 } from './../../../routes/index';
 
 class QuizList extends Component {
@@ -99,6 +100,8 @@ class QuizList extends Component {
         modified: el.test.modified ? moment(el.test.modified).format('L') : '' 
     });
 
+    goToCreateForm = () => this.props.history.push(`${QUIZ_CREATE_PATH}`);
+
     render () {
         const {
             dataSource,
@@ -118,6 +121,7 @@ class QuizList extends Component {
                     <Button
                         type="primary"
                         icon="plus"
+                        onClick={this.goToCreateForm}
                     >
                         Create new Quizzes
                     </Button>
