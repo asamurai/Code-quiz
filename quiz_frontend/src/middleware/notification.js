@@ -3,13 +3,19 @@ import * as notifications from './../constants/container_constants/notifications
 import * as fullquizzes from './../constants/container_constants/fullquizzes';
 import * as user from './../constants/container_constants/user';
 
+/**
+ * Array of async container constants, that need to be checked in middleware
+ */
 const asyncTypesConstants = Object.values(types)
-.filter(type => typeof(type) === 'object')
-.reduce((arr, type) => ([
-    ...arr,
-    ...Object.values(type)
-]), []);
+    .filter(type => typeof(type) === 'object')
+    .reduce((arr, type) => ([
+        ...arr,
+        ...Object.values(type)
+    ]), []);
 
+/**
+ * List of async constants that need to be ignored
+ */
 const EXCEPTION_LIST = [
     fullquizzes.GET_QUIZZES_BY_TYPE.SUCCESS,
     user.USER_SIGNIN.SUCCESS,
@@ -31,6 +37,16 @@ const FAILURE_ACTIONS = asyncTypesConstants.filter((item) => (
     /_FAILURE/.test(item)
 ));
 
+
+/**
+ * 
+ * Middleware that checks if there is success or failure action and shows notification due to its status
+ * 
+ * @param {object}   store   current store
+ * @param {function} next    function that that ignores current action and passing to next action
+ * @param {object}   action  action that is passing
+ *  
+ */
 export const notificationMiddleware = store => next => action => {
     if (SUCCESS_ACTIONS.includes(action.type)) {
         store.dispatch({ 
