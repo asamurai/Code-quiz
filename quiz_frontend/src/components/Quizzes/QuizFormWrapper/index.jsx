@@ -88,7 +88,8 @@ class QuizFormWrapper extends Component {
         const {
             state,
             onSubmit,
-            onDelete
+            onDelete,
+            mainInfoFormData
         } = this.props;
 
         return (
@@ -101,7 +102,9 @@ class QuizFormWrapper extends Component {
                 />
                 <Tabs defaultActiveKey="1">
                     <TabPane tab="Main info" key="1">
-                        <QuizFormInfo/>
+                        <QuizFormInfo
+                            {...mainInfoFormData}
+                        />
                     </TabPane>
                     <TabPane tab={`Levels & questions`} key="2">
                         <LevelQuestionForm/>
@@ -116,6 +119,7 @@ QuizFormWrapper.propTypes = {
     match: PropTypes.objectOf(PropTypes.any).isRequired,
     location: PropTypes.objectOf(PropTypes.any).isRequired,
     state: PropTypes.objectOf(PropTypes.bool).isRequired,
+    mainInfoFormData: PropTypes.objectOf(PropTypes.any).isRequired,
 
     onChangeState: PropTypes.func.isRequired,
     onSubmit: PropTypes.func.isRequired,

@@ -2,31 +2,31 @@ import {
     combineReducers
 } from 'redux';
 
-const mockThemesList = [
+const mockCategoriesList = [
     {
-        id: 1,
+        category_id: 1,
         name: 'javascript core',
         description: 'javascript core'
     },
     {
-        id: 2,
+        category_id: 2,
         name: 'ajax library',
         description: 'ajax library'
     },
     {
-        id: 3,
+        category_id: 3,
         name: 'React',
         description: 'React'
     },
     {
-        id: 4,
+        category_id: 4,
         name: 'Redux',
         description: 'Redux'
     }
 ];
 
 const initialState = {
-    themesList: mockThemesList,
+    categoriesList: mockCategoriesList,
     loading: false,
     error: null
 };
@@ -45,7 +45,7 @@ const error = (state = initialState.error, action) => {
     }
 };
 
-const themesList = (state = initialState.themesList, action) => {
+const categoriesList = (state = initialState.categoriesList, action) => {
     switch (action.type) {
         default:
             return state;
@@ -55,5 +55,5 @@ const themesList = (state = initialState.themesList, action) => {
 export default combineReducers({
     loading,
     error,
-    themesList
+    categoriesList
 });

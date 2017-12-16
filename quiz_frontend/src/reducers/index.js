@@ -6,6 +6,7 @@ import fullquizzes from './fullquizes';
 import quizzes from './quizzes';
 import home from './home';
 import faq from './faq';
+import classifiers from './сlassifiers';
 
 export default combineReducers({
     user,
@@ -13,5 +14,6 @@ export default combineReducers({
     notifications,
     quizzes,
     home,
-    faq
+    faq,
+    classifiers
 });
