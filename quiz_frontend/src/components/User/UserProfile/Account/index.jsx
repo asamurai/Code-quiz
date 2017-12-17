@@ -54,6 +54,16 @@ class Account extends Component {
         onAccountSave();
     }
 
+    handleEditCancel = () => {
+        const {
+            onEditCancel,
+            setUserFormViewState
+        } = this.props;
+
+        onEditCancel();
+        setUserFormViewState(true)
+    }
+
     handlePictureUpload = () => {
         const { onPictureUpload } = this.props;
         const { imageFileToUpload } = this.state;
@@ -105,7 +115,6 @@ class Account extends Component {
             modals: {
                 imageUpload: imageUploadModalState
             },
-            setUserFormViewState,
             setUserFormEditState
         } = this.props;
 
@@ -136,36 +145,36 @@ class Account extends Component {
                     <Row span="12">
                         <Col span="12">
                             <FormItem
-                                label="Name"
+                                label="First name"
                             >
-                                {getFieldDecorator('name', {
+                                {getFieldDecorator('first_name', {
                                     rules: [
                                         { 
                                             required: false, 
-                                            message: 'Please input your name.' 
+                                            message: 'Please input your first name.' 
                                         }
                                     ]
                                 })(
                                     <Input
                                         disabled={viewState}
-                                        placeholder="Name" 
+                                        placeholder="First name" 
                                     />
                                 )}
                             </FormItem>
                             <FormItem
-                                label="Surname"
+                                label="Last name"
                             >
-                                {getFieldDecorator('surname', {
+                                {getFieldDecorator('last_name', {
                                     rules: [
                                         { 
                                             required: false, 
-                                            message: 'Please input your surname.' 
+                                            message: 'Please input your last name.' 
                                         }
                                     ]
                                 })(
                                     <Input 
                                         disabled={viewState}
-                                        placeholder="Surname" 
+                                        placeholder="Last name" 
                                     />
                                 )}
                             </FormItem>
@@ -175,7 +184,7 @@ class Account extends Component {
                                 {getFieldDecorator('username', {
                                     rules: [
                                         { 
-                                            required: true, 
+                                            required: !viewState, 
                                             message: 'Please input your username.' 
                                         }
                                     ]
@@ -222,13 +231,14 @@ class Account extends Component {
                         <Col span="24">
                             <FormItem label="Biograpgy" hasFeedback >
                                 {getFieldDecorator('bio', {
-                                rules: [{ required: false }]
+                                    rules: [{ required: false }]
                                 })(
-                                <TextArea
-                                    disabled={viewState}
-                                    autosize={{ minRows: 6 }}
-                                    maxLength="3000"
-                                />)}
+                                    <TextArea
+                                        disabled={viewState}
+                                        autosize={{ minRows: 6 }}
+                                        maxLength="3000"
+                                    />
+                                )}
                             </FormItem>
                         </Col>
                     </Row>
@@ -244,7 +254,7 @@ class Account extends Component {
                             </Button>
                             <Button
                                 type="danger"
-                                onClick={() => setUserFormViewState(true)}
+                                onClick={this.handleEditCancel}
                             >
                                 Cancel
                             </Button>
@@ -274,8 +284,8 @@ const AccountHOC = Form.create({
   },
   mapPropsToFields(props) {
     return getPropsObject(props.fields, [
-      'name',
-      'surname',
+      'first_name',
+      'last_name',
       'username',
       'bio'
     ]);
@@ -293,7 +303,8 @@ Account.propTypes = {
     setUserFormEditState: PropTypes.func.isRequired,
     onAccountSave: PropTypes.func.isRequired,
     onPictureUpload: PropTypes.func.isRequired,
-    onChangeModalState: PropTypes.func.isRequired
+    onChangeModalState: PropTypes.func.isRequired,
+    onEditCancel: PropTypes.func.isRequired
 };
 
 export default AccountHOC;
