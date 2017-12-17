@@ -92,7 +92,6 @@ class UserAccountContainer extends Component {
         }
     }));
     
-
     handlePictureUpload = (pictureFile) => {
         const {
             user: {
