@@ -9,6 +9,8 @@ import {
     Row
 } from 'antd';
 
+import uuid from 'uuid';
+
 import * as quizzesActions from './../../actions/quizzes';
 
 import QuizzesList from './../../components/Quizzes/QuizzesList';
@@ -37,10 +39,56 @@ class Quizzes extends Component {
         };
 
         this.defState = {
-            formQuizMainInfoValues: { ...this.defFormQuizMainInfoValues }
+            formQuizMainInfoValues: { ...this.defFormQuizMainInfoValues },
+            levels: [],
+            activeLevelKey: null
         };
 
         this.state = { ...this.defState };
+    }
+
+    onChangeActiveLevelKey = (activeLevelKey) => {
+        this.setState({ activeLevelKey });
+    }
+
+    onEditLevel = (targetKey, action) => {
+        // this[action](targetKey);
+        switch (action) {
+            case 'remove':
+                this.onRemoveLevel(targetKey);
+                break;
+            case 'change':
+                this.onChangeActiveLevelKey(targetKey);
+                break;
+            default:
+                break;
+        }
+    }
+
+    onAddNewLevel = () => {
+        const activeLevelKey = uuid();
+        this.setState((prevState) => ({
+            levels: prevState.levels.concat({ key: activeLevelKey }),
+            activeLevelKey
+        }));
+    };
+
+    onRemoveLevel = (targetKey) => {
+        let activeLevelKey = this.state.activeLevelKey;
+        let lastIndex;
+        this.state.levels.forEach((level, i) => {
+            if (level.key === targetKey) {
+                lastIndex = i - 1;
+            }
+        });
+        const levels = this.state.levels.filter(pane => pane.key !== targetKey);
+        if (lastIndex >= 0 && activeLevelKey === targetKey) {
+            activeLevelKey = levels[lastIndex].key;
+        }
+        this.setState({
+            levels,
+            activeLevelKey
+        });
     }
 
     handleChangeListPage = (page) => {
@@ -112,6 +160,13 @@ class Quizzes extends Component {
                                             formName: 'formQuizMainInfoValues',
                                             onChange: this.handleFormChange('formQuizMainInfoValues'),
                                             quizCategories: classifiers.categoriesList
+                                        }}
+                                        levelOptionsData={{
+                                            activeLevelKey: this.state.activeLevelKey,
+                                            levels: this.state.levels,
+                                            onAddNewLevel: this.onAddNewLevel,
+                                            onEditLevel: this.onEditLevel,
+                                            onChangeActiveLevelKey: this.onChangeActiveLevelKey
                                         }}
                                         onChangeState={setQuizCreateFormState}
                                         onSubmit={this.handleSubmitForm}

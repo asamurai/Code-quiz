@@ -61,7 +61,7 @@ class Account extends Component {
         } = this.props;
 
         onEditCancel();
-        setUserFormViewState(true)
+        setUserFormViewState(true);
     }
 
     handlePictureUpload = () => {
