@@ -12,6 +12,7 @@ import {
 } from 'antd';
 
 import moment from 'moment';
+import _ from 'lodash';
 
 import * as userActions from './../../actions/user';
 
@@ -80,8 +81,17 @@ class UserAccountContainer extends Component {
         } = this.props;
         const data = getValuesFromForm(formUserProfileValues);
         updateUser(userId, data);
-    }
+    };
 
+    handleAccountCancelEditing = () => this.setState((state, props) => ({
+        formUserProfileValues: {
+            first_name: { value: props.user.data.first_name || '' },
+            last_name: { value: props.user.data.last_name || '' },
+            username: { value: props.user.data.username || '' },
+            bio: { value: props.user.data.bio || '' }
+        }
+    }));
+    
     handlePictureUpload = (pictureFile) => {
         const {
             user: {
@@ -102,7 +112,7 @@ class UserAccountContainer extends Component {
             setUserFormModalsState
         } = this.props;
         setUserFormModalsState(modalName, state);
-    }
+    };
 
     handleSettingsUpdate = (changeField) => {
         const { formUserSettingsValues } = this.state;
@@ -133,7 +143,7 @@ class UserAccountContainer extends Component {
             const data = getCertainValuesFromForm(formUserSettingsValues, neededProps);
             updateFunction(userId, data);
         }
-    }
+    };
 
     handleSettingsReset = () => this.setState({
         formUserSettingsValues: this.defFormUserSettingsValues
@@ -141,19 +151,65 @@ class UserAccountContainer extends Component {
 
     genereteRowForTable = (type, entity) => {
         switch (type) {
-          case 'test':
-            return {
-              key: entity.id,
-              action: entity.id,
-              testName: entity.test.name,
-              testImage: entity.test.imageUrl,
-              testScore: `${entity.testResult.score*100}%`,
-              date: moment(entity.date).format('l')
-            };
-          default:
-            break;
+            case 'test':
+                return {
+                    key: entity.id,
+                    action: entity.id,
+                    testName: entity.test.name,
+                    testImage: entity.test.imageUrl,
+                    testScore: `${entity.testResult.score*100}%`,
+                    date: moment(entity.date).format('l')
+                };
+            default:
+                break;
         }
-      }
+    };
+
+    componentWillMount() {
+        const {
+            user: {
+                data
+            }
+        } = this.props;
+
+        if (data) {
+            this.setState({
+                formUserProfileValues: {
+                    first_name: { value: data.first_name || '' },
+                    last_name: { value: data.last_name || '' },
+                    username: { value: data.username || '' },
+                    bio: { value: data.bio || '' }
+                }
+            });
+        }        
+    }
+    
+
+    componentWillReceiveProps(nextProps) {
+        const {
+            user: {
+                data: prevUserData
+            }
+        } = this.props;
+
+        const {
+            user: {
+                data: nextUserData
+            }
+        } = nextProps;
+
+        if (nextUserData && !_.isEqual(nextUserData, prevUserData)) {
+            this.setState({
+                formUserProfileValues: {
+                    first_name: { value: nextUserData.first_name || '' },
+                    last_name: { value: nextUserData.last_name || '' },
+                    username: { value: nextUserData.username || '' },
+                    bio: { value: nextUserData.bio || '' }
+                }
+            });
+        }
+    }
+    
 
     render () {
         const {
@@ -199,6 +255,7 @@ class UserAccountContainer extends Component {
                                                 setUserFormEditState={setUserFormEditState}
                                                 setUserFormViewState={setUserFormViewState}
                                                 onChangeModalState={this.handleChangeUserModalState}
+                                                onEditCancel={this.handleAccountCancelEditing}
                                             />
                                         );
                                     case 'settings':

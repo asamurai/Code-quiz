@@ -105,7 +105,13 @@ const initialState = {
     loading: false,
     error: null,
     role: null,
-    data: { id: 1, name: 'Artem' },
+    data: {
+        id: 1,
+        first_name: 'Artem',
+        last_name: 'Vergun',
+        username: 'asamurai',
+        bio: 'javascript ninja at @labracode'
+    },
     forms: {
         profile: {
             state: {

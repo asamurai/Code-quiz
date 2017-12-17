@@ -26,6 +26,23 @@ const ACTIONS = {
 
 class Quizzes extends Component {
 
+    constructor(props) {
+        super(props);
+
+        this.defFormQuizMainInfoValues = {
+            description: { value: '' },
+            category_id: { value: '' },
+            title: { value: '' },
+            imageId: { value: '' }
+        };
+
+        this.defState = {
+            formQuizMainInfoValues: { ...this.defFormQuizMainInfoValues }
+        };
+
+        this.state = { ...this.defState };
+    }
+
     handleChangeListPage = (page) => {
         const {
             setQuizzesPages,
@@ -36,6 +53,15 @@ class Quizzes extends Component {
             currentPage: page
         });
     }
+
+    handleFormChange = (formName) => (changedFields) => {
+        this.setState({
+            [formName]: { 
+                ...this.state[formName], 
+                ...changedFields 
+            }
+        });
+    };
 
     handleSubmitForm = (formName) => {
         console.log(`submit ${formName}`);
@@ -50,6 +76,7 @@ class Quizzes extends Component {
             state,
             register,
             pages,
+            classifiers,
             requestBody: {
                 limit
             },
@@ -79,7 +106,13 @@ class Quizzes extends Component {
                                 return (
                                     <QuizFormWrapper
                                         state={state}
-
+                                        mainInfoFormData={{
+                                            state: state,
+                                            fields: this.state.formQuizMainInfoValues,
+                                            formName: 'formQuizMainInfoValues',
+                                            onChange: this.handleFormChange('formQuizMainInfoValues'),
+                                            quizCategories: classifiers.categoriesList
+                                        }}
                                         onChangeState={setQuizCreateFormState}
                                         onSubmit={this.handleSubmitForm}
                                         onDelete={this.handleDeleteForm}
@@ -109,6 +142,7 @@ Quizzes.propTypes = {
         currentPage: PropTypes.number,
         totalFinded: PropTypes.number
     }).isRequired,
+    classifiers: PropTypes.objectOf(PropTypes.any).isRequired,
 
     setQuizCreateFormState: PropTypes.func.isRequired
 };
@@ -117,7 +151,8 @@ const mapStateToProps = (state) => ({
     state: state.quizzes.formCreation.state,
     register: state.quizzes.quizList.register,
     requestBody: state.quizzes.quizList.requestBody,
-    pages: state.quizzes.quizList.pages
+    pages: state.quizzes.quizList.pages,
+    classifiers: state.classifiers
 });
   
 export default connect(mapStateToProps, ACTIONS)(Quizzes);
