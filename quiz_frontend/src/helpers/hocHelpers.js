@@ -9,8 +9,9 @@
  * @return {object}            Form state
  */
 export const getPropsObject = (props, fieldNames) => {
-    const madePropsObj = (rez, curName) => ({
-        ...rez,
+    console.log(props, fieldNames);
+    const madePropsObj = (prev, curName) => ({
+        ...prev,
         [curName]: {
             ...props[curName],
             value: props[curName].value

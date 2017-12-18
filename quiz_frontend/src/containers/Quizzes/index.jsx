@@ -9,6 +9,8 @@ import {
     Row
 } from 'antd';
 
+import uuid from 'uuid';
+
 import * as quizzesActions from './../../actions/quizzes';
 
 import QuizzesList from './../../components/Quizzes/QuizzesList';
@@ -36,11 +38,89 @@ class Quizzes extends Component {
             imageId: { value: '' }
         };
 
+        this.defFormLevelValues = {
+            // questions: []
+            questions: [
+                {
+                    question_id: 1,
+                    title: 'Question?',
+                    description: 'question description',
+                    answers: [
+                        {
+                            answer_id: 1,
+                            name: 'false answer',
+                            isCorrect: false
+                        },
+                        {
+                            answer_id: 2,
+                            name: 'correct answer',
+                            isCorrect: true
+                        }
+                    ]
+                }
+            ]
+        };
+
+        this.defFormQuestionValues = {
+            question: { value: '' },
+            description: { value: '' },
+            answers: []
+        };
+
         this.defState = {
-            formQuizMainInfoValues: { ...this.defFormQuizMainInfoValues }
+            formQuizMainInfoValues: { ...this.defFormQuizMainInfoValues },
+            levels: [],
+            activeLevelKey: null
         };
 
         this.state = { ...this.defState };
+    }
+
+    onChangeActiveLevelKey = (activeLevelKey) => {
+        this.setState({ activeLevelKey });
+    }
+
+    onEditLevel = (targetKey, action) => {
+        // this[action](targetKey);
+        switch (action) {
+            case 'remove':
+                this.onRemoveLevel(targetKey);
+                break;
+            case 'change':
+                this.onChangeActiveLevelKey(targetKey);
+                break;
+            default:
+                break;
+        }
+    }
+
+    onAddNewLevel = () => {
+        const activeLevelKey = uuid();
+        this.setState((prevState) => ({
+            levels: prevState.levels.concat({
+                key: activeLevelKey,
+                ...this.defFormLevelValues
+            }),
+            activeLevelKey
+        }));
+    };
+
+    onRemoveLevel = (targetKey) => {
+        const {
+            levels,
+            activeLevelKey
+        } = this.state;
+        let newLevels = [];
+        let newActiveLevelKey = null;
+        let lastIndex = levels.map(level => level.key).indexOf(activeLevelKey);
+        newLevels = levels.filter(pane => pane.key !== targetKey);
+        if (lastIndex >= 0 && activeLevelKey === targetKey) {
+            newActiveLevelKey = levels[lastIndex].key;
+        }
+        this.setState({
+            levels: newLevels,
+            activeLevelKey: newActiveLevelKey
+        });
     }
 
     handleChangeListPage = (page) => {
@@ -112,6 +192,13 @@ class Quizzes extends Component {
                                             formName: 'formQuizMainInfoValues',
                                             onChange: this.handleFormChange('formQuizMainInfoValues'),
                                             quizCategories: classifiers.categoriesList
+                                        }}
+                                        levelOptionsData={{
+                                            activeLevelKey: this.state.activeLevelKey,
+                                            levels: this.state.levels,
+                                            onAddNewLevel: this.onAddNewLevel,
+                                            onEditLevel: this.onEditLevel,
+                                            onChangeActiveLevelKey: this.onChangeActiveLevelKey
                                         }}
                                         onChangeState={setQuizCreateFormState}
                                         onSubmit={this.handleSubmitForm}

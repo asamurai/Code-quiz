@@ -233,8 +233,8 @@ const initialState = {
         requestBody: {
             limit: 10
         },
-        // register: []
-        register: mockQuizzesList
+        register: []
+        // register: mockQuizzesList
     },
     modalStatus: {
         deleteQuiz: false,
