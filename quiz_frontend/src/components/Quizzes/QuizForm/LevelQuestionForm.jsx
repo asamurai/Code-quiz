@@ -6,6 +6,8 @@ import {
     Alert
 } from 'antd';
 
+import QuestionForm from './../QuestionForm';
+
 const TabPane = Tabs.TabPane;
 
 class LevelQuestionForm extends Component {
@@ -15,7 +17,11 @@ class LevelQuestionForm extends Component {
 
     renderLevelTabs = (level, ind) => (
         <TabPane tab={`Level ${ind + 1}`} key={level.key}>
-            {`Content of level ${ind + 1}`}
+            <QuestionForm
+                key={level.key}
+                levelKey={level.key}
+                questions={level.questions}
+            />
         </TabPane>
     );
 
@@ -32,7 +38,13 @@ class LevelQuestionForm extends Component {
         return (
         <div>
             <div style={{ marginBottom: 16 }}>
-                <Button onClick={onAddNewLevel}>Add new level</Button>
+                <Button
+                    type="primary"
+                    icon="plus"
+                    onClick={onAddNewLevel}
+                >
+                    Add new level
+                </Button>
             </div>
             {
                 levels.length ===0 &&

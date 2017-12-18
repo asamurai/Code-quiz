@@ -38,6 +38,35 @@ class Quizzes extends Component {
             imageId: { value: '' }
         };
 
+        this.defFormLevelValues = {
+            // questions: []
+            questions: [
+                {
+                    question_id: 1,
+                    title: 'Question?',
+                    description: 'question description',
+                    answers: [
+                        {
+                            answer_id: 1,
+                            name: 'false answer',
+                            isCorrect: false
+                        },
+                        {
+                            answer_id: 2,
+                            name: 'correct answer',
+                            isCorrect: true
+                        }
+                    ]
+                }
+            ]
+        };
+
+        this.defFormQuestionValues = {
+            question: { value: '' },
+            description: { value: '' },
+            answers: []
+        };
+
         this.defState = {
             formQuizMainInfoValues: { ...this.defFormQuizMainInfoValues },
             levels: [],
@@ -68,26 +97,29 @@ class Quizzes extends Component {
     onAddNewLevel = () => {
         const activeLevelKey = uuid();
         this.setState((prevState) => ({
-            levels: prevState.levels.concat({ key: activeLevelKey }),
+            levels: prevState.levels.concat({
+                key: activeLevelKey,
+                ...this.defFormLevelValues
+            }),
             activeLevelKey
         }));
     };
 
     onRemoveLevel = (targetKey) => {
-        let activeLevelKey = this.state.activeLevelKey;
-        let lastIndex;
-        this.state.levels.forEach((level, i) => {
-            if (level.key === targetKey) {
-                lastIndex = i - 1;
-            }
-        });
-        const levels = this.state.levels.filter(pane => pane.key !== targetKey);
-        if (lastIndex >= 0 && activeLevelKey === targetKey) {
-            activeLevelKey = levels[lastIndex].key;
-        }
-        this.setState({
+        const {
             levels,
             activeLevelKey
+        } = this.state;
+        let newLevels = [];
+        let newActiveLevelKey = null;
+        let lastIndex = levels.map(level => level.key).indexOf(activeLevelKey);
+        newLevels = levels.filter(pane => pane.key !== targetKey);
+        if (lastIndex >= 0 && activeLevelKey === targetKey) {
+            newActiveLevelKey = levels[lastIndex].key;
+        }
+        this.setState({
+            levels: newLevels,
+            activeLevelKey: newActiveLevelKey
         });
     }
 
