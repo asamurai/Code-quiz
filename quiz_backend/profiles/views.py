@@ -18,6 +18,7 @@ email_activation = EmailActivation()
 def register(request):
     serialized = UserSerializer(data=request.data)
     if serialized.is_valid(raise_exception=True):
+        request.data.pop('password_confirm')
         email_activation.create_inactive_user(**request.data)
         return Response(email_activation.get_days(),
                         status=status.HTTP_201_CREATED)
@@ -48,6 +49,10 @@ def logout(request):
 
 @api_view(['POST'])
 def restore_password(request):
+    """
+    Changing password via email confirmation]
+
+    """
     try:
         email_activation.re_activate(request.data['email'])
         return Response(status=status.HTTP_200_OK)
@@ -83,22 +88,26 @@ class UserView(APIView):
 
     @permission_classes((IsAuthenticated,))
     def put(self, request, id):
-        print(request.data)
-        print(type(UserProfile.objects.get(user=request.user).user_id))
-        print(type(id))
-        serialized = UserProfileSerializer(data=request.data).is_valid(raise_exception=True)
-        if serialized:
-            if int(id) != UserProfile.objects.get(user=request.user).user_id:
+        """
+        PUT http://testserver/user/id/1/
+        Changing UserProfile model and django.auth model instances
+        :param request: JSON request data
+        :param id: user_id
+        :return: HTTP_200_OK
+        """
+        serialized = UserProfileSerializer(data=request.data)
+        if serialized.is_valid(raise_exception=True):
+            if id != request.data['user_id']:
                 return Response({'error': {'errors': 'You do not have permission to change user info'}},
                                 status=status.HTTP_200_OK)
             else:
                 profile = UserProfile.objects.get(user_id=int(id))
-                print(profile.user.username)
                 profile.user.last_name = request.data['last_name']
                 profile.user.first_name = request.data['first_name']
                 profile.user.username = request.data['username']
                 profile.user.email = request.data['email']
                 profile.user.save()
-
                 UserProfile.objects.filter(user_id=int(id)).update(bio=request.data['bio'])
-                return Response({'asdf':'ok'}, status=status.HTTP_200_OK)
+                if request.FILES:
+                    UserProfile.objects.filter(user_id=int(id)).update(profile_image=request.FILES['profile_image'])
+                return Response({'Response': 'ok'}, status=status.HTTP_200_OK)
