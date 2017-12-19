@@ -30,6 +30,11 @@ class EmailActivation(object):
         return {'message': 'You are registered'}
 
     def key_expired(self, user):
+        """
+        Checking, if key expired(timedelta = 7 days), account will be deactivated
+        :param user:
+        :return:
+        """
         activated = RegistrationProfile.objects.get(user=user)
         date_joined = user.date_joined
         expiration_date = datetime.timedelta(days=self.days)
@@ -41,6 +46,11 @@ class EmailActivation(object):
             return False
 
     def create_profile(self, user):
+        """
+        Create RegistrationProfile instance
+        :param user: User model instance
+        :return: RegistrationProfile instance ( token, user_id )
+        """
         activation_key = self.create_activation_key(user)
         registration_profile = RegistrationProfile.objects.create(
             user=user, activation_key=activation_key)
@@ -48,6 +58,9 @@ class EmailActivation(object):
         return registration_profile
 
     def create_activation_key(self, user):
+        """
+        Generate activation key with SHA1
+        """
         username = user.username
         salt_bytes = str(random.random()).encode('utf-8')
         salt = hashlib.sha1(salt_bytes).hexdigest()[:5]
@@ -56,6 +69,10 @@ class EmailActivation(object):
         return activation_key
 
     def send_activation_email(self, user, site):
+        """
+        Sending activation key using SMTP protocol. Template file in templates/mail.html
+        :param site: Depends on domain
+        """
         ctx_dict = {'activation_key': user.api_registration_profile.activation_key,
                     'expiration_days': self.days,
                     'site': site}
@@ -65,6 +82,11 @@ class EmailActivation(object):
                   message="", recipient_list=[user.email], html_message=message)
 
     def activate_user(self, activation_key):
+        """
+        http://cq.example.com/activate/YOUR TOKEN HERE
+        :param activation_key: activation key from REgistrationProfile model
+        :return:
+        """
         if self.SHA1_RE.search(activation_key):
             try:
                 profile = RegistrationProfile.objects.get(
@@ -83,6 +105,7 @@ class EmailActivation(object):
         return False
 
     def re_activate(self, email):
+        """ Create new key """
         activated = RegistrationProfile.objects.get(user__email=email)
         activated.activation_key = self.create_activation_key(activated.user)
         activated.save()
@@ -103,6 +126,11 @@ class EmailActivation(object):
 
 
 def custom_exception_handler(exc, context):
+    """
+    Changing exception handler.
+    :param exc:All REST framework's default exception handler to get the standard error response.
+    :param context: Errors catching by serializers
+    """
     response = exception_handler(exc, context)
     if response is not None:
         return Response({'error': {'errors': [response.data]}, 'statusCode': response.status_code},

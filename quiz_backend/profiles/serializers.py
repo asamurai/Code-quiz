@@ -34,3 +34,4 @@ class UserProfileSerializer(serializers.HyperlinkedModelSerializer):
 
         model = UserProfile
         fields = ('user_id', 'email', 'profile_image', 'bio', 'username', 'first_name', 'last_name')
+        extra_kwargs = {'bio': {'required': True}, 'profile_image': {'required': False}}

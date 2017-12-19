@@ -49,6 +49,10 @@ def logout(request):
 
 @api_view(['POST'])
 def restore_password(request):
+    """
+    Changing password via email confirmation]
+
+    """
     try:
         email_activation.re_activate(request.data['email'])
         return Response(status=status.HTTP_200_OK)
@@ -84,9 +88,16 @@ class UserView(APIView):
 
     @permission_classes((IsAuthenticated,))
     def put(self, request, id):
-        serialized = UserProfileSerializer(data=request.data).is_valid(raise_exception=True)
-        if serialized:
-            if int(id) != UserProfile.objects.get(user=request.user).user_id:
+        """
+        PUT http://testserver/user/id/1/
+        Changing UserProfile model and django.auth model instances
+        :param request: JSON request data
+        :param id: user_id
+        :return: HTTP_200_OK
+        """
+        serialized = UserProfileSerializer(data=request.data)
+        if serialized.is_valid(raise_exception=True):
+            if id != request.data['user_id']:
                 return Response({'error': {'errors': 'You do not have permission to change user info'}},
                                 status=status.HTTP_200_OK)
             else:
@@ -96,6 +107,7 @@ class UserView(APIView):
                 profile.user.username = request.data['username']
                 profile.user.email = request.data['email']
                 profile.user.save()
-
                 UserProfile.objects.filter(user_id=int(id)).update(bio=request.data['bio'])
+                if request.FILES:
+                    UserProfile.objects.filter(user_id=int(id)).update(profile_image=request.FILES['profile_image'])
                 return Response({'Response': 'ok'}, status=status.HTTP_200_OK)
