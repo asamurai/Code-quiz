@@ -33,10 +33,10 @@ export const signUp = credentials => async dispatch => {
         await dispatch({
             type: types.USER_REGISTER.REQUEST
         });
-        const { data } = await withAuth('post','/register/', credentials);
+        const { data: { message } } = await withAuth('post','/register/', credentials);
         await dispatch({
             type: types.USER_REGISTER.SUCCESS,
-            data
+            message
         });
     } catch (error) {
         await dispatch({
