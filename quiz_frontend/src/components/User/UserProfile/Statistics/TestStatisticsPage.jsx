@@ -26,8 +26,6 @@ const mockStatisticData = {
     date: 'Mon Oct 30 2017 00:31:59 GMT+0200 (EET)'
 };
 
-// ToDo: Make action for getting statistic details and put it into reducer statistcs.statistic, after backend final
-
 class TestStatisticsPage extends Component {
     constructor(props) {
         super(props);
