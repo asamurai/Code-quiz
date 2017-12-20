@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'corsheaders',
     'rest_framework',
     'profiles',
+    'quizzes',
     'rest_framework.authtoken',
     'django.contrib.sites'
 ]
@@ -132,15 +133,15 @@ STATIC_URL = '/static/'
 
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 
-DEFAULT_FROM_EMAIL = 'mail@chainsquizzes.com'
+DEFAULT_FROM_EMAIL = 'bodya_mutnyi@meta.ua'
 
-EMAIL_HOST = 'smtp.sendgrid.net'
+EMAIL_HOST = 'smtp.meta.ua'
 
 EMAIL_PORT = 465
 
-EMAIL_HOST_USER = 'apikey'
+EMAIL_HOST_USER = 'bodya_mutnyi@meta.ua'
 
-EMAIL_HOST_PASSWORD = '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'
+EMAIL_HOST_PASSWORD = 'chains'
 
 EMAIL_USE_SSL = True
 
