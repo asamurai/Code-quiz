@@ -18,7 +18,7 @@ email_activation = EmailActivation()
 def register(request):
     serialized = UserSerializer(data=request.data)
     if serialized.is_valid(raise_exception=True):
-        request.data.pop('password_confirm')
+        request.data.pop('confirmPassword')
         email_activation.create_inactive_user(**request.data)
         return Response(email_activation.get_days(),
                         status=status.HTTP_201_CREATED)
