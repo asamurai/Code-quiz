@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import QuizCategory, Question, Quiz
+from .models import QuizCategory, Question, Quiz, Answer
 
 
 class QuizCategorySerializer(serializers.ModelSerializer):
@@ -14,9 +14,16 @@ class QuizSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 
+class AnswerSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Answer
+        fields = "__all__"
+
+
 class QuestionsSerializer(serializers.ModelSerializer):
-    answers = serializers.HyperlinkedRelatedField(many=True, view_name='track-detail')
+    answers = AnswerSerializer(many=True)
 
     class Meta:
         model = Question
         fields = ('test', 'chain', 'level', 'source', 'answers')
+

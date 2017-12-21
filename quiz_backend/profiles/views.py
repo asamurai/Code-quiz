@@ -43,7 +43,7 @@ def logout(request):
     try:
         Token.objects.get(key=request.data['token']).delete()
         return Response(status=status.HTTP_200_OK)
-    except ObjectDoesNotExist:
+    except (ObjectDoesNotExist, KeyError):
         return Response({'error': {'errors': 'Bad token'}}, status=status.HTTP_400_BAD_REQUEST)
 
 
