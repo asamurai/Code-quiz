@@ -7,8 +7,8 @@ import {
 } from 'antd';
 
 import QuizControlPanel from './../QuizControlPanel';
-import LevelQuestionForm from './../QuizForm/LevelQuestionForm';
-import QuizFormInfo from './../QuizForm/QuizFormInfo';
+import QuestionForm from './../QuestionForm';
+import QuizFormInfo from './../QuizFormInfo';
 
 import {
     QUIZ_CREATE_PATH,
@@ -90,7 +90,7 @@ class QuizFormWrapper extends Component {
             onSubmit,
             onDelete,
             mainInfoFormData,
-            levelOptionsData
+            questionFormData
         } = this.props;
 
         return (
@@ -107,9 +107,9 @@ class QuizFormWrapper extends Component {
                             {...mainInfoFormData}
                         />
                     </TabPane>
-                    <TabPane tab={`Levels & questions`} key="2">
-                        <LevelQuestionForm
-                            {...levelOptionsData}
+                    <TabPane tab={`Questions`} key="2">
+                        <QuestionForm
+                            {...questionFormData}
                         />
                     </TabPane>
                 </Tabs>
@@ -123,7 +123,7 @@ QuizFormWrapper.propTypes = {
     location: PropTypes.objectOf(PropTypes.any).isRequired,
     state: PropTypes.objectOf(PropTypes.bool).isRequired,
     mainInfoFormData: PropTypes.objectOf(PropTypes.any).isRequired,
-    levelOptionsData: PropTypes.objectOf(PropTypes.any).isRequired,
+    questionFormData: PropTypes.objectOf(PropTypes.any).isRequired,
 
     onChangeState: PropTypes.func.isRequired,
     onSubmit: PropTypes.func.isRequired,

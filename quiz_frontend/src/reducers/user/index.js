@@ -105,14 +105,14 @@ const initialState = {
     loading: false,
     error: null,
     role: null,
-    data: null,
-    // data: {
-    //     id: 1,
-    //     first_name: 'Artem',
-    //     last_name: 'Vergun',
-    //     username: 'asamurai',
-    //     bio: 'javascript ninja at @labracode'
-    // },
+    // data: null,
+    data: {
+        id: 1,
+        first_name: 'Artem',
+        last_name: 'Vergun',
+        username: 'asamurai',
+        bio: 'javascript ninja at @labracode'
+    },
     forms: {
         profile: {
             state: {
@@ -138,8 +138,8 @@ const initialState = {
             statistic: null
         }
     },
-    // loggedIn: true,
-    loggedIn: false
+    loggedIn: true,
+    // loggedIn: false
 };
 
 const error = (state = initialState.error, action) => {
