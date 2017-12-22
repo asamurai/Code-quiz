@@ -44,7 +44,7 @@ class QuestionsSerializer(serializers.ModelSerializer):
             id = answer_data.get('id', None)
             print(id)
             if id is None:
-                Answer.objects.create(**answer_data)
+                Answer.objects.create(**answer_data, question=instance)
             else:
-                Answer.objects.get(pk=id).update(**answer_data)
+                Answer.objects.filter(id=id).update(**answer_data)
         return instance
