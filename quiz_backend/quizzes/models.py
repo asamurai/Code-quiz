@@ -18,7 +18,7 @@ class Quiz(models.Model):
 
 
 class Question(models.Model):
-    test = models.ForeignKey(Quiz, on_delete=models.CASCADE)
+    quiz = models.ForeignKey(Quiz, on_delete=models.CASCADE)
     chain = models.TextField()
     level = models.PositiveSmallIntegerField()
     source = models.TextField()
@@ -27,12 +27,12 @@ class Question(models.Model):
 class Answer(models.Model):
     answer = models.TextField()
     is_true = models.BooleanField()
-    quiz = models.ForeignKey(Quiz, on_delete=models.CASCADE)
+    question = models.ForeignKey(Question, related_name='answers', on_delete=models.CASCADE)
 
 
 class UserProgress(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
-    quiz = models.ForeignKey(Question, on_delete=models.CASCADE)
-    test = models.ForeignKey(Quiz, on_delete=models.CASCADE)
+    question = models.ForeignKey(Question, on_delete=models.CASCADE)
+    quiz = models.ForeignKey(Quiz, on_delete=models.CASCADE)
     answer = models.ForeignKey(Answer, on_delete=models.CASCADE)
     datetime_finished = models.DateTimeField(blank=True)
