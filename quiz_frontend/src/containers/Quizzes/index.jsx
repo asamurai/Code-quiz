@@ -24,6 +24,69 @@ const ACTIONS = {
     ...quizzesActions
 };
 
+const mockQuestions = [
+    {
+        question_id: 1,
+        question: 'question 1?',
+        description: 'description question 1',
+        sources: 'question 1 sources',
+        answers: [
+            {
+                answer: 'answer 1',
+                isCorrect: true
+            },
+            {
+                answer: 'answer 2',
+                isCorrect: false
+            },
+            {
+                answer: 'answer 3',
+                isCorrect: false
+            }
+        ]
+    },
+    {
+        question_id: 2,
+        question: 'question 2?',
+        description: 'description question 2',
+        sources: 'question 2 sources',
+        answers: [
+            {
+                answer: 'answer 1',
+                isCorrect: false
+            },
+            {
+                answer: 'answer 2',
+                isCorrect: true
+            },
+            {
+                answer: 'answer 3',
+                isCorrect: false
+            }
+        ]
+    },
+    {
+        question_id: 3,
+        question: 'question 3?',
+        description: 'description question 3',
+        sources: 'question 3 sources',
+        answers: [
+            {
+                answer: 'answer 1',
+                isCorrect: true
+            },
+            {
+                answer: 'answer 2',
+                isCorrect: false
+            },
+            {
+                answer: 'answer 3',
+                isCorrect: true
+            }
+        ]
+    },
+];
+
 class Quizzes extends Component {
 
     constructor(props) {
@@ -123,7 +186,7 @@ class Quizzes extends Component {
                                             quizCategories: classifiers.categoriesList
                                         }}
                                         questionFormData={{
-                                            questions: []
+                                            questions: mockQuestions
                                         }}
                                         onChangeState={setQuizCreateFormState}
                                         onSubmit={this.handleSubmitForm}
