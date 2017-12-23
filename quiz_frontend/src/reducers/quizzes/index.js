@@ -227,14 +227,14 @@ const initialState = {
     quizList: {
         pages: {
             currentPage: 1,
-            totalFinded: 0
-            // totalFinded: mockQuizzesList.length
+            // totalFinded: 0
+            totalFinded: mockQuizzesList.length
         },
         requestBody: {
             limit: 10
         },
-        register: []
-        // register: mockQuizzesList
+        // register: []
+        register: mockQuizzesList
     },
     modalStatus: {
         deleteQuiz: false,

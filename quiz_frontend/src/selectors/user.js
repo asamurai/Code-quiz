@@ -1,5 +1,11 @@
 import * as roles from './../constants/userRoles';
 
+/**
+ * Selector for checking user permissions
+ * 
+ * @param {object} state redux state
+ * @param {string} role  user role
+ */
 export const isUserHavePermissions = (state, role) => {
     switch (role) {
         case roles.USER_ROLE:

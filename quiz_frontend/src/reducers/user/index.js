@@ -105,6 +105,7 @@ const initialState = {
     loading: false,
     error: null,
     role: null,
+    // data: null,
     data: {
         id: 1,
         first_name: 'Artem',
@@ -137,7 +138,8 @@ const initialState = {
             statistic: null
         }
     },
-    loggedIn: true
+    loggedIn: true,
+    // loggedIn: false
 };
 
 const error = (state = initialState.error, action) => {
