@@ -2,42 +2,55 @@ from django.db import models
 from django.conf import settings
 
 
-class TestCategory(models.Model):
+class QuizCategory(models.Model):
     name = models.CharField(max_length=128)
     description = models.TextField()
 
+    def __str__(self):
+        return self.name
 
-class Test(models.Model):
+
+class Quiz(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
-    category = models.ForeignKey(TestCategory, on_delete=models.CASCADE)
+    category = models.ForeignKey(QuizCategory, on_delete=models.CASCADE, related_name='quizzes')
     title = models.CharField(max_length=128)
     description = models.TextField()
     image = models.ImageField(null=True, upload_to='quiz_images/')
     created = models.DateTimeField(auto_now_add=True)
     modified = models.DateTimeField(auto_now=True)
 
-
-class QuizChain(models.Model):
-    test = models.ForeignKey(Test, on_delete=models.CASCADE)
-    name = models.CharField(max_length=128)
-    description = models.TextField(blank=True)
-    source_url = models.URLField()
-    color = models.CharField(max_length=6)
+    def __str__(self):
+        return self.title
 
 
-class Quiz(models.Model):
-    test= models.ForeignKey(Test, on_delete=models.CASCADE)
-    description = models.TextField()
+class Chain(models.Model):
+    chain_text = models.TextField()
+    chain_category = models.ForeignKey(QuizCategory, on_delete=models.CASCADE, related_name='category')
+
+    def __str__(self):
+        return self.chain_text
+
+
+class Question(models.Model):
+    quiz = models.ForeignKey(Quiz, on_delete=models.CASCADE, related_name='quiz')
+    text_question = models.TextField()
+    chain = models.ForeignKey(Chain, on_delete=models.CASCADE, related_name='quiestions')
     level = models.PositiveSmallIntegerField()
-    chain = models.ManyToManyField(QuizChain)
+    source = models.TextField()
 
 
-class QuizAnswer(models.Model):
+class Answer(models.Model):
     answer = models.TextField()
     is_true = models.BooleanField()
-    quiz = models.ForeignKey(Quiz, on_delete=models.CASCADE)
+    question = models.ForeignKey(Question, related_name='answers', on_delete=models.CASCADE)
+
+    def __str__(self):
+        return self.answer
 
 
 class UserProgress(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
-    answer = models.ForeignKey(QuizAnswer, on_delete=models.CASCADE)
+    question = models.ForeignKey(Question, on_delete=models.CASCADE)
+    quiz = models.ForeignKey(Quiz, on_delete=models.CASCADE)
+    answer = models.ForeignKey(Answer, on_delete=models.CASCADE)
+    datetime_finished = models.DateTimeField(blank=True)
