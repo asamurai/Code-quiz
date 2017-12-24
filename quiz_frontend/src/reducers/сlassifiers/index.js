@@ -25,8 +25,32 @@ const mockCategoriesList = [
     }
 ];
 
+const mockQuestionChains = [
+    {
+        chain_id: 1,
+        name: 'variables',
+        description: 'variables'
+    },
+    {
+        chain_id: 2,
+        name: 'functions',
+        description: 'functions'
+    },
+    {
+        chain_id: 3,
+        name: 'loops',
+        description: 'loops'
+    },
+    {
+        chain_id: 4,
+        name: 'scopes',
+        description: 'scopes'
+    }
+];
+
 const initialState = {
     categoriesList: mockCategoriesList,
+    questionChains: mockQuestionChains,
     loading: false,
     error: null
 };
@@ -52,8 +76,16 @@ const categoriesList = (state = initialState.categoriesList, action) => {
     }
 };
 
+const questionChains = (state = initialState.questionChains, action) => {
+    switch (action.type) {
+        default:
+            return state;
+    }
+};
+
 export default combineReducers({
     loading,
     error,
-    categoriesList
+    categoriesList,
+    questionChains
 });

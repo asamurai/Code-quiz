@@ -239,10 +239,18 @@ const initialState = {
     modalStatus: {
         deleteQuiz: false,
         createQuiz: false,
-        createQuestion: false
+        deleteQuestion: false
     },
-    formCreation: {
-        selectedQuizId: null,
+    formQuizCreation: {
+        data: null,
+        maxLevel: 1,
+        state: {
+            create: false,
+            edit: false,
+            view: false
+        }
+    },
+    formQuestionCreation: {
         data: null,
         state: {
             create: false,
@@ -296,15 +304,15 @@ const quizList = (state = initialState.quizList, action) => {
     }
 };
 
-const formCreation = (state = initialState.formCreation, action) => {
+const formQuizCreation = (state = initialState.formQuizCreation, action) => {
     switch (action.type) {
         case types.RESET_QUIZ_CREATE_FORM:
-            return initialState.formCreation;
+            return initialState.formQuizCreation;
         case types.CHANGE_QUIZZES_CREATE_FORM_STATE:
             return {
                 ...state,
                 state: {
-                    ...initialState.formCreation.state,
+                    ...initialState.formQuizCreation.state,
                     ...action.state,
                 }
             };
@@ -313,7 +321,34 @@ const formCreation = (state = initialState.formCreation, action) => {
                 ...state,
                 data: action.data
             };
+        case types.SET_QUIZ_MAX_LEVELS:
+            return {
+                ...state,
+                maxLevel: action.maxLevel
+            };
         case types.GET_QUIZ_BY_ID.FAILURE:
+        default:
+            return state;
+    }
+};
+
+const formQuestionCreation = (state = initialState.formQuestionCreation, action) => {
+    switch (action.type) {
+        case types.RESET_QUESTION_CREATE_FORM:
+            return initialState.formQuestionCreation;
+        case types.CHANGE_QUESTION_CREATE_FORM_STATE:
+            return {
+                ...state,
+                state: {
+                    ...initialState.formQuestionCreation.state,
+                    ...action.state,
+                }
+            };
+        case types.GET_QUESTION_BY_ID:
+            return {
+                ...state,
+                data: action.data
+            };
         default:
             return state;
     }
@@ -402,7 +437,8 @@ const loading = (state = initialState.loading, action) => {
 
 export default combineReducers({
     quizList,
-    formCreation,
+    formQuizCreation,
+    formQuestionCreation,
     formTraining,
     loading,
     error,

@@ -14,6 +14,7 @@ import * as quizzesActions from './../../actions/quizzes';
 import QuizzesList from './../../components/Quizzes/QuizzesList';
 import QuizFormWrapper from './../../components/Quizzes/QuizFormWrapper';
 import QuizTraining from './../../components/Quizzes/QuizTraining';
+import QuizModalForm from './../../components/Quizzes/QuizModalForm';
 
 import {
     QUIZ_FULL_PATH ,
@@ -29,6 +30,8 @@ const mockQuestions = [
         question_id: 1,
         question: 'question 1?',
         description: 'description question 1',
+        level: 1,
+        chain: 2,
         sources: 'question 1 sources',
         answers: [
             {
@@ -49,6 +52,8 @@ const mockQuestions = [
         question_id: 2,
         question: 'question 2?',
         description: 'description question 2',
+        level: 1,
+        chain: 1,
         sources: 'question 2 sources',
         answers: [
             {
@@ -70,6 +75,8 @@ const mockQuestions = [
         question: 'question 3?',
         description: 'description question 3',
         sources: 'question 3 sources',
+        level: 2,
+        chain: 1,
         answers: [
             {
                 answer: 'answer 1',
@@ -109,7 +116,8 @@ class Quizzes extends Component {
         };
 
         this.defState = {
-            formQuizMainInfoValues: { ...this.defFormQuizMainInfoValues }
+            formQuizMainInfoValues: { ...this.defFormQuizMainInfoValues },
+            formQuestionValues: { ...this.defFormQuestionValues }
         };
 
         this.state = { ...this.defState };
@@ -143,16 +151,33 @@ class Quizzes extends Component {
         console.log(`delete ${formName}`);
     };
 
+    handleSetNewAnswerList = answers => this.setState((prevState) => ({
+        formQuestionValues: {
+            ...prevState.formQuestionValues,
+            answers
+        }
+    }));
+
     render () {
+
         const {
-            state,
+            formQuestionValues,
+            formQuizMainInfoValues
+        } = this.state;
+
+        const {
+            formQuiz,
+            formQuestion,
             register,
             pages,
             classifiers,
             requestBody: {
                 limit
             },
-            setQuizCreateFormState
+            setQuizCreateFormState,
+            getQuestionByQuestionId,
+            setQuestionCreateFormState,
+            setQuizMaxLevels
         } = this.props;
 
         return (
@@ -177,16 +202,24 @@ class Quizzes extends Component {
                             case 'edit':
                                 return (
                                     <QuizFormWrapper
-                                        state={state}
+                                        state={formQuiz.state}
+                                        maxLevel={formQuiz.maxLevel}
                                         mainInfoFormData={{
-                                            state: state,
-                                            fields: this.state.formQuizMainInfoValues,
+                                            state: formQuiz.state,
+                                            fields: formQuizMainInfoValues,
                                             formName: 'formQuizMainInfoValues',
+
                                             onChange: this.handleFormChange('formQuizMainInfoValues'),
                                             quizCategories: classifiers.categoriesList
                                         }}
                                         questionFormData={{
-                                            questions: mockQuestions
+                                            state: formQuiz.state,
+                                            maxLevel: formQuiz.maxLevel,
+                                            questions: mockQuestions,
+
+                                            setQuizMaxLevels: setQuizMaxLevels,
+                                            selectQuestion: getQuestionByQuestionId,
+                                            setQuestionCreateFormState: setQuestionCreateFormState
                                         }}
                                         onChangeState={setQuizCreateFormState}
                                         onSubmit={this.handleSubmitForm}
@@ -202,13 +235,28 @@ class Quizzes extends Component {
                         }
                     }}
                 />
+                <QuizModalForm
+                    modalStatus={formQuestion.state}
+                    maxLevel={formQuiz.maxLevel}
+                    answers={formQuestionValues.answers}
+                    questionChains={classifiers.questionChains}
+                    formName={'formQuestionValues'}
+                    fields={formQuestionValues}
+                    
+                    onSetNewAnswerList={this.handleSetNewAnswerList}
+                    onChange={this.handleFormChange('formQuestionValues')}
+                    closeModal={() => {
+                        setQuestionCreateFormState({});
+                    }}
+                />
             </Row>
         );
     }
 }
 
 Quizzes.propTypes = {
-    state: PropTypes.objectOf(PropTypes.bool).isRequired,
+    formQuiz: PropTypes.objectOf(PropTypes.any).isRequired,
+    formQuestion: PropTypes.objectOf(PropTypes.any).isRequired,
     register: PropTypes.arrayOf(PropTypes.any).isRequired,
     requestBody: PropTypes.shape({
         limit: PropTypes.number
@@ -219,11 +267,15 @@ Quizzes.propTypes = {
     }).isRequired,
     classifiers: PropTypes.objectOf(PropTypes.any).isRequired,
 
-    setQuizCreateFormState: PropTypes.func.isRequired
+    setQuizCreateFormState: PropTypes.func.isRequired,
+    setQuestionCreateFormState: PropTypes.func.isRequired,
+    getQuestionByQuestionId: PropTypes.func.isRequired,
+    setQuizMaxLevels: PropTypes.func.isRequired
 };
 
 const mapStateToProps = (state) => ({
-    state: state.quizzes.formCreation.state,
+    formQuiz: state.quizzes.formQuizCreation,
+    formQuestion: state.quizzes.formQuestionCreation,
     register: state.quizzes.quizList.register,
     requestBody: state.quizzes.quizList.requestBody,
     pages: state.quizzes.quizList.pages,

@@ -103,7 +103,7 @@ export const getQuizListByUserId = (userId, requestBody, pages) => async dispatc
     }
 };
 
-export const getQuizByQuizId = (quizId) => async dispatch => {
+export const getQuizByQuizId = quizId => async dispatch => {
     try {
         await dispatch({
             type: types.GET_QUIZ_BY_ID.REQUEST
@@ -121,9 +121,24 @@ export const getQuizByQuizId = (quizId) => async dispatch => {
     }
 };
 
+export const getQuestionByQuestionId = questionData => dispatch => dispatch({
+    type: types.GET_QUESTION_BY_ID,
+    data: questionData
+});
+
 export const setQuizCreateFormState = state => dispatch => dispatch({
     type: types.CHANGE_QUIZZES_CREATE_FORM_STATE,
     state
+});
+
+export const setQuestionCreateFormState = state => dispatch => dispatch({
+    type: types.CHANGE_QUESTION_CREATE_FORM_STATE,
+    state
+});
+
+export const setQuizMaxLevels = maxLevel => dispatch => dispatch({
+    type: types.SET_QUIZ_MAX_LEVELS,
+    maxLevel
 });
 
 export const resetQuizzesErrors = () => dispatch => dispatch({
@@ -140,6 +155,10 @@ export const resetQuizzesList = () => dispatch => dispatch({
 
 export const resetQuizzesCreateForm = () => dispatch => dispatch({
     type: types.RESET_QUIZ_CREATE_FORM
+});
+
+export const resetQuestionCreateForm = () => dispatch => dispatch({
+    type: types.RESET_QUESTION_CREATE_FORM
 });
 
 export const setQuizzesRequestBody = requestBody => dispatch => dispatch({
