@@ -9,6 +9,8 @@ import {
     Row
 } from 'antd';
 
+import _ from 'lodash';
+
 import * as quizzesActions from './../../actions/quizzes';
 
 import QuizzesList from './../../components/Quizzes/QuizzesList';
@@ -35,14 +37,17 @@ const mockQuestions = [
         sources: 'question 1 sources',
         answers: [
             {
+                answer_id: 1,
                 answer: 'answer 1',
                 isCorrect: true
             },
             {
+                answer_id: 2,
                 answer: 'answer 2',
                 isCorrect: false
             },
             {
+                answer_id: 3,
                 answer: 'answer 3',
                 isCorrect: false
             }
@@ -57,14 +62,17 @@ const mockQuestions = [
         sources: 'question 2 sources',
         answers: [
             {
+                answer_id: 4,
                 answer: 'answer 1',
                 isCorrect: false
             },
             {
+                answer_id: 5,
                 answer: 'answer 2',
                 isCorrect: true
             },
             {
+                answer_id: 6,
                 answer: 'answer 3',
                 isCorrect: false
             }
@@ -79,14 +87,17 @@ const mockQuestions = [
         chain: 1,
         answers: [
             {
+                answer_id: 7,
                 answer: 'answer 1',
                 isCorrect: true
             },
             {
+                answer_id: 8,
                 answer: 'answer 2',
                 isCorrect: false
             },
             {
+                answer_id: 9,
                 answer: 'answer 3',
                 isCorrect: true
             }
@@ -121,6 +132,28 @@ class Quizzes extends Component {
         };
 
         this.state = { ...this.defState };
+    }
+
+    componentWillReceiveProps(nextProps) {
+        const {
+            formQuestion: {
+                data: questionData,
+                state: questionState
+            }
+        } = nextProps;
+        if ((questionState.edit || questionState.view) && questionData && !_.isEqual(questionData, this.props.formQuestion.data)) {
+            this.setState((prevState) => ({
+                formQuestionValues: {
+                    ...prevState.formQuestionValues,
+                    question: { value: questionData.question },
+                    level: { value: `${questionData.level}` },
+                    chain: { value: `${questionData.chain}` },
+                    description: { value: questionData.description },
+                    sources: { value: questionData.sources },
+                    answers: questionData.answers
+                }
+            }));
+        }
     }
 
     handleChangeListPage = (page) => {
@@ -158,6 +191,20 @@ class Quizzes extends Component {
         }
     }));
 
+    handleCloseQuestionModal = () => {
+        const {
+            setQuestionCreateFormState,
+            resetQuestionCreateForm
+        } = this.props;
+        setQuestionCreateFormState({});
+        resetQuestionCreateForm();
+        this.setState({
+            formQuestionValues: {
+                ...this.defFormQuestionValues
+            }
+        });
+    }
+
     render () {
 
         const {
@@ -175,7 +222,7 @@ class Quizzes extends Component {
                 limit
             },
             setQuizCreateFormState,
-            getQuestionByQuestionId,
+            setQuestionData,
             setQuestionCreateFormState,
             setQuizMaxLevels
         } = this.props;
@@ -218,7 +265,7 @@ class Quizzes extends Component {
                                             questions: mockQuestions,
 
                                             setQuizMaxLevels: setQuizMaxLevels,
-                                            selectQuestion: getQuestionByQuestionId,
+                                            selectQuestion: setQuestionData,
                                             setQuestionCreateFormState: setQuestionCreateFormState
                                         }}
                                         onChangeState={setQuizCreateFormState}
@@ -245,9 +292,7 @@ class Quizzes extends Component {
                     
                     onSetNewAnswerList={this.handleSetNewAnswerList}
                     onChange={this.handleFormChange('formQuestionValues')}
-                    closeModal={() => {
-                        setQuestionCreateFormState({});
-                    }}
+                    closeModal={this.handleCloseQuestionModal}
                 />
             </Row>
         );
@@ -269,8 +314,9 @@ Quizzes.propTypes = {
 
     setQuizCreateFormState: PropTypes.func.isRequired,
     setQuestionCreateFormState: PropTypes.func.isRequired,
-    getQuestionByQuestionId: PropTypes.func.isRequired,
-    setQuizMaxLevels: PropTypes.func.isRequired
+    setQuestionData: PropTypes.func.isRequired,
+    setQuizMaxLevels: PropTypes.func.isRequired,
+    resetQuestionCreateForm: PropTypes.func.isRequired
 };
 
 const mapStateToProps = (state) => ({

@@ -221,7 +221,76 @@ const mockQuizzesList = [
     }
 ];
 
-console.log(!!mockQuizzesList);
+const mockQuestions = [
+    {
+        question_id: 1,
+        question: 'question 1?',
+        description: 'description question 1',
+        level: 1,
+        chain: 2,
+        sources: 'question 1 sources',
+        answers: [
+            {
+                answer: 'answer 1',
+                isCorrect: true
+            },
+            {
+                answer: 'answer 2',
+                isCorrect: false
+            },
+            {
+                answer: 'answer 3',
+                isCorrect: false
+            }
+        ]
+    },
+    {
+        question_id: 2,
+        question: 'question 2?',
+        description: 'description question 2',
+        level: 1,
+        chain: 1,
+        sources: 'question 2 sources',
+        answers: [
+            {
+                answer: 'answer 1',
+                isCorrect: false
+            },
+            {
+                answer: 'answer 2',
+                isCorrect: true
+            },
+            {
+                answer: 'answer 3',
+                isCorrect: false
+            }
+        ]
+    },
+    {
+        question_id: 3,
+        question: 'question 3?',
+        description: 'description question 3',
+        sources: 'question 3 sources',
+        level: 2,
+        chain: 1,
+        answers: [
+            {
+                answer: 'answer 1',
+                isCorrect: true
+            },
+            {
+                answer: 'answer 2',
+                isCorrect: false
+            },
+            {
+                answer: 'answer 3',
+                isCorrect: true
+            }
+        ]
+    },
+];
+
+console.log(!!mockQuizzesList, !!mockQuestions);
 
 const initialState = {
     quizList: {
@@ -344,7 +413,7 @@ const formQuestionCreation = (state = initialState.formQuestionCreation, action)
                     ...action.state,
                 }
             };
-        case types.GET_QUESTION_BY_ID:
+        case types.SET_QUESTION_DATA:
             return {
                 ...state,
                 data: action.data

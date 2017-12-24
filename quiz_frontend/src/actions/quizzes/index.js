@@ -121,8 +121,8 @@ export const getQuizByQuizId = quizId => async dispatch => {
     }
 };
 
-export const getQuestionByQuestionId = questionData => dispatch => dispatch({
-    type: types.GET_QUESTION_BY_ID,
+export const setQuestionData = questionData => dispatch => dispatch({
+    type: types.SET_QUESTION_DATA,
     data: questionData
 });
 

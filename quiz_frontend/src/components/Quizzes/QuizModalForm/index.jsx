@@ -57,7 +57,7 @@ class QuizModalForm extends Component {
                 type="primary"
                 icon="check"
                 onClick={() => {
-                    console.log('cancel creating');
+                    console.log('submit creating');
                 }}
             >
                 Create
@@ -143,7 +143,7 @@ class QuizModalForm extends Component {
     renderChains = chain => (
         <Option
             key={chain.chain_id}
-            value={`${chain.name}`}
+            value={`${chain.chain_id}`}
         >
             {chain.name}
         </Option>
@@ -232,17 +232,16 @@ class QuizModalForm extends Component {
             questionChains,
             maxLevel,
             closeModal,
-            answers
+            answers,
+            fields
         } = this.props;
 
         const isModalVisible = createState || editState || viewState;
         const modalTitle = this.getTitleForModal();
         const modalFooter = this.getFooterForModal();
 
-        console.log(answers);
-
         const answersList = answers.map(answer => {
-            const key = answer && answer.answer_id ? answer.answer_id : uuid();
+            const key = answer.answer_id ? answer.answer_id : uuid();
             return (
                 <Row
                     span="11"

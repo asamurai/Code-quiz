@@ -9,7 +9,6 @@
  * @return {object}            Form state
  */
 export const getPropsObject = (props, fieldNames) => {
-    console.log(props, fieldNames);
     const madePropsObj = (prev, curName) => ({
         ...prev,
         [curName]: {
