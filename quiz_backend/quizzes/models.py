@@ -9,7 +9,7 @@ class QuizCategory(models.Model):
 
 class Quiz(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
-    category = models.ForeignKey(QuizCategory, on_delete=models.CASCADE)
+    category = models.ForeignKey(QuizCategory, on_delete=models.CASCADE, related_name='categories')
     title = models.CharField(max_length=128)
     description = models.TextField()
     image = models.ImageField(null=True, upload_to='quiz_images/')

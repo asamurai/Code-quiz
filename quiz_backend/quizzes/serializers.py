@@ -39,10 +39,15 @@ class QuestionsSerializer(serializers.ModelSerializer):
 
     def update(self, instance, validated_data):
         answers_data = validated_data.get('answers')
-        print(Answer.objects.filter(question=instance).values_list('id', flat=True))
+        instance.chain = validated_data.get('chain')
+        instance.level = validated_data.get('level')
+        instance.source = validated_data.get('source')
+        instance.text_question = validated_data.get('text_question')
+        instance.save()
+        to_delete = Answer.objects.filter(question=instance).exclude(id__in=[answer.get('id',None) for answer in answers_data]).delete()
+        print(to_delete)
         for answer_data in answers_data:
             id = answer_data.get('id', None)
-            print(id)
             if id is None:
                 Answer.objects.create(**answer_data, question=instance)
             else:
