@@ -27,12 +27,13 @@ class QuestionsSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Question
-        fields = ("id", "quiz", "chain", "level", "source", "answers")
+        fields = ("id", "quiz", "chain", "level", "source", "answers", 'text_question')
         extra_kwargs = {'id': {'read_only': True}}
 
     def validate(self, data):
         if data['chain'].chain_category.id != data['quiz'].category.id:
              raise serializers.ValidationError("Chain in quiz must appear on category")
+        return data
 
 
     def create(self, validated_data):
@@ -65,3 +66,20 @@ class ChainSerializer(serializers.ModelSerializer):
     class Meta:
         model = Chain
         fields = "__all__"
+
+
+class AnswerNestedSerializerForPassing(serializers.ModelSerializer):
+    class Meta:
+        model = Answer
+        fields = ('answer', 'id')
+        extra_kwargs = {'id': {'required': False, 'read_only': False}, "answer": {'read_only': True}}
+
+
+class QuestionsSerializerForPassing(serializers.ModelSerializer):
+    answers = AnswerNestedSerializerForPassing(many=True)
+    # answer =
+    class Meta:
+        model = Question
+        fields = ("id", "quiz", "chain", "level", "source", "answers", "text_question")
+        extra_kwargs = {'quiz': {'read_only': True}, 'chain': {'read_only': True}, 'level': {'read_only': True} ,
+                        'source': {'read_only': True}, "text_question": {'read_only': True}, "answer": {'many': False, 'required': True}}

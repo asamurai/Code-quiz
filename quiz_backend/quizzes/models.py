@@ -38,6 +38,9 @@ class Question(models.Model):
     level = models.PositiveSmallIntegerField()
     source = models.TextField()
 
+    def __str__(self):
+        return self.text_question
+
 
 class Answer(models.Model):
     answer = models.TextField()
