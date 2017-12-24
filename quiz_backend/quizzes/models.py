@@ -12,7 +12,7 @@ class QuizCategory(models.Model):
 
 class Quiz(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
-    category = models.ForeignKey(QuizCategory, on_delete=models.CASCADE, related_name='categories')
+    category = models.ForeignKey(QuizCategory, on_delete=models.CASCADE, related_name='quizzes')
     title = models.CharField(max_length=128)
     description = models.TextField()
     image = models.ImageField(null=True, upload_to='quiz_images/')
@@ -32,9 +32,9 @@ class Chain(models.Model):
 
 
 class Question(models.Model):
-    quiz = models.ForeignKey(Quiz, on_delete=models.CASCADE)
+    quiz = models.ForeignKey(Quiz, on_delete=models.CASCADE, related_name='quiz')
     text_question = models.TextField()
-    chain = models.ForeignKey(Chain, on_delete=models.CASCADE)
+    chain = models.ForeignKey(Chain, on_delete=models.CASCADE, related_name='quiestions')
     level = models.PositiveSmallIntegerField()
     source = models.TextField()
 

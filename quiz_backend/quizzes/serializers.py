@@ -1,6 +1,7 @@
 from rest_framework import serializers
 from .models import QuizCategory, Question, Quiz, Answer
 
+
 class QuizCategorySerializer(serializers.ModelSerializer):
     class Meta:
         model = QuizCategory
@@ -29,6 +30,10 @@ class QuestionsSerializer(serializers.ModelSerializer):
         fields = ("id", "quiz", "chain", "level", "source", "answers")
         extra_kwargs = {'id': {'read_only': True}}
 
+    def validate(self, data):
+        if data['chain'].chain_category.id != data['quiz'].category.id:
+             raise serializers.ValidationError("Chain in quiz must appear on category")
+
 
     def create(self, validated_data):
         answers_data = validated_data.pop('answers')
@@ -36,6 +41,7 @@ class QuestionsSerializer(serializers.ModelSerializer):
         for answer_data in answers_data:
             Answer.objects.create(question=question, **answer_data)
         return question
+
 
     def update(self, instance, validated_data):
         answers_data = validated_data.get('answers')
