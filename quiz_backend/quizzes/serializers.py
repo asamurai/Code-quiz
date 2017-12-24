@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import QuizCategory, Question, Quiz, Answer
+from .models import QuizCategory, Question, Quiz, Answer, Chain
 
 
 class QuizCategorySerializer(serializers.ModelSerializer):
@@ -59,3 +59,9 @@ class QuestionsSerializer(serializers.ModelSerializer):
             else:
                 Answer.objects.filter(id=id).update(**answer_data)
         return instance
+
+
+class ChainSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Chain
+        fields = "__all__"
