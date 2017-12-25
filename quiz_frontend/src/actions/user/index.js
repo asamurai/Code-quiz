@@ -5,6 +5,11 @@ import {
     withAuth 
 } from './../../api';
 
+import {
+    setAuthDataIntoStorage,
+    removeAuthDataFromStorage
+} from './../../helpers/localStorageHelpers';
+
 const types = {
     ...userTypes
 };
@@ -26,6 +31,7 @@ export const signIn = credentials => async dispatch => {
             token
         });
         await saveToken(token);
+        await setAuthDataIntoStorage({data, token});
     } catch (error) {
         await dispatch({
             type: types.USER_SIGNIN.FAILURE,
@@ -64,7 +70,8 @@ export const signOut = credentials => async dispatch => {
         await dispatch({
             type: types.USER_SIGNOUT.SUCCESS
         });
-        await removeToken();        
+        await removeToken();     
+        await removeAuthDataFromStorage();
     } catch (error) {
         await dispatch({
             type: types.USER_SIGNIN.FAILURE,
@@ -170,29 +177,32 @@ export const setUserImage = (id, newPicture, isPrevPicture) => async dispatch =>
     }
 };
 
-export const setUserFormEditState = state => dispatch => {
+export const setExistingUserData = (authData) => dispatch => {
     dispatch({
-        type: types.CHANGE_USER_PROFILE_FORM_EDIT_STATE,
-        state
+        type: types.SET_EXISTING_USER_DATA,
+        data: authData.data,
+        token: authData.token
     });
+    saveToken(authData.token);
 };
 
-export const setUserFormViewState = state => dispatch => {
-    dispatch({
-        type: types.CHANGE_USER_PROFILE_FORM_VIEW_STATE,
-        state
-    }); 
-};
+export const setUserFormEditState = state => dispatch => dispatch({
+    type: types.CHANGE_USER_PROFILE_FORM_EDIT_STATE,
+    state
+});
 
-export const setUserFormModalsState = (modalName, state)=> dispatch => {
-    dispatch({
-        type: types.CHANGE_USER_PROFILE_FORM_MODAL_STATE,
-        modalState: {
-            [modalName]: state
-        }
-    }); 
-};
+export const setUserFormViewState = state => dispatch => dispatch({
+    type: types.CHANGE_USER_PROFILE_FORM_VIEW_STATE,
+    state
+});
 
-export const resetUserErrorState = () => ({
+export const setUserFormModalsState = (modalName, state)=> dispatch => dispatch({
+    type: types.CHANGE_USER_PROFILE_FORM_MODAL_STATE,
+    modalState: {
+        [modalName]: state
+    }
+});
+
+export const resetUserErrorState = () => dispatch => dispatch({
     type: types.RESET_USER_ERRORS
 });

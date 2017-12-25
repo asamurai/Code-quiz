@@ -142,10 +142,10 @@ class QuizModalForm extends Component {
 
     renderChains = chain => (
         <Option
-            key={chain.chain_id}
-            value={`${chain.chain_id}`}
+            key={chain.id}
+            value={`${chain.id}`}
         >
-            {chain.name}
+            {chain.chain_text}
         </Option>
     );
 
@@ -221,6 +221,8 @@ class QuizModalForm extends Component {
 
     render () {
         const {
+            fields,
+            questions,
             form:{
                 getFieldDecorator
             },
@@ -238,6 +240,11 @@ class QuizModalForm extends Component {
         const isModalVisible = createState || editState || viewState;
         const modalTitle = this.getTitleForModal();
         const modalFooter = this.getFooterForModal();
+
+        const availableLevels = Array(maxLevel).fill('').map((el, ind) => ind + 1);
+        const questionLevels = questions.map(question => question.level);
+        const isAnyHigherLevelsAvailable = questions.map(question => +question.level).filter(el => el > fields.level.value).length >= 1;
+        const isLevelFieldBlocked = questionLevels.filter(el => (+el === +fields.level.value && isAnyHigherLevelsAvailable)).length === 1;
 
         const answersList = answers.map(answer => {
             const key = answer.answer_id ? answer.answer_id : uuid();
@@ -388,15 +395,13 @@ class QuizModalForm extends Component {
                                     ]
                                 })(
                                     <Select
-                                        disabled={viewState}
+                                        disabled={viewState || isLevelFieldBlocked}
                                         showSearch
                                         placeholder={'Select question level'}
                                         optionFilterProp="children"
-                                        filterOption={(input, option) =>
-                                        option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0}
                                     >
                                         {
-                                            Array(maxLevel).fill('').map((el, ind) => ind + 1).map(this.renderLevels)
+                                            availableLevels.map(this.renderLevels)
                                         }
                                     </Select>
                                 )}
@@ -433,6 +438,7 @@ QuizModalForm.propTypes = {
     modalStatus: PropTypes.objectOf(PropTypes.bool).isRequired,
     questionChains: PropTypes.arrayOf(PropTypes.any).isRequired,
     answers: PropTypes.arrayOf(PropTypes.any).isRequired,
+    questions: PropTypes.arrayOf(PropTypes.any).isRequired,
 
     closeModal: PropTypes.func.isRequired,
     onSetNewAnswerList: PropTypes.func.isRequired

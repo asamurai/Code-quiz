@@ -19,10 +19,19 @@ class QuizFormInfo extends Component {
 
     renderCategories = (category) => (
         <Option
-            key={category.category_id}
-            value={`${category.category_id}`}
+            key={category.id}
+            value={`${category.id}`}
         >
             {category.name}
+        </Option>
+    );
+
+    renderTopics = (topic) => (
+        <Option
+            key={topic.topic_id}
+            value={`${topic.topic_id}`}
+        >
+            {topic.name}
         </Option>
     );
 
@@ -86,6 +95,31 @@ class QuizFormInfo extends Component {
                                 </Select>
                             )}
                         </FormItem>
+                        <FormItem
+                            label="Topic"
+                        >
+                            {getFieldDecorator('topic_id', {
+                                rules: [
+                                    { 
+                                        required: true, 
+                                        message: 'Select quiz topic.' 
+                                    }
+                                ]
+                            })(
+                                <Select
+                                    disabled={state.view}
+                                    showSearch
+                                    placeholder={'Select quiz topic'}
+                                    optionFilterProp="children"
+                                    filterOption={(input, option) =>
+                                    option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0}
+                                >
+                                    {
+                                        [].map(this.renderTopics)
+                                    }
+                                </Select>
+                            )}
+                        </FormItem>
                     </Col>
                     <Col span="11">
                         <FormItem
@@ -121,6 +155,7 @@ const QuizFormInfoHOC = Form.create({
       return getPropsObject(props.fields, [
         'description',
         'category_id',
+        'topic_id',
         'title',
         'imageId'
       ]);
