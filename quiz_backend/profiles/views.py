@@ -4,14 +4,11 @@ from django.core.exceptions import ObjectDoesNotExist
 from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.authtoken.models import Token
-from rest_framework.views import APIView
+from django.shortcuts import redirect
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.authtoken.serializers import AuthTokenSerializer
 from rest_framework.viewsets import ModelViewSet
-from rest_framework.views import APIView
-from rest_framework import generics
-from rest_framework.decorators import detail_route
 
 
 from .utils import EmailActivation
@@ -38,10 +35,11 @@ def activate(request, activation_key=None):
     """
     user = email_activation.activate_user(activation_key)
     if user:
+
         token = Token.objects.update_or_create(user=user)[0]
-        return Response({'token': token.key},status=status.HTTP_201_CREATED)
+        return redirect('http://127.0.0.1:8080/signup/token={}&id={}'.format(token, user.id))
     else:
-        return Response({'error': {'errors': 'Bad token'}}, status=status.HTTP_400_BAD_REQUEST)
+        return redirect('http://127.0.0.1:8080/error')
 
 
 @api_view(['POST'])
