@@ -19,10 +19,7 @@ const asyncTypesConstants = Object.values(types)
 const EXCEPTION_LIST = [
     fullquizzes.GET_QUIZZES_BY_TYPE.SUCCESS,
     user.USER_SIGNIN.SUCCESS,
-    user.USER_SIGNOUT.SUCCESS,
-    user.USER_UPDATE.SUCCESS,
-    user.USER_PASSWORD_CHANGE.SUCCESS,
-    user.USER_EMAIL_CHANGE.SUCCESS
+    user.USER_SIGNOUT.SUCCESS
 ];
 
 const SUCCESS_ACTIONS = asyncTypesConstants.filter((item) => (
@@ -50,13 +47,15 @@ const FAILURE_ACTIONS = asyncTypesConstants.filter((item) => (
 export const notificationMiddleware = store => next => action => {
     if (SUCCESS_ACTIONS.includes(action.type)) {
         store.dispatch({ 
-            type: notifications.NOTIFICATION_SHOW_SUCCESS_MESSAGE, 
+            type: notifications.NOTIFICATION_SHOW_SUCCESS_MESSAGE,
+            title: action.title || 'Success!' , 
             message: action.message || 'Success!'
         });
     }
     if (FAILURE_ACTIONS.includes(action.type)) {
         store.dispatch({ 
             type: notifications.NOTIFICATION_SHOW_ERROR_MESSAGE,
+            title: action.title || 'Failure!' ,
             message: action.error || 'Failure!' 
         });   
     }

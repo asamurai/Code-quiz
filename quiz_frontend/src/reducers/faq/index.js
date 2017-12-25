@@ -13,11 +13,11 @@ const mockFaqList = [
     },
     {
         question: `Can i pass quiz, before i sign up?`,
-        answer: `Sure, go to quizzes pages and check filter for free quizzes.`
+        answer: `Unfortunately, you can't now, but in future, you will.`
     },
     {
         question: 'Can i see my statistics?',
-        answer: 'Yes, it is in your account.'
+        answer: 'Yes, it is in your account profile -> statistics.'
     }
 ];
 

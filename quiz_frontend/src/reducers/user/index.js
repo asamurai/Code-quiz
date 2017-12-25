@@ -199,6 +199,7 @@ const role = (state = initialState.role, action) => {
 const token = (state = initialState.token, action) => {
     switch (action.type) {
         case types.USER_SIGNIN.SUCCESS:
+        case types.SET_EXISTING_USER_DATA:
             return action.token;
         default:
             return state;
@@ -209,6 +210,7 @@ const data = (state = initialState.data, action) => {
     switch (action.type) {
         case types.USER_SIGNIN.SUCCESS:
         case types.USER_UPDATE.SUCCESS:
+        case types.SET_EXISTING_USER_DATA:
             return action.data;
         case types.USER_SIGNOUT.SUCCESS: 
             return null;
@@ -260,6 +262,7 @@ const forms = (state = initialState.forms, action) => {
 const loggedIn = (state = initialState.loggedIn, action) => {
     switch (action.type) {
         case types.USER_SIGNIN.SUCCESS:
+        case types.SET_EXISTING_USER_DATA:
             return true;
         case types.USER_SIGNOUT.SUCCESS: 
             return false;

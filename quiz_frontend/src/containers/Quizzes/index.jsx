@@ -103,6 +103,31 @@ const mockQuestions = [
             }
         ]
     },
+    {
+        question_id: 4,
+        question: 'question 4?',
+        description: 'description question 4',
+        sources: 'question 4 sources',
+        level: 3,
+        chain: 1,
+        answers: [
+            {
+                answer_id: 10,
+                answer: 'answer 1',
+                isCorrect: true
+            },
+            {
+                answer_id: 11,
+                answer: 'answer 2',
+                isCorrect: false
+            },
+            {
+                answer_id: 12,
+                answer: 'answer 3',
+                isCorrect: true
+            }
+        ]
+    }
 ];
 
 class Quizzes extends Component {
@@ -113,6 +138,7 @@ class Quizzes extends Component {
         this.defFormQuizMainInfoValues = {
             description: { value: '' },
             category_id: { value: '' },
+            topic_id: { value: '' },
             title: { value: '' },
             imageId: { value: '' }
         };
@@ -287,6 +313,7 @@ class Quizzes extends Component {
                     maxLevel={formQuiz.maxLevel}
                     answers={formQuestionValues.answers}
                     questionChains={classifiers.questionChains}
+                    questions={mockQuestions}
                     formName={'formQuestionValues'}
                     fields={formQuestionValues}
                     

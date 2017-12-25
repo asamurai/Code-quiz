@@ -51,7 +51,9 @@ class HeaderNavigation extends Component {
         return (
             <header className={styles.header_nav}>
                 <div className={`${styles.header_wrapper} ${styles.header_wrapper_nav}`}>
-                    <HeaderNavigationLinks/>
+                    <HeaderNavigationLinks
+                        loggedIn={loggedIn}
+                    />
                     <HeaderNavigationAuth
                         loggedIn={loggedIn}
                         signOutFunction={this.signOutFunction}
