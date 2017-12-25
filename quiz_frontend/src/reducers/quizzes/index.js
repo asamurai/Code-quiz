@@ -221,28 +221,105 @@ const mockQuizzesList = [
     }
 ];
 
-console.log(!!mockQuizzesList);
+const mockQuestions = [
+    {
+        question_id: 1,
+        question: 'question 1?',
+        description: 'description question 1',
+        level: 1,
+        chain: 2,
+        sources: 'question 1 sources',
+        answers: [
+            {
+                answer: 'answer 1',
+                isCorrect: true
+            },
+            {
+                answer: 'answer 2',
+                isCorrect: false
+            },
+            {
+                answer: 'answer 3',
+                isCorrect: false
+            }
+        ]
+    },
+    {
+        question_id: 2,
+        question: 'question 2?',
+        description: 'description question 2',
+        level: 1,
+        chain: 1,
+        sources: 'question 2 sources',
+        answers: [
+            {
+                answer: 'answer 1',
+                isCorrect: false
+            },
+            {
+                answer: 'answer 2',
+                isCorrect: true
+            },
+            {
+                answer: 'answer 3',
+                isCorrect: false
+            }
+        ]
+    },
+    {
+        question_id: 3,
+        question: 'question 3?',
+        description: 'description question 3',
+        sources: 'question 3 sources',
+        level: 2,
+        chain: 1,
+        answers: [
+            {
+                answer: 'answer 1',
+                isCorrect: true
+            },
+            {
+                answer: 'answer 2',
+                isCorrect: false
+            },
+            {
+                answer: 'answer 3',
+                isCorrect: true
+            }
+        ]
+    },
+];
+
+console.log(!!mockQuizzesList, !!mockQuestions);
 
 const initialState = {
     quizList: {
         pages: {
             currentPage: 1,
-            totalFinded: 0
-            // totalFinded: mockQuizzesList.length
+            // totalFinded: 0
+            totalFinded: mockQuizzesList.length
         },
         requestBody: {
             limit: 10
         },
-        register: []
-        // register: mockQuizzesList
+        // register: []
+        register: mockQuizzesList
     },
     modalStatus: {
         deleteQuiz: false,
         createQuiz: false,
-        createQuestion: false
+        deleteQuestion: false
     },
-    formCreation: {
-        selectedQuizId: null,
+    formQuizCreation: {
+        data: null,
+        maxLevel: 1,
+        state: {
+            create: false,
+            edit: false,
+            view: false
+        }
+    },
+    formQuestionCreation: {
         data: null,
         state: {
             create: false,
@@ -296,15 +373,15 @@ const quizList = (state = initialState.quizList, action) => {
     }
 };
 
-const formCreation = (state = initialState.formCreation, action) => {
+const formQuizCreation = (state = initialState.formQuizCreation, action) => {
     switch (action.type) {
         case types.RESET_QUIZ_CREATE_FORM:
-            return initialState.formCreation;
+            return initialState.formQuizCreation;
         case types.CHANGE_QUIZZES_CREATE_FORM_STATE:
             return {
                 ...state,
                 state: {
-                    ...initialState.formCreation.state,
+                    ...initialState.formQuizCreation.state,
                     ...action.state,
                 }
             };
@@ -313,7 +390,34 @@ const formCreation = (state = initialState.formCreation, action) => {
                 ...state,
                 data: action.data
             };
+        case types.SET_QUIZ_MAX_LEVELS:
+            return {
+                ...state,
+                maxLevel: action.maxLevel
+            };
         case types.GET_QUIZ_BY_ID.FAILURE:
+        default:
+            return state;
+    }
+};
+
+const formQuestionCreation = (state = initialState.formQuestionCreation, action) => {
+    switch (action.type) {
+        case types.RESET_QUESTION_CREATE_FORM:
+            return initialState.formQuestionCreation;
+        case types.CHANGE_QUESTION_CREATE_FORM_STATE:
+            return {
+                ...state,
+                state: {
+                    ...initialState.formQuestionCreation.state,
+                    ...action.state,
+                }
+            };
+        case types.SET_QUESTION_DATA:
+            return {
+                ...state,
+                data: action.data
+            };
         default:
             return state;
     }
@@ -402,7 +506,8 @@ const loading = (state = initialState.loading, action) => {
 
 export default combineReducers({
     quizList,
-    formCreation,
+    formQuizCreation,
+    formQuestionCreation,
     formTraining,
     loading,
     error,

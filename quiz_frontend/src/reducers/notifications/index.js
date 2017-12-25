@@ -12,6 +12,7 @@ const initialState = {
   isSuccessMessage: false,
   isErrorMessage: false,
   isInfoMessage: false,
+  title: '',
   message: '',
   notificationTtl: 20 //20s
 };
@@ -71,9 +72,34 @@ const message = (state = initialState.message, action) => {
   }
 };
 
+const title = (state = initialState.title, action) => {
+  switch (action.type) {
+    case types.NOTIFICATION_SHOW_ERROR_MESSAGE:
+      if (action.title && typeof action.title === 'string') {
+        return action.title;
+      }
+      return 'Error!';
+    case types.NOTIFICATION_SHOW_SUCCESS_MESSAGE:
+      if (action.title && typeof action.title === 'string') {
+        return action.title;
+      }
+      return 'Success!';
+    case types.NOTIFICATION_SHOW_INFO_MESSAGE:
+      if (action.title && typeof action.title === 'string') {
+        return action.title;
+      }
+      return 'Attention!';
+    case types.NOTIFICATION_CLOSE_MESSAGE:
+      return '';
+    default:
+      return state;
+  }
+};
+
 export default combineReducers({
   isSuccessMessage,
   isErrorMessage,
   isInfoMessage,
-  message
+  message,
+  title
 });

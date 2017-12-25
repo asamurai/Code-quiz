@@ -77,9 +77,7 @@ def restore_password(request):
     except Exception as e:
         return Response({'error': {'errors': 'Incorrect e-mail'}}, status=status.HTTP_400_BAD_REQUEST)
 
-
 class ProfilesViewSet(ModelViewSet):
     queryset = UserProfile.objects.all()
     serializer_class = UserProfileSerializer
     http_method_names = ['get', 'put', 'head']
-

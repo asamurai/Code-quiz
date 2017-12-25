@@ -50,6 +50,8 @@ const initialState = {
     modalStatus: {
         deleteQuiz: false,
         createQuiz: false,
+        editQuestion: false,
+        deleteQuestion: false,
         createQuestion: false
     },
     formCreation: {

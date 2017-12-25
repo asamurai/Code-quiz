@@ -101,17 +101,14 @@ const mockUserStatisticsData = [
     }
 ];
 
+console.log(mockUserStatisticsData);
+
 const initialState = {
     loading: false,
     error: null,
     role: null,
-    data: {
-        id: 1,
-        first_name: 'Artem',
-        last_name: 'Vergun',
-        username: 'asamurai',
-        bio: 'javascript ninja at @labracode'
-    },
+    token: null,
+    data: null,
     forms: {
         profile: {
             state: {
@@ -125,8 +122,8 @@ const initialState = {
         settings: {
         },
         statistics: {
-            register: mockUserStatisticsData,
-            // register: [],
+            // register: mockUserStatisticsData,
+            register: [],
             requestBody: {
                 limit: 10
             },
@@ -137,7 +134,7 @@ const initialState = {
             statistic: null
         }
     },
-    loggedIn: true
+    loggedIn: false
 };
 
 const error = (state = initialState.error, action) => {
@@ -192,8 +189,18 @@ const loading = (state = initialState.loading, action) => {
 
 const role = (state = initialState.role, action) => {
     switch (action.type) {
+        // case types.USER_SIGNIN.SUCCESS:
+            // return action.role;
+        default:
+            return state;
+    }
+};
+
+const token = (state = initialState.token, action) => {
+    switch (action.type) {
         case types.USER_SIGNIN.SUCCESS:
-            return action.role;
+        case types.SET_EXISTING_USER_DATA:
+            return action.token;
         default:
             return state;
     }
@@ -203,6 +210,7 @@ const data = (state = initialState.data, action) => {
     switch (action.type) {
         case types.USER_SIGNIN.SUCCESS:
         case types.USER_UPDATE.SUCCESS:
+        case types.SET_EXISTING_USER_DATA:
             return action.data;
         case types.USER_SIGNOUT.SUCCESS: 
             return null;
@@ -254,6 +262,7 @@ const forms = (state = initialState.forms, action) => {
 const loggedIn = (state = initialState.loggedIn, action) => {
     switch (action.type) {
         case types.USER_SIGNIN.SUCCESS:
+        case types.SET_EXISTING_USER_DATA:
             return true;
         case types.USER_SIGNOUT.SUCCESS: 
             return false;
@@ -268,5 +277,6 @@ export default combineReducers({
     role,
     data,
     forms,
-    loggedIn
+    loggedIn,
+    token
 });

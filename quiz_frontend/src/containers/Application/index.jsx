@@ -3,7 +3,15 @@ import { withRouter } from 'react-router-dom';
 import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
 
-import { signOut } from './../../actions/user';
+import {
+    signOut,
+    setExistingUserData
+} from './../../actions/user';
+import {
+    getQuizCategories,
+    getQuizChains
+} from './../../actions/classifiers';
+
 import { closeMessage } from './../../actions/notifications';
 
 import { 
@@ -14,6 +22,13 @@ import HeaderNavigation from './../../components/Navigation/HeaderNavigation';
 import Main from './../../components/Main';
 
 import { stringHelper } from './../../helpers';
+import {
+    getAuthDataFromStorage
+} from './../../helpers/localStorageHelpers';
+
+import {
+    USER_ACCOUNT_PATH
+} from './../../routes';
 
 import './../../../assets/style/index.sass';
 import 'antd/dist/antd.css';
@@ -22,26 +37,44 @@ const {
     capitalize
 } = stringHelper;
 
-/**
- * Application container
- * 
- * Container wrapper by redux connect HOC.
- * 
- * Render and passing props from redux store 
- * into application navigation (HeaderNavigation) and content (Main) components.
- * 
- * Notification init code.
- * 
- * @class Application
- * @extends {Component}
- */
 class Application extends Component {
     constructor(props){
         super(props);
-        this.signOut = this.props.signOut.bind(this);
         this.closeMessage = this.props.closeMessage.bind(this);
     }
 
+    signOut = () => {
+        const {
+            user: {
+                token
+            },
+            signOut
+        } = this.props;
+
+        signOut({token});
+    }    
+
+    componentDidMount() {
+        const {
+            user,
+            history,
+            setExistingUserData,
+            getQuizCategories,
+            getQuizChains
+        } = this.props;
+        const existingData = getAuthDataFromStorage();
+        if (existingData) {
+            const authData = JSON.parse(existingData);
+            setExistingUserData(authData);
+            history.push(`${USER_ACCOUNT_PATH}`);
+        }
+        if (user.token || existingData) {
+            const defaultCategory = 1;
+            getQuizCategories();
+            getQuizChains(defaultCategory);
+        }
+    }
+    
     
     componentWillMount () {
         const {
@@ -64,7 +97,8 @@ class Application extends Component {
                 isSuccessMessage: nextIsSuccessMessage,
                 isErrorMessage: nextIsErrorMessage,
                 isInfoMessage: nextIsInfoMessage,
-                message: nextMessage
+                message: nextMessage,
+                title: nextTitle
             }
         } = nextProps;
 
@@ -73,10 +107,10 @@ class Application extends Component {
                 message
             }
         } = this.props;
-    
+        
         if (nextIsSuccessMessage && message!==nextMessage) {
             notification['success']({
-                message: 'Success!',
+                message: nextTitle || 'Success!',
                 description: capitalize(nextMessage),
                 onClose: () => this.closeMessage()
             });
@@ -84,7 +118,7 @@ class Application extends Component {
     
         if (nextIsErrorMessage && message!==nextMessage) {
             notification['error']({
-                message: 'Error!',
+                message: nextTitle || 'Error!',
                 description: capitalize(nextMessage),
                 onClose: () => this.closeMessage()
             });
@@ -92,7 +126,7 @@ class Application extends Component {
     
         if (nextIsInfoMessage && message!==nextMessage) {
             notification['info']({
-                message: 'Attention!',
+                message: nextTitle || 'Attention!',
                 description: capitalize(nextMessage),
                 onClose: () => this.closeMessage()
             });
@@ -128,7 +162,10 @@ function mapStateToProps(state) {
 function mapDispatchToProps(dispatch) {
     return {
         signOut: bindActionCreators(signOut, dispatch),
-        closeMessage: bindActionCreators(closeMessage, dispatch)
+        closeMessage: bindActionCreators(closeMessage, dispatch),
+        setExistingUserData: bindActionCreators(setExistingUserData, dispatch),
+        getQuizCategories: bindActionCreators(getQuizCategories, dispatch),
+        getQuizChains: bindActionCreators(getQuizChains, dispatch)
     };
 }
 
