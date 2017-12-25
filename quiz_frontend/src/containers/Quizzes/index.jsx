@@ -37,19 +37,19 @@ const mockQuestions = [
         sources: 'question 1 sources',
         answers: [
             {
-                answer_id: 1,
+                id: 1,
                 answer: 'answer 1',
-                isCorrect: true
+                is_true: true
             },
             {
-                answer_id: 2,
+                id: 2,
                 answer: 'answer 2',
-                isCorrect: false
+                is_true: false
             },
             {
-                answer_id: 3,
+                id: 3,
                 answer: 'answer 3',
-                isCorrect: false
+                is_true: false
             }
         ]
     },
@@ -62,19 +62,19 @@ const mockQuestions = [
         sources: 'question 2 sources',
         answers: [
             {
-                answer_id: 4,
+                id: 4,
                 answer: 'answer 1',
-                isCorrect: false
+                is_true: false
             },
             {
-                answer_id: 5,
+                id: 5,
                 answer: 'answer 2',
-                isCorrect: true
+                is_true: true
             },
             {
-                answer_id: 6,
+                id: 6,
                 answer: 'answer 3',
-                isCorrect: false
+                is_true: false
             }
         ]
     },
@@ -87,19 +87,19 @@ const mockQuestions = [
         chain: 1,
         answers: [
             {
-                answer_id: 7,
+                id: 7,
                 answer: 'answer 1',
-                isCorrect: true
+                is_true: true
             },
             {
-                answer_id: 8,
+                id: 8,
                 answer: 'answer 2',
-                isCorrect: false
+                is_true: false
             },
             {
-                answer_id: 9,
+                id: 9,
                 answer: 'answer 3',
-                isCorrect: true
+                is_true: true
             }
         ]
     },
@@ -112,19 +112,19 @@ const mockQuestions = [
         chain: 1,
         answers: [
             {
-                answer_id: 10,
+                id: 10,
                 answer: 'answer 1',
-                isCorrect: true
+                is_true: true
             },
             {
-                answer_id: 11,
+                id: 11,
                 answer: 'answer 2',
-                isCorrect: false
+                is_true: false
             },
             {
-                answer_id: 12,
+                id: 12,
                 answer: 'answer 3',
-                isCorrect: true
+                is_true: true
             }
         ]
     }
@@ -194,12 +194,25 @@ class Quizzes extends Component {
     }
 
     handleFormChange = (formName) => (changedFields) => {
-        this.setState({
-            [formName]: { 
-                ...this.state[formName], 
-                ...changedFields 
-            }
-        });
+        switch (true) {
+            case changedFields.category_id && changedFields.category_id.value !== this.state[formName].category_id.value:
+                this.setState({
+                    [formName]: { 
+                        ...this.state[formName], 
+                        topic_id: { value: '' },
+                        ...changedFields 
+                    }
+                });             
+                break;
+            default:
+                this.setState({
+                    [formName]: { 
+                        ...this.state[formName], 
+                        ...changedFields 
+                    }
+                });
+                break;
+        }
     };
 
     handleSubmitForm = (formName) => {
@@ -283,7 +296,8 @@ class Quizzes extends Component {
                                             formName: 'formQuizMainInfoValues',
 
                                             onChange: this.handleFormChange('formQuizMainInfoValues'),
-                                            quizCategories: classifiers.categoriesList
+                                            quizCategories: classifiers.categoriesList,
+                                            quizTopics: classifiers.quizTopics,
                                         }}
                                         questionFormData={{
                                             state: formQuiz.state,

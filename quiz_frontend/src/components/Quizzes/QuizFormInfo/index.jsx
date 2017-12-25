@@ -28,8 +28,8 @@ class QuizFormInfo extends Component {
 
     renderTopics = (topic) => (
         <Option
-            key={topic.topic_id}
-            value={`${topic.topic_id}`}
+            key={topic.id}
+            value={`${topic.id}`}
         >
             {topic.name}
         </Option>
@@ -37,12 +37,18 @@ class QuizFormInfo extends Component {
 
     render () {
         const {
+            fields,
             form:{
                 getFieldDecorator
             },
             state,
-            quizCategories
+            quizCategories,
+            quizTopics
         } = this.props;
+
+        const selectedCategory = +fields.category_id.value;
+        const topics = selectedCategory ? quizTopics.filter(topic => topic.category === selectedCategory) : quizTopics;
+
         return (
             <Form>
                 <div
@@ -115,7 +121,7 @@ class QuizFormInfo extends Component {
                                     option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0}
                                 >
                                     {
-                                        [].map(this.renderTopics)
+                                        topics.map(this.renderTopics)
                                     }
                                 </Select>
                             )}
@@ -164,7 +170,8 @@ const QuizFormInfoHOC = Form.create({
   
   QuizFormInfo.propTypes = {
     state: PropTypes.objectOf(PropTypes.any).isRequired,
-    quizCategories: PropTypes.arrayOf(PropTypes.any).isRequired
+    quizCategories: PropTypes.arrayOf(PropTypes.any).isRequired,
+    quizTopics: PropTypes.arrayOf(PropTypes.any).isRequired
         // fields={this.state.formQuizMainInfoValues}
         // formName={'formQuizMainInfoValues'}
         

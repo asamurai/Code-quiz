@@ -30,7 +30,7 @@ export const getQuizTopics = () => async dispatch => {
         await dispatch({
             type: types.GET_QUIZ_TOPICS.REQUEST
         }); 
-        const { data } = await withAuth('get',`/topics/`);
+        const { data } = await withAuth('get',`/topic/`);
         await dispatch({
             type: types.GET_QUIZ_TOPICS.SUCCESS,
             data
@@ -43,12 +43,12 @@ export const getQuizTopics = () => async dispatch => {
     }
 };
 
-export const getQuizChains = (categoryId) => async dispatch => {
+export const getQuizChains = () => async dispatch => {
     try {
         await dispatch({
             type: types.GET_QUIZ_CHAINS.REQUEST
         }); 
-        const { data } = await withAuth('get',`/chain/${categoryId}`);
+        const { data } = await withAuth('get',`/chain/`);
         await dispatch({
             type: types.GET_QUIZ_CHAINS.SUCCESS,
             data

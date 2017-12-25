@@ -122,8 +122,8 @@ const initialState = {
         settings: {
         },
         statistics: {
-            // register: mockUserStatisticsData,
-            register: [],
+            register: mockUserStatisticsData,
+            // register: [],
             requestBody: {
                 limit: 10
             },
