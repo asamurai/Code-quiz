@@ -37,7 +37,7 @@ def activate(request, activation_key=None):
     if user:
 
         token = Token.objects.update_or_create(user=user)[0]
-        return redirect('http://127.0.0.1:8080/signup/token={}&id={}'.format(token, user.id))
+        return redirect('http://127.0.0.1:8080/signin/token={}&id={}'.format(token, user.id))
     else:
         return redirect('http://127.0.0.1:8080/error')
 
