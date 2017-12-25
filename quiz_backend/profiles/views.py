@@ -1,5 +1,6 @@
 from django.contrib.auth.models import User
 from django.core.exceptions import ObjectDoesNotExist
+
 from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.authtoken.models import Token
@@ -7,9 +8,14 @@ from rest_framework.views import APIView
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.authtoken.serializers import AuthTokenSerializer
+from rest_framework.viewsets import ModelViewSet
+from rest_framework.views import APIView
+from rest_framework import generics
+from rest_framework.decorators import detail_route
+
 
 from .utils import EmailActivation
-from .serializers import UserSerializer, UserProfileSerializer
+from .serializers import UserSerializer, UserProfileSerializer, UserBaseSerializer
 from .models import UserProfile
 
 email_activation = EmailActivation()
@@ -74,54 +80,8 @@ def restore_password(request):
         return Response({'error': {'errors': 'Incorrect e-mail'}}, status=status.HTTP_400_BAD_REQUEST)
 
 
-class UserView(APIView):
-    """
-    List all users, or create a new snippet.
-    """
-    def check_token(self, token):
-        try:
-            Token.objects.get(key=token)
-            return True
-        except ObjectDoesNotExist:
-            return False
+class ProfilesViewSet(ModelViewSet):
+    queryset = UserProfile.objects.all()
+    serializer_class = UserProfileSerializer
+    http_method_names = ['get', 'put', 'head']
 
-    def get_object(self, pk):
-        try:
-            user = User.objects.get(id=pk)
-            return user
-        except ObjectDoesNotExist:
-            return False
-
-    def get(self, request: object, id: object) -> object:
-        user = self.get_object(id)
-        if not user:
-            return Response({'error': {'errors': 'User does not exist'}},status=status.HTTP_400_BAD_REQUEST)
-        queryset = UserProfile.objects.get(user=user)
-        serializer = UserProfileSerializer(queryset)
-        return Response(serializer.data, status=status.HTTP_200_OK)
-
-    @permission_classes((IsAuthenticated,))
-    def put(self, request, id):
-        """
-        PUT http://testserver/user/id/1/
-        Changing UserProfile model and django.auth model instances
-        :param request: JSON request data
-        :param id: user_id
-        :return: HTTP_200_OK
-        """
-        serialized = UserProfileSerializer(data=request.data)
-        if serialized.is_valid(raise_exception=True):
-            if id != request.data['user_id']:
-                return Response({'error': {'errors': 'You do not have permission to change user info'}},
-                                status=status.HTTP_200_OK)
-            else:
-                profile = UserProfile.objects.get(user_id=int(id))
-                profile.user.last_name = request.data['last_name']
-                profile.user.first_name = request.data['first_name']
-                profile.user.username = request.data['username']
-                profile.user.email = request.data['email']
-                profile.user.save()
-                UserProfile.objects.filter(user_id=int(id)).update(bio=request.data['bio'])
-                if request.FILES:
-                    UserProfile.objects.filter(user_id=int(id)).update(profile_image=request.FILES['profile_image'])
-                return Response({'Response': 'ok'}, status=status.HTTP_200_OK)
