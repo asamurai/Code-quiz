@@ -14,11 +14,17 @@ export const signIn = credentials => async dispatch => {
         await dispatch({
             type: types.USER_SIGNIN.REQUEST
         });
-        const { data } = await withAuth('post','/api-token-auth/', credentials);
-        await saveToken(data.token);
+        const {
+            data: {
+                data,
+                token
+            }
+        } = await withAuth('post','/login/', credentials);
+        await saveToken(token);
         await dispatch({
             type: types.USER_SIGNIN.SUCCESS,
-            data
+            data,
+            token
         });
     } catch (error) {
         await dispatch({
@@ -52,10 +58,10 @@ export const signOut = credentials => async dispatch => {
             type: types.USER_SIGNOUT.REQUEST
         }); 
         await withAuth('post','/logout/', credentials);
-        await removeToken();
         await dispatch({
             type: types.USER_SIGNOUT.SUCCESS
-        });        
+        });
+        await removeToken();        
     } catch (error) {
         await dispatch({
             type: types.USER_SIGNIN.FAILURE,
@@ -69,15 +75,15 @@ export const updateUser = (id, userData) => async dispatch => {
         await dispatch({
             type: types.USER_UPDATE.REQUEST
         }); 
-        const { data } = await withAuth('put',`/user/id/${id}`, userData);
+        const { data } = await withAuth('put',`/user/id/${id}/`, userData);
         await dispatch({
             type: types.USER_UPDATE.SUCCESS,
             data
         });       
         await dispatch({
-            type: types.CHANGE_USER_PROFILE_EDIT_STATE,
+            type: types.CHANGE_USER_PROFILE_FORM_EDIT_STATE,
             state: false
-        });             
+        });    
     } catch (error) {
         await dispatch({
             type: types.USER_UPDATE.FAILURE,
@@ -153,7 +159,7 @@ export const setUserImage = (id, newPicture, isPrevPicture) => async dispatch =>
     }
 };
 
-export const setUserFormEditState = state => async dispatch => {
+export const setUserFormEditState = state => dispatch => {
     dispatch({
         type: types.CHANGE_USER_PROFILE_FORM_EDIT_STATE,
         state

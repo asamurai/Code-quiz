@@ -39,8 +39,8 @@ class UserAccountContainer extends Component {
     constructor(props) {
         super(props);
         this.defFormUserProfileValues = {
-            name: { value: '' },
-            surname: { value: '' },
+            first_name: { value: '' },
+            last_name: { value: '' },
             username: { value: '' },
             bio: { value: '' }
         };
@@ -74,12 +74,16 @@ class UserAccountContainer extends Component {
         const { 
             updateUser, 
             user:{
+                data: userData,
                 data: {
-                    id: userId
+                    user_id: userId
                 }
             } 
         } = this.props;
-        const data = getValuesFromForm(formUserProfileValues);
+        const data = {
+            ...userData,
+            ...getValuesFromForm(formUserProfileValues)
+        };
         updateUser(userId, data);
     };
 
@@ -118,6 +122,7 @@ class UserAccountContainer extends Component {
         const { formUserSettingsValues } = this.state;
         const {
             user: {
+                data: userData,
                 data: {
                     id: userId
                 }
@@ -140,7 +145,13 @@ class UserAccountContainer extends Component {
                 break;
         }
         if (neededProps.length > 0) {
-            const data = getCertainValuesFromForm(formUserSettingsValues, neededProps);
+            let data = getCertainValuesFromForm(formUserSettingsValues, neededProps);
+            if (changeField === 'email') {
+                data = {
+                    ...userData,
+                    email: data.newEmail
+                };
+            }
             updateFunction(userId, data);
         }
     };

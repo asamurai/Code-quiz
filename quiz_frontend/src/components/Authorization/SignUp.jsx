@@ -117,7 +117,7 @@ class SignUp extends Component {
                 <FormItem
                     label="Confirm password"
                 >
-                    {getFieldDecorator('password_confirm', {
+                    {getFieldDecorator('confirmPassword', {
                         rules: [
                             { 
                                 required: true, 

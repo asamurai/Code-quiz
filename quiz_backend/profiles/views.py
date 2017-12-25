@@ -124,4 +124,5 @@ class UserView(APIView):
                 UserProfile.objects.filter(user_id=int(id)).update(bio=request.data['bio'])
                 if request.FILES:
                     UserProfile.objects.filter(user_id=int(id)).update(profile_image=request.FILES['profile_image'])
-                return Response({'Response': 'ok'}, status=status.HTTP_200_OK)
+                serializer = UserProfileSerializer(profile)
+                return Response(serializer.data, status=status.HTTP_200_OK)
