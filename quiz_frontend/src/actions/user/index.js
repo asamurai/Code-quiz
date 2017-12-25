@@ -20,16 +20,17 @@ export const signIn = credentials => async dispatch => {
                 token
             }
         } = await withAuth('post','/login/', credentials);
-        await saveToken(token);
         await dispatch({
             type: types.USER_SIGNIN.SUCCESS,
             data,
             token
         });
+        await saveToken(token);
     } catch (error) {
         await dispatch({
             type: types.USER_SIGNIN.FAILURE,
-            error: error.message
+            title: 'Login error!',
+            error: error.response.data.error.errors.map(el => Object.values(el)[0]).join(',')
         });        
     }
 };
@@ -42,12 +43,14 @@ export const signUp = credentials => async dispatch => {
         const { data: { message } } = await withAuth('post','/register/', credentials);
         await dispatch({
             type: types.USER_REGISTER.SUCCESS,
+            title: 'Registration succeed!',
             message
         });
     } catch (error) {
         await dispatch({
-            type: types.USER_SIGNIN.FAILURE,
-            error: error.message
+            type: types.USER_REGISTER.FAILURE,
+            title: 'Registration error!',
+            error: error.response.data.error.errors.map(el => Object.values(el)[0]).join(',')
         });        
     }
 };
@@ -78,7 +81,9 @@ export const updateUser = (id, userData) => async dispatch => {
         const { data } = await withAuth('put',`/user/id/${id}/`, userData);
         await dispatch({
             type: types.USER_UPDATE.SUCCESS,
-            data
+            data,
+            title: 'Update succeed!',
+            message: 'User data updated successfully.'
         });       
         await dispatch({
             type: types.CHANGE_USER_PROFILE_FORM_EDIT_STATE,
@@ -99,7 +104,9 @@ export const updateUserPassword = (id, userData) => async dispatch => {
         }); 
         await withAuth('put',`/user/id/${id}/change-password/`, userData);
         await dispatch({
-            type: types.USER_PASSWORD_CHANGE.SUCCESS
+            type: types.USER_PASSWORD_CHANGE.SUCCESS,
+            title: 'Update succeed!',
+            message: 'User password updated successfully.'
         });                 
     } catch (error) {
         await dispatch({
@@ -114,9 +121,11 @@ export const updateUserEmail = (id, userData) => async dispatch => {
         await dispatch({
             type: types.USER_EMAIL_CHANGE.REQUEST
         }); 
-        await withAuth('put',`/user/id/${id}/change-email/`, userData);
+        await withAuth('put',`/user/id/${id}/`, userData);
         await dispatch({
-            type: types.USER_EMAIL_CHANGE.SUCCESS
+            type: types.USER_EMAIL_CHANGE.SUCCESS,
+            title: 'Update succeed!',
+            message: 'Email changed successfully.'
         });                 
     } catch (error) {
         await dispatch({
@@ -143,7 +152,9 @@ export const setUserImage = (id, newPicture, isPrevPicture) => async dispatch =>
         const data = await withAuth('post',`/photo/upload/user/${id}`, newPicture);
         await dispatch({
             type: types.USER_SET_PICTURE.SUCCESS,
-            data
+            data,
+            title: 'Update succeed!',
+            message: 'Profile image updated successfully.'
         }); 
         await dispatch({
             type: types.CHANGE_USER_PROFILE_FORM_MODAL_STATE,

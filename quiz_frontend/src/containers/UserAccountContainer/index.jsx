@@ -124,7 +124,7 @@ class UserAccountContainer extends Component {
             user: {
                 data: userData,
                 data: {
-                    id: userId
+                    user_id: userId
                 }
             },
             updateUserEmail,

@@ -60,7 +60,8 @@ class Application extends Component {
                 isSuccessMessage: nextIsSuccessMessage,
                 isErrorMessage: nextIsErrorMessage,
                 isInfoMessage: nextIsInfoMessage,
-                message: nextMessage
+                message: nextMessage,
+                title: nextTitle
             }
         } = nextProps;
 
@@ -69,10 +70,10 @@ class Application extends Component {
                 message
             }
         } = this.props;
-    
+        
         if (nextIsSuccessMessage && message!==nextMessage) {
             notification['success']({
-                message: 'Success!',
+                message: nextTitle || 'Success!',
                 description: capitalize(nextMessage),
                 onClose: () => this.closeMessage()
             });
@@ -80,7 +81,7 @@ class Application extends Component {
     
         if (nextIsErrorMessage && message!==nextMessage) {
             notification['error']({
-                message: 'Error!',
+                message: nextTitle || 'Error!',
                 description: capitalize(nextMessage),
                 onClose: () => this.closeMessage()
             });
@@ -88,7 +89,7 @@ class Application extends Component {
     
         if (nextIsInfoMessage && message!==nextMessage) {
             notification['info']({
-                message: 'Attention!',
+                message: nextTitle || 'Attention!',
                 description: capitalize(nextMessage),
                 onClose: () => this.closeMessage()
             });
