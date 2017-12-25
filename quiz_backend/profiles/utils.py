@@ -5,6 +5,7 @@ import datetime
 
 from rest_framework.views import exception_handler
 from django.conf import settings
+from django.core.exceptions import ObjectDoesNotExist
 from django.utils.timezone import now as datetime_now
 from django.core.mail import send_mail
 from django.contrib.auth import get_user_model
@@ -66,6 +67,7 @@ class EmailActivation(object):
         salt = hashlib.sha1(salt_bytes).hexdigest()[:5]
         hash_input = (salt + username).encode('utf-8')
         activation_key = hashlib.sha1(hash_input).hexdigest()
+        print(activation_key)
         return activation_key
 
     def send_activation_email(self, user, site):
@@ -73,9 +75,10 @@ class EmailActivation(object):
         Sending activation key using SMTP protocol. Template file in templates/mail.html
         :param site: Depends on domain
         """
+        print(user.api_registration_profile.activation_key)
         ctx_dict = {'activation_key': user.api_registration_profile.activation_key,
                     'expiration_days': self.days,
-                    'site': site}
+                    'site': '127.0.0.1:8000'}
         subject = 'ChainsQuizzes activation key'
         message = render_to_string('mail.html', ctx_dict)
         send_mail(subject=subject, from_email=settings.DEFAULT_FROM_EMAIL,
@@ -91,7 +94,8 @@ class EmailActivation(object):
             try:
                 profile = RegistrationProfile.objects.get(
                     activation_key=activation_key)
-            except RegistrationProfile.DoesNotExit:
+
+            except ObjectDoesNotExist:
                 return False
             if profile.user.is_active and not self.key_expired(profile.user):
                 return profile.user

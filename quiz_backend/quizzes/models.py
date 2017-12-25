@@ -10,12 +10,21 @@ class QuizCategory(models.Model):
         return self.name
 
 
+class Topic(models.Model):
+    name = models.CharField(max_length=128)
+    description = models.TextField()
+    category = models.ForeignKey(QuizCategory, on_delete=models.CASCADE, related_name='topics')
+
+    def __str__(self):
+        return self.name
+
+
 class Quiz(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
-    category = models.ForeignKey(QuizCategory, on_delete=models.CASCADE, related_name='quizzes')
+    topic = models.ForeignKey(Topic, on_delete=models.CASCADE, related_name='topics')
     title = models.CharField(max_length=128)
     description = models.TextField()
-    image = models.ImageField(null=True, upload_to='quiz_images/')
+    image = models.ImageField(null=True, upload_to='quiz_images/', blank=True)
     created = models.DateTimeField(auto_now_add=True)
     modified = models.DateTimeField(auto_now=True)
 
@@ -32,9 +41,9 @@ class Chain(models.Model):
 
 
 class Question(models.Model):
-    quiz = models.ForeignKey(Quiz, on_delete=models.CASCADE, related_name='quiz')
+    quiz = models.ForeignKey(Quiz, on_delete=models.CASCADE, related_name='questions')
     text_question = models.TextField()
-    chain = models.ForeignKey(Chain, on_delete=models.CASCADE, related_name='quiestions')
+    chain = models.ForeignKey(Chain, on_delete=models.CASCADE, related_name='chains')
     level = models.PositiveSmallIntegerField()
     source = models.TextField()
 

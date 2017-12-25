@@ -1,15 +1,18 @@
 from django.contrib.auth.models import User
 from django.core.exceptions import ObjectDoesNotExist
+
 from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.authtoken.models import Token
-from rest_framework.views import APIView
+from django.shortcuts import redirect
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.authtoken.serializers import AuthTokenSerializer
+from rest_framework.viewsets import ModelViewSet
+
 
 from .utils import EmailActivation
-from .serializers import UserSerializer, UserProfileSerializer
+from .serializers import UserSerializer, UserProfileSerializer, UserBaseSerializer
 from .models import UserProfile
 
 email_activation = EmailActivation()
@@ -32,10 +35,11 @@ def activate(request, activation_key=None):
     """
     user = email_activation.activate_user(activation_key)
     if user:
+
         token = Token.objects.update_or_create(user=user)[0]
-        return Response({'token': token.key},status=status.HTTP_201_CREATED)
+        return redirect('http://127.0.0.1:8080/signin/token={}&id={}'.format(token, user.id))
     else:
-        return Response({'error': {'errors': 'Bad token'}}, status=status.HTTP_400_BAD_REQUEST)
+        return redirect('http://127.0.0.1:8080/error')
 
 
 @api_view(['POST'])
@@ -73,56 +77,7 @@ def restore_password(request):
     except Exception as e:
         return Response({'error': {'errors': 'Incorrect e-mail'}}, status=status.HTTP_400_BAD_REQUEST)
 
-
-class UserView(APIView):
-    """
-    List all users, or create a new snippet.
-    """
-    def check_token(self, token):
-        try:
-            Token.objects.get(key=token)
-            return True
-        except ObjectDoesNotExist:
-            return False
-
-    def get_object(self, pk):
-        try:
-            user = User.objects.get(id=pk)
-            return user
-        except ObjectDoesNotExist:
-            return False
-
-    def get(self, request: object, id: object) -> object:
-        user = self.get_object(id)
-        if not user:
-            return Response({'error': {'errors': 'User does not exist'}},status=status.HTTP_400_BAD_REQUEST)
-        queryset = UserProfile.objects.get(user=user)
-        serializer = UserProfileSerializer(queryset)
-        return Response(serializer.data, status=status.HTTP_200_OK)
-
-    @permission_classes((IsAuthenticated,))
-    def put(self, request, id):
-        """
-        PUT http://testserver/user/id/1/
-        Changing UserProfile model and django.auth model instances
-        :param request: JSON request data
-        :param id: user_id
-        :return: HTTP_200_OK
-        """
-        serialized = UserProfileSerializer(data=request.data)
-        if serialized.is_valid(raise_exception=True):
-            if id != request.data['user_id']:
-                return Response({'error': {'errors': 'You do not have permission to change user info'}},
-                                status=status.HTTP_200_OK)
-            else:
-                profile = UserProfile.objects.get(user_id=int(id))
-                profile.user.last_name = request.data['last_name']
-                profile.user.first_name = request.data['first_name']
-                profile.user.username = request.data['username']
-                profile.user.email = request.data['email']
-                profile.user.save()
-                UserProfile.objects.filter(user_id=int(id)).update(bio=request.data['bio'])
-                if request.FILES:
-                    UserProfile.objects.filter(user_id=int(id)).update(profile_image=request.FILES['profile_image'])
-                serializer = UserProfileSerializer(profile)
-                return Response(serializer.data, status=status.HTTP_200_OK)
+class ProfilesViewSet(ModelViewSet):
+    queryset = UserProfile.objects.all()
+    serializer_class = UserProfileSerializer
+    http_method_names = ['get', 'put', 'head']
