@@ -57,7 +57,7 @@ const types = {
 const initialState = {
     categoriesList: [],
     questionChains: [],
-    questionTopics: [],
+    quizTopics: [],
     loading: false,
     error: null
 };
@@ -120,7 +120,7 @@ const questionChains = (state = initialState.questionChains, action) => {
     }
 };
 
-const questionTopics = (state = initialState.questionTopics, action) => {
+const quizTopics = (state = initialState.quizTopics, action) => {
     switch (action.type) {
         case types.GET_QUIZ_TOPICS.SUCCESS:
             return action.data;
@@ -136,5 +136,5 @@ export default combineReducers({
     error,
     categoriesList,
     questionChains,
-    questionTopics
+    quizTopics
 });

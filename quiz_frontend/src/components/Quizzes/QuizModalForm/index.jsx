@@ -94,7 +94,7 @@ class QuizModalForm extends Component {
 
         this.defAnswer = {
             answer: '',
-            isCorrect: false
+            is_true: false
         };
     }
 
@@ -165,7 +165,7 @@ class QuizModalForm extends Component {
         } = this.props;
         const newAnswer = {
             ...this.defAnswer,
-            answer_id: uuid()
+            id: uuid()
         };
         onSetNewAnswerList(
             answers.concat(newAnswer)
@@ -178,7 +178,7 @@ class QuizModalForm extends Component {
             answers
         } = this.props;
         onSetNewAnswerList(
-            answers.filter(answer => answer.answer_id !== key)
+            answers.filter(answer => answer.id !== key)
         );
     };
 
@@ -188,11 +188,11 @@ class QuizModalForm extends Component {
             answers
         } = this.props;
         const changedAnswer = {
-            ...answers.find(answer => answer.answer_id === key),
+            ...answers.find(answer => answer.id === key),
             answer: e.target.value
         };
         const newAnswers = answers.map(answer => {
-            if (answer.answer_id === key) {
+            if (answer.id === key) {
                 return changedAnswer;
             }
             return answer;
@@ -205,13 +205,13 @@ class QuizModalForm extends Component {
             onSetNewAnswerList,
             answers
         } = this.props;
-        let changedAnswer = answers.find(answer => answer.answer_id === key);
+        let changedAnswer = answers.find(answer => answer.id === key);
         changedAnswer = {
             ...changedAnswer,
-            isCorrect: !changedAnswer.isCorrect
+            is_true: !changedAnswer.is_true
         };
         const newAnswers = answers.map(answer => {
-            if (answer.answer_id === key) {
+            if (answer.id === key) {
                 return changedAnswer;
             }
             return answer;  
@@ -247,7 +247,7 @@ class QuizModalForm extends Component {
         const isLevelFieldBlocked = questionLevels.filter(el => (+el === +fields.level.value && isAnyHigherLevelsAvailable)).length === 1;
 
         const answersList = answers.map(answer => {
-            const key = answer.answer_id ? answer.answer_id : uuid();
+            const key = answer.id ? answer.id : uuid();
             return (
                 <Row
                     span="11"
@@ -267,7 +267,7 @@ class QuizModalForm extends Component {
                         onChange={(e) => this.handleChangeAnswerInput(key, e)}
                     />
                     <Checkbox
-                        checked={answer.isCorrect}
+                        checked={answer.is_true}
                         disabled={viewState}
                         onChange={() => this.handleChangeAnswerCheckbox(key)}
                     >

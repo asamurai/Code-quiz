@@ -9,7 +9,8 @@ import {
 } from './../../actions/user';
 import {
     getQuizCategories,
-    getQuizChains
+    getQuizChains,
+    getQuizTopics
 } from './../../actions/classifiers';
 
 import { closeMessage } from './../../actions/notifications';
@@ -60,7 +61,8 @@ class Application extends Component {
             history,
             setExistingUserData,
             getQuizCategories,
-            getQuizChains
+            getQuizChains,
+            getQuizTopics
         } = this.props;
         const existingData = getAuthDataFromStorage();
         if (existingData) {
@@ -71,12 +73,11 @@ class Application extends Component {
             }
         }
         if (user.token || existingData) {
-            const defaultCategory = 1;
             getQuizCategories();
-            getQuizChains(defaultCategory);
+            getQuizChains();
+            getQuizTopics();
         }
     }
-    
     
     componentWillMount () {
         const {
@@ -91,7 +92,6 @@ class Application extends Component {
             duration: notificationTtl
         });
     }
-    
 
     componentWillReceiveProps (nextProps) {
         const {
@@ -101,14 +101,25 @@ class Application extends Component {
                 isInfoMessage: nextIsInfoMessage,
                 message: nextMessage,
                 title: nextTitle
-            }
+            },
+            user: nextUser
         } = nextProps;
 
         const {
             notifications: {
                 message
-            }
+            },
+            user,
+            getQuizCategories,
+            getQuizChains,
+            getQuizTopics
         } = this.props;
+
+        if (!user.token && nextUser.token) {
+            getQuizCategories();
+            getQuizChains();
+            getQuizTopics();
+        }
         
         if (nextIsSuccessMessage && message!==nextMessage) {
             notification['success']({
@@ -167,7 +178,8 @@ function mapDispatchToProps(dispatch) {
         closeMessage: bindActionCreators(closeMessage, dispatch),
         setExistingUserData: bindActionCreators(setExistingUserData, dispatch),
         getQuizCategories: bindActionCreators(getQuizCategories, dispatch),
-        getQuizChains: bindActionCreators(getQuizChains, dispatch)
+        getQuizChains: bindActionCreators(getQuizChains, dispatch),
+        getQuizTopics: bindActionCreators(getQuizTopics, dispatch)
     };
 }
 
