@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import { Link, NavLink } from 'react-router-dom';
 
 import uuid from 'uuid';
@@ -19,6 +20,10 @@ import styles from './../index.sass';
  */
 class HeaderNavigationLinks extends Component {
     render () {
+        const {
+            loggedIn
+        } = this.props;
+
         return (
             <div className={`${styles.header_wrapper} ${styles.header_wrapper_links}`}>
                 <Link to={HOME_PATH}>
@@ -30,7 +35,7 @@ class HeaderNavigationLinks extends Component {
                     />   
                 </Link>
                 {
-                    headerNavigationLinks.map((link) => (
+                    headerNavigationLinks.filter(link => link.auth ? (link.auth && loggedIn) ? true : false: true).map((link) => (
                         <NavLink 
                             key={uuid()}
                             to={link.route}
@@ -45,5 +50,9 @@ class HeaderNavigationLinks extends Component {
         );
     }
 }
+
+HeaderNavigationLinks.propTypes = {
+    loggedIn: PropTypes.bool.isRequired
+};
 
 export default HeaderNavigationLinks;
