@@ -66,7 +66,9 @@ class Application extends Component {
         if (existingData) {
             const authData = JSON.parse(existingData);
             setExistingUserData(authData);
-            history.push(`${USER_ACCOUNT_PATH}`);
+            if (!user.token) {
+                history.push(`${USER_ACCOUNT_PATH}`);
+            }
         }
         if (user.token || existingData) {
             const defaultCategory = 1;

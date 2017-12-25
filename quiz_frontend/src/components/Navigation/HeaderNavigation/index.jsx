@@ -37,7 +37,7 @@ class HeaderNavigation extends Component {
             history
         } = nextProps;
 
-        if (user && user.token && !_.isEqual(user, this.props.user)) {
+        if (user && user.token && !_.isEqual(user.token, this.props.user.token)) {
             history.push(`${USER_ACCOUNT_PATH}`);
         }
     }
