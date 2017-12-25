@@ -6,7 +6,7 @@ from rest_framework.authtoken.models import Token
 from rest_framework.views import APIView
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import IsAuthenticated
-
+from rest_framework.authtoken.serializers import AuthTokenSerializer
 
 from .utils import EmailActivation
 from .serializers import UserSerializer, UserProfileSerializer
@@ -48,6 +48,20 @@ def logout(request):
 
 
 @api_view(['POST'])
+def login(request):
+    serializer = AuthTokenSerializer(data=request.data,
+                                       context={'request': request})
+    serializer.is_valid(raise_exception=True)
+    user = serializer.validated_data['user']
+    token, created = Token.objects.get_or_create(user=user)
+    try:
+        queryset = UserProfile.objects.get(user=user)
+        serializer = UserProfileSerializer(queryset)
+        return Response({'token': token.key, 'data': serializer.data}, status=status.HTTP_200_OK)
+    except ObjectDoesNotExist:
+        Response({'error': {'errors': 'Something bad'}}, status=status.HTTP_400_BAD_REQUEST)
+
+@api_view(['POST'])
 def restore_password(request):
     """
     Changing password via email confirmation]
@@ -78,7 +92,7 @@ class UserView(APIView):
         except ObjectDoesNotExist:
             return False
 
-    def get(self, request, id):
+    def get(self, request: object, id: object) -> object:
         user = self.get_object(id)
         if not user:
             return Response({'error': {'errors': 'User does not exist'}},status=status.HTTP_400_BAD_REQUEST)

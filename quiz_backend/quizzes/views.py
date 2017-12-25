@@ -1,10 +1,11 @@
 from rest_framework.viewsets import ModelViewSet
 from rest_framework.permissions import IsAuthenticated
-
+from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import generics
 
-from .serializers import QuizCategorySerializer, QuestionsSerializer, QuizSerializer, ChainSerializer
+from .serializers import QuizCategorySerializer, QuestionsSerializer, QuizSerializer, ChainSerializer, \
+    AnswerNestedSerializerForPassing, QuestionsSerializerForPassing
 from .models import QuizCategory, Question, Quiz, Chain
 
 
@@ -30,10 +31,6 @@ class QuestionViewSet(ModelViewSet):
     serializer_class = QuestionsSerializer
     queryset = Question.objects.all()
 
-    def list(self, request):
-        serializer = QuestionsSerializer(self.queryset, many=True, partial=True)
-        [data.pop('answers') for data in serializer.data]
-        return Response(serializer.data)
 
 
 class ChainsList(generics.ListCreateAPIView):
@@ -45,3 +42,17 @@ class ChainsList(generics.ListCreateAPIView):
         queryset = self.get_queryset().filter(chain_category__id=id)
         serializer = ChainSerializer(queryset, many=True)
         return Response(serializer.data)
+
+
+class QuestionList(APIView):
+    ''' Implements passing quiz'''
+    def get(self, request, id):
+        # should be userprogress
+        queryset = Question.objects.filter(quiz__id=id).all()
+        serializer = QuestionsSerializerForPassing(queryset, many=True)
+        return Response(serializer.data)
+
+    def post(self, request, id):
+        serializer = QuestionsSerializerForPassing(data=request.data, many=True)
+        if serializer.is_valid(raise_exception=True):
+            return Response({'ok': 'ok'})
