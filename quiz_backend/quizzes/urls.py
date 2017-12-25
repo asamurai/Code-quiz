@@ -4,7 +4,7 @@ from django.conf import settings
 
 from rest_framework.routers import SimpleRouter
 
-from .views import QuizCategoryViewSet, QuestionViewSet, QuizViewSet, ChainsList, QuestionList
+from .views import QuizCategoryViewSet, QuestionViewSet, QuizViewSet, ChainsList, QuestionList, ChainsListAll
 
 router = SimpleRouter()
 router.register("categories", QuizCategoryViewSet)
@@ -14,6 +14,7 @@ router.register("quizzes", QuizViewSet)
 
 urlpatterns = [
     url(r'^chain/(?P<id>\d+)/$', ChainsList.as_view()),
+    url(r'^chain/$', ChainsListAll.as_view()),
     url(r'^pass_quiz/(?P<id>\d+)/$', QuestionList.as_view()),
 ]
 

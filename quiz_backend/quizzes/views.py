@@ -57,6 +57,17 @@ class ChainsList(generics.ListCreateAPIView):
         return Response(serializer.data)
 
 
+class ChainsListAll(generics.ListCreateAPIView):
+    queryset = Chain.objects.all()
+    serializer_class = ChainSerializer
+
+    # def list(self, request, id):
+    #     # Note the use of `get_queryset()` instead of `self.queryset`
+    #     queryset = self.get_queryset().filter(chain_category__id=id)
+    #     serializer = ChainSerializer(queryset, many=True)
+    #     return Response(serializer.data)
+
+
 class QuestionList(APIView):
     ''' Implements passing quiz '''
     def get(self, request, id):
