@@ -23,15 +23,28 @@ class UserBaseSerializer(serializers.ModelSerializer):
         fields = ('id','username', 'email', 'first_name', 'last_name')
 
 
-class UserProfileSerializer(serializers.HyperlinkedModelSerializer):
+class UserProfileSerializer(serializers.ModelSerializer):
     username = serializers.CharField(source='user.username')
-    first_name = serializers.CharField(source='user.first_name')
-    last_name = serializers.CharField(source='user.last_name')
+    first_name = serializers.CharField(source='user.first_name', required=False)
+    last_name = serializers.CharField(source='user.last_name', required=False)
     email = serializers.CharField(source='user.email')
-    user_id = serializers.CharField(source='user.id')
+    user_id = serializers.PrimaryKeyRelatedField(source='user.id', read_only=True)
 
     class Meta:
-
         model = UserProfile
         fields = ('user_id', 'email', 'profile_image', 'bio', 'username', 'first_name', 'last_name')
-        extra_kwargs = {'bio': {'required': True}, 'profile_image': {'required': False}}
+        extra_kwargs = {'bio': {'required': False}, 'profile_image': {'required': False}}
+
+    def update(self, instance, validated_data):
+        user_dict = validated_data.get('user')
+        user = instance.user
+        user.email = user_dict.get('email', user.email)
+        user.first_name = user_dict.get('first_name', user.first_name)
+        user.last_name = user_dict.get('last_name', user.last_name)
+        user.save()
+        instance.bio = validated_data.get('bio', None)
+        instance.profile_image = validated_data.get('profile_image', None)
+        instance.save()
+        return instance
+
+

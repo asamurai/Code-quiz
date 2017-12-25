@@ -21,3 +21,4 @@ urlpatterns = [
     url(r'^', include('profiles.urls')),
     url(r'^', include('quizzes.urls')),
 ]
+

@@ -1,6 +1,13 @@
 from django.conf.urls import url
-from rest_framework.authtoken import views
-from .views import register, activate, logout, restore_password, UserView, login
+from django.conf import settings
+from django.conf.urls.static import static
+
+from rest_framework.routers import SimpleRouter
+from .views import register, activate, logout, restore_password, login, ProfilesViewSet
+
+
+router = SimpleRouter()
+router.register(r"user/id", ProfilesViewSet)
 
 urlpatterns = [
     url(r'^register/$', register),
@@ -8,5 +15,8 @@ urlpatterns = [
     url(r'^login/', login),
     url(r'^logout/$', logout),
     url(r'^forgot_password/$', restore_password),
-    url(r'^user/id/(?P<id>\d+)/$', UserView.as_view()),
 ]
+
+urlpatterns += router.urls
+
+urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
