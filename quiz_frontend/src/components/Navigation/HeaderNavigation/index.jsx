@@ -1,8 +1,17 @@
 import React, { Component } from 'react';
+import { 
+    withRouter
+} from 'react-router';
 import PropTypes from 'prop-types';
+
+import _ from 'lodash';
 
 import HeaderNavigationLinks from './../HeaderNavigationLinks';
 import HeaderNavigationAuth from './../HeaderNavigationAuth';
+
+import {
+    USER_ACCOUNT_PATH
+} from './../../../routes';
 
 import styles from './../index.sass';
 
@@ -21,6 +30,18 @@ class HeaderNavigation extends Component {
         super(props);
         this.signOutFunction = this.props.signOutFunction.bind(this);
     }
+
+    componentWillReceiveProps(nextProps) {
+        const {
+            user,
+            history
+        } = nextProps;
+
+        if (user && user.token && !_.isEqual(user, this.props.user)) {
+            history.push(`${USER_ACCOUNT_PATH}`);
+        }
+    }
+
     render () {
         const {
             user: {
@@ -43,7 +64,9 @@ class HeaderNavigation extends Component {
 
 HeaderNavigation.propTypes = {
     user: PropTypes.objectOf(PropTypes.any).isRequired,
+    history: PropTypes.objectOf(PropTypes.any).isRequired,
+
     signOutFunction: PropTypes.func.isRequired
 };
 
-export default HeaderNavigation;
+export default withRouter(HeaderNavigation);

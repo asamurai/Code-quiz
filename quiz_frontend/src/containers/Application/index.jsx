@@ -25,10 +25,19 @@ const {
 class Application extends Component {
     constructor(props){
         super(props);
-        this.signOut = this.props.signOut.bind(this);
         this.closeMessage = this.props.closeMessage.bind(this);
     }
 
+    signOut = () => {
+        const {
+            user: {
+                token
+            },
+            signOut
+        } = this.props;
+
+        signOut({token});
+    }    
     
     componentWillMount () {
         const {

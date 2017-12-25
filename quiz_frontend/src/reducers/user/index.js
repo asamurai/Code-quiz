@@ -107,14 +107,8 @@ const initialState = {
     loading: false,
     error: null,
     role: null,
+    token: null,
     data: null,
-    // data: {
-    //     id: 1,
-    //     first_name: 'Artem',
-    //     last_name: 'Vergun',
-    //     username: 'asamurai',
-    //     bio: 'javascript ninja at @labracode'
-    // },
     forms: {
         profile: {
             state: {
@@ -140,7 +134,6 @@ const initialState = {
             statistic: null
         }
     },
-    // loggedIn: true,
     loggedIn: false
 };
 
@@ -196,8 +189,17 @@ const loading = (state = initialState.loading, action) => {
 
 const role = (state = initialState.role, action) => {
     switch (action.type) {
+        // case types.USER_SIGNIN.SUCCESS:
+            // return action.role;
+        default:
+            return state;
+    }
+};
+
+const token = (state = initialState.token, action) => {
+    switch (action.type) {
         case types.USER_SIGNIN.SUCCESS:
-            return action.role;
+            return action.token;
         default:
             return state;
     }
@@ -272,5 +274,6 @@ export default combineReducers({
     role,
     data,
     forms,
-    loggedIn
+    loggedIn,
+    token
 });
