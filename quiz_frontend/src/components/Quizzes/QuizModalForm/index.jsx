@@ -232,8 +232,7 @@ class QuizModalForm extends Component {
             questionChains,
             maxLevel,
             closeModal,
-            answers,
-            fields
+            answers
         } = this.props;
 
         const isModalVisible = createState || editState || viewState;
