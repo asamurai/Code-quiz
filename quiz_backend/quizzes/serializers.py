@@ -60,12 +60,6 @@ class QuestionsSerializer(serializers.ModelSerializer):
         return instance
 
 
-class QuestionTest(serializers.ModelSerializer):
-    class Meta:
-        model = Question
-        fields = "__all__"
-
-
 class QuizNestedSerializer(serializers.ModelSerializer):
     questions = QuestionsSerializer(many=True)
 

@@ -61,11 +61,10 @@ class ChainsListAll(generics.ListCreateAPIView):
     queryset = Chain.objects.all()
     serializer_class = ChainSerializer
 
-    # def list(self, request, id):
-    #     # Note the use of `get_queryset()` instead of `self.queryset`
-    #     queryset = self.get_queryset().filter(chain_category__id=id)
-    #     serializer = ChainSerializer(queryset, many=True)
-    #     return Response(serializer.data)
+
+class TopicViewSet(ModelViewSet):
+    queryset = Topic.objects.all()
+    serializer_class = TopicSerializer
 
 
 class QuestionList(APIView):
