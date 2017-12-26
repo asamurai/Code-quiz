@@ -150,7 +150,7 @@ class Account extends Component {
                                 {getFieldDecorator('first_name', {
                                     rules: [
                                         { 
-                                            required: false, 
+                                            required: !viewState, 
                                             message: 'Please input your first name.' 
                                         }
                                     ]
@@ -167,7 +167,7 @@ class Account extends Component {
                                 {getFieldDecorator('last_name', {
                                     rules: [
                                         { 
-                                            required: false, 
+                                            required: !viewState, 
                                             message: 'Please input your last name.' 
                                         }
                                     ]
@@ -229,9 +229,14 @@ class Account extends Component {
                     </Row>
                     <Row span="12">
                         <Col span="24">
-                            <FormItem label="Biograpgy" hasFeedback >
+                            <FormItem label="Biography" hasFeedback >
                                 {getFieldDecorator('bio', {
-                                    rules: [{ required: false }]
+                                    rules: [
+                                        {
+                                            required: !viewState,
+                                            message: 'Please input few words about your biography.'
+                                        }
+                                    ]
                                 })(
                                     <TextArea
                                         disabled={viewState}

@@ -7,6 +7,7 @@ import {
 
 import {
     setAuthDataIntoStorage,
+    getAuthDataFromStorage,
     removeAuthDataFromStorage
 } from './../../helpers/localStorageHelpers';
 
@@ -95,11 +96,14 @@ export const updateUser = (id, userData) => async dispatch => {
         await dispatch({
             type: types.CHANGE_USER_PROFILE_FORM_EDIT_STATE,
             state: false
-        });    
+        });
+        const authData = await getAuthDataFromStorage();
+        await setAuthDataIntoStorage({data, token: JSON.parse(authData).token});
     } catch (error) {
         await dispatch({
             type: types.USER_UPDATE.FAILURE,
-            error: error.message
+            title: 'Update failure!',
+            error: error.response.data.error.errors.map(el => Object.values(el)[0]).join(',')
         });  
     }
 };
