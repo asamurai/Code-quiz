@@ -4,6 +4,7 @@ from django.conf import settings
 from django.db import models
 from annoying.fields import AutoOneToOneField
 
+
 class RegistrationProfile(models.Model):
     """
     A simple profile which stores an activation key for use during
