@@ -46,6 +46,10 @@ class QuizViewSet(ModelViewSet):
         serializer = QuizSerializer(Quiz.objects.filter(user__id=id).all(), many=True)
         return Response(serializer.data)
 
+    def get_queryset_by_topic(self, request, id=None):
+        serializer = QuizSerializer(Quiz.objects.filter(topic__id=id).all(), many=True)
+        return Response(serializer.data)
+
 
 
 class QuestionViewSet(ModelViewSet):
@@ -73,6 +77,9 @@ class TopicViewSet(ModelViewSet):
     queryset = Topic.objects.all()
     serializer_class = TopicSerializer
 
+    def get_queryset_by_category(self, request, id=None):
+        serializer = TopicSerializer(Topic.objects.filter(category__id=id).all(), many=True)
+        return Response(serializer.data)
 
 class QuestionList(APIView):
     ''' Implements passing quiz '''
