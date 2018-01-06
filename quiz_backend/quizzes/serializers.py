@@ -30,7 +30,7 @@ class QuestionsSerializer(serializers.ModelSerializer):
         extra_kwargs = {'id': {'read_only': True}}
 
     def validate(self, data):
-        if data['chain'].chain_category.id != data['quiz'].category.id:
+        if data['chain'].chain_category.id != data['quiz'].topic.category.id:
              raise serializers.ValidationError("Chain in quiz must appear on category")
         return data
 
@@ -50,7 +50,7 @@ class QuestionsSerializer(serializers.ModelSerializer):
         instance.source = validated_data.get('source')
         instance.text_question = validated_data.get('text_question')
         instance.save()
-        to_delete = Answer.objects.filter(question=instance).exclude(id__in=[answer.get('id',None) for answer in answers_data]).delete()
+        Answer.objects.filter(question=instance).exclude(id__in=[answer.get('id',None) for answer in answers_data]).delete()
         for answer_data in answers_data:
             id = answer_data.get('id', None)
             if id is None:
@@ -61,7 +61,7 @@ class QuestionsSerializer(serializers.ModelSerializer):
 
 
 class QuizNestedSerializer(serializers.ModelSerializer):
-    questions = QuestionsSerializer(many=True)
+    questions = QuestionsSerializer(many=True, read_only=True)
 
     class Meta:
         model = Quiz
