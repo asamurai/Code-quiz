@@ -113,7 +113,7 @@ export const updateUserPassword = (id, userData) => async dispatch => {
         await dispatch({
             type: types.USER_PASSWORD_CHANGE.REQUEST
         }); 
-        await withAuth('put',`/user/id/${id}/change-password/`, userData);
+        await withAuth('put',`/change_password/`, userData);
         await dispatch({
             type: types.USER_PASSWORD_CHANGE.SUCCESS,
             title: 'Update succeed!',
