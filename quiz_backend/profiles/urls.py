@@ -3,7 +3,7 @@ from django.conf import settings
 from django.conf.urls.static import static
 
 from rest_framework.routers import SimpleRouter
-from .views import register, activate, logout, restore_password, login, ProfilesViewSet
+from .views import register, activate, logout, restore_password, login, ProfilesViewSet, UpdatePassword
 
 
 router = SimpleRouter()
@@ -15,6 +15,7 @@ urlpatterns = [
     url(r'^login/', login),
     url(r'^logout/$', logout),
     url(r'^forgot_password/$', restore_password),
+    url(r'^change_password/$', UpdatePassword.as_view()),
 ]
 
 urlpatterns += router.urls

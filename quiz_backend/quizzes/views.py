@@ -2,6 +2,7 @@ from django.shortcuts import get_object_or_404
 
 from rest_framework.viewsets import ModelViewSet
 from rest_framework.permissions import IsAuthenticated
+from rest_framework.decorators import detail_route, list_route
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import generics
@@ -40,6 +41,16 @@ class QuizViewSet(ModelViewSet):
         serializer = QuizSerializer(self.queryset, many=True)
         return Response(serializer.data)
 
+    # @detail_route(methods=['get'])
+    def get_queryset_by_user(self, request, id=None):
+        serializer = QuizSerializer(Quiz.objects.filter(user__id=id).all(), many=True)
+        return Response(serializer.data)
+
+    def get_queryset_by_topic(self, request, id=None):
+        serializer = QuizSerializer(Quiz.objects.filter(topic__id=id).all(), many=True)
+        return Response(serializer.data)
+
+
 
 class QuestionViewSet(ModelViewSet):
     serializer_class = QuestionsSerializer
@@ -66,6 +77,9 @@ class TopicViewSet(ModelViewSet):
     queryset = Topic.objects.all()
     serializer_class = TopicSerializer
 
+    def get_queryset_by_category(self, request, id=None):
+        serializer = TopicSerializer(Topic.objects.filter(category__id=id).all(), many=True)
+        return Response(serializer.data)
 
 class QuestionList(APIView):
     ''' Implements passing quiz '''
