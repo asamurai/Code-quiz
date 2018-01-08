@@ -4,6 +4,8 @@ export const CREATE_QUIZ_SESSION = createRequestTypes('CREATE_QUIZ_SESSION');
 
 export const CREATE_QUIZ = createRequestTypes('CREATE_QUIZ');
 
+export const UPDATE_QUIZ = createRequestTypes('UPDATE_QUIZ');
+
 export const DELETE_QUIZ_SESSION = createRequestTypes('DELETE_QUIZ_SESSION');
 
 export const DELETE_QUIZ_BY_QUIZ_ID = createRequestTypes('DELETE_QUIZ_BY_QUIZ_ID');

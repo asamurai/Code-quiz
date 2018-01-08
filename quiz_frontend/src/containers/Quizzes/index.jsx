@@ -3,7 +3,8 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { 
     Route,
-    Redirect
+    Redirect,
+    withRouter
 } from 'react-router-dom';
 import {
     Row
@@ -20,7 +21,10 @@ import QuizModalForm from './../../components/Quizzes/QuizModalForm';
 
 import {
     QUIZ_FULL_PATH ,
-    QUIZ_LIST_PATH
+    QUIZ_LIST_PATH,
+    QUIZ_CREATE_PATH,
+    QUIZ_EDIT_PATH,
+    QUIZ_VIEW_PATH
 } from './../../routes';
 
 const ACTIONS = {
@@ -182,8 +186,28 @@ class Quizzes extends Component {
                 data: quizData,
                 state: quizState
             },
-            classifiers
+            match: {
+                params
+            },
+            history,
+            classifiers,
+            getQuizByQuizId
         } = nextProps;
+
+        switch (true) {
+            case quizState.create && !this.props.formQuiz.state.create:
+                history.push(`${QUIZ_CREATE_PATH}`);
+                break;
+            case quizState.edit && !this.props.formQuiz.state.edit && params.id:
+                history.push(`${QUIZ_EDIT_PATH}/${params.id}`);
+                break;
+            case quizState.view && !this.props.formQuiz.state.view && params.id:
+                history.push(`${QUIZ_VIEW_PATH}/${params.id}`);
+                break;        
+            default:
+                break;
+        }
+
         if ((quizState.edit || quizState.view) && quizData && !_.isEqual(quizData, this.props.formQuiz.data)) {
             const categoryId = classifiers.quizTopics.find(topic => topic.id === quizData.topic).category;
             this.setState((prevState) => ({
@@ -196,6 +220,7 @@ class Quizzes extends Component {
                 }
             }));
         }
+
         if ((questionState.edit || questionState.view) && questionData && !_.isEqual(questionData, this.props.formQuestion.data)) {
             this.setState((prevState) => ({
                 formQuestionValues: {
@@ -208,6 +233,11 @@ class Quizzes extends Component {
                     answers: questionData.answers
                 }
             }));
+        }
+
+        if (params.id && this.props.match.params.id !== params.id) {
+            const quizId = params.id;
+            getQuizByQuizId(quizId);
         }
     }
 
@@ -258,8 +288,13 @@ class Quizzes extends Component {
         const {
             formQuiz,
             user,
-            createQuiz
+            createQuiz,
+            updateQuiz,
+            match: {
+                params
+            }
         } = this.props;
+
         if (formName === 'formQuizMainInfoValues') {
             if (formQuiz.state.create) {
                 const data = {
@@ -269,6 +304,16 @@ class Quizzes extends Component {
                     user: user.data.user_id
                 };
                 createQuiz(data);
+            }
+            if (formQuiz.state.edit) {
+                const quizId = params.id;
+                const data = {
+                    title: formQuizMainInfoValues.title.value,
+                    description: formQuizMainInfoValues.description.value,
+                    topic: +formQuizMainInfoValues.topic.value,
+                    user: user.data.user_id
+                };
+                updateQuiz(quizId, data);
             }
         }
     };
@@ -428,4 +473,4 @@ const mapStateToProps = (state) => ({
     user: state.user
 });
   
-export default connect(mapStateToProps, ACTIONS)(Quizzes);
+export default connect(mapStateToProps, ACTIONS)(withRouter(Quizzes));

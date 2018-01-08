@@ -91,7 +91,8 @@ class QuizFormWrapper extends Component {
             onDelete,
             quizFormName,
             mainInfoFormData,
-            questionFormData
+            questionFormData,
+            onChangeState
         } = this.props;
 
         return (
@@ -102,6 +103,7 @@ class QuizFormWrapper extends Component {
 
                     onSubmit={onSubmit}
                     onDelete={onDelete}
+                    onChangeState={onChangeState}
                 />
                 <Tabs defaultActiveKey="1">
                     <TabPane tab="Main info" key="1">
