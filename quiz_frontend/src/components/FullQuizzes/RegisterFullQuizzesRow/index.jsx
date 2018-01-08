@@ -14,6 +14,7 @@ class RegisterFullQuizzesRow extends Component {
         const {
             chunk
         } = this.props;
+        
         return (
             <Row key={uuid()} style={{ display: 'flex' }}>
                 {

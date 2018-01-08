@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-// import { bindActionCreators } from 'redux';
 import { 
     Route,
     Redirect
@@ -15,39 +14,71 @@ import FullQuizzesNavigation from './../../components/FullQuizzes/Navigation';
 import FullQuizzesRegister from './../../components/FullQuizzes/Register';
 import QuizDetailedInfo from './../../components/FullQuizzes/QuizDetailedInfo';
 
+import * as fullquizzesActions from './../../actions/fullquizzes';
+
 import {
     FULL_QUIZZES_PATH
 } from './../../routes/index';
 
 import * as quizzesCategoryNames from './../../constants/quizzesCategoryNames';
 
+const ACTIONS = {
+    ...fullquizzesActions
+};
+
 class FullQuizzesContainer extends Component {
     constructor(props) {
         super(props);
     }
 
+    clearTopicDetailedDataAfterUnmount = () => {
+        const {
+            clearFullTopicQuizzes,
+            clearFullTopicInfo
+        } = this.props;
+
+        clearFullTopicInfo();
+        clearFullTopicQuizzes();
+    }
+
     render () {
         const {
             fullquizzes: {
-                registers
-            }
+                registers,
+                loading,
+                quizzes: topicQuizzes,
+                topic: selectedTopic
+            },
+            classifiers: {
+                categoriesList
+            },
+            getTopicsByCategoryId,
+            getTopicInfoByTopicId,
+            getQuizzesByTopicId,
         } = this.props;
 
         return (
             <Row span="12">
                 <FullQuizzesNavigation />
                 <Route
-                    path={`${FULL_QUIZZES_PATH}/:quizType?/:quizId?`}
+                    path={`${FULL_QUIZZES_PATH}/:category?/:topicId?`}
                     render={(routeProps) => {
-                        const quizType = routeProps.match.params.quizType || '';
-                        const quizId = routeProps.match.params.quizId || null;
-                        switch (quizType) {
-                            case 'quiz':
-                            switch (!!quizId) {
+                        const category = routeProps.match.params.category || '';
+                        const topicId = routeProps.match.params.topicId || null;
+                        switch (category) {
+                            case 'topic':
+                            switch (!!topicId) {
                                 case true:
                                     return (
                                         <QuizDetailedInfo
-                                            quizId={quizId}
+                                            topicId={topicId}
+                                            topic={selectedTopic}
+                                            quizzes={topicQuizzes}
+                                            loading={loading}
+
+                                            getTopicInfoByTopicId={getTopicInfoByTopicId}
+                                            getQuizzesByTopicId={getQuizzesByTopicId}
+                                            clearTopicDetailedDataAfterUnmount={this.clearTopicDetailedDataAfterUnmount}
                                         />
                                     ); 
                                 default:
@@ -57,11 +88,15 @@ class FullQuizzesContainer extends Component {
                             case quizzesCategoryNames.FRAMEWORK:
                             case quizzesCategoryNames.LIBRARY:
                             case quizzesCategoryNames.TOOL:
-                            case quizzesCategoryNames.PLATFORM:  
+                            case quizzesCategoryNames.PLATFORM:
                                 return (
                                     <FullQuizzesRegister
-                                        quizType={quizType}
+                                        category={category}
                                         registers={registers}
+                                        categories={categoriesList}
+                                        loading={loading}
+                                        
+                                        getTopicsByCategoryId={getTopicsByCategoryId}
                                     />
                                 );               
                             default:    
@@ -79,14 +114,10 @@ FullQuizzesContainer.propTypes = {
 };
 
 const mapStateToProps = (state) => ({
-    fullquizzes: state.fullquizzes
+    fullquizzes: state.fullquizzes,
+    classifiers: state.classifiers
 });
   
-const mapDispatchToProps = () => {
-    return {
-    };
-};
-  
-export default connect(mapStateToProps, mapDispatchToProps)(FullQuizzesContainer);
+export default connect(mapStateToProps, ACTIONS)(FullQuizzesContainer);
 
 

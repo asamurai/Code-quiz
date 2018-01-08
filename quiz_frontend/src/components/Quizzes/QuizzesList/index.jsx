@@ -55,19 +55,25 @@ class QuizList extends Component {
                         <Button                            
                             type="danger"
                             icon="delete"
+                            onClick={() => {
+                                const {
+                                    onDeleteQuiz
+                                } = this.props;
+                                onDeleteQuiz(key.id);
+                            }}
                         />
                     </Row>
                 )
             },
             {
-                key: 'name',
-                title: 'name',
-                dataIndex: 'name'
+                key: 'title',
+                title: 'title',
+                dataIndex: 'title'
             },
             {
-                key: 'category',
-                title: 'category',
-                dataIndex: 'category'
+                key: 'topic',
+                title: 'topic',
+                dataIndex: 'topic'
             },
             {
                 key: 'description',
@@ -89,15 +95,15 @@ class QuizList extends Component {
     }
 
     generateQuizListRow = (el) => ({
-        key: el.testId,
+        key: el.id,
         action: {
-            id: el.testId
+            id: el.id
         },
-        name: el.test.name,
-        category: el.test.category.name,
-        description: el.test.description,
-        created: el.test.created ? moment(el.test.created).format('L') : '',
-        modified: el.test.modified ? moment(el.test.modified).format('L') : '' 
+        title: el.title,
+        description: el.description,
+        topic: this.props.topics.find(topic => el.topic === topic.id).name,
+        created: moment(el.created).format('L'),
+        modified: moment(el.modified).format('L') 
     });
 
     goToCreateForm = () => this.props.history.push(`${QUIZ_CREATE_PATH}`);
@@ -151,8 +157,10 @@ QuizList.propTypes = {
         totalFinded: PropTypes.number
     }).isRequired,
     limit: PropTypes.number.isRequired,
+    topics: PropTypes.arrayOf(PropTypes.any).isRequired,
 
-    onPageChange: PropTypes.func.isRequired
+    onPageChange: PropTypes.func.isRequired,
+    onDeleteQuiz: PropTypes.func.isRequired
 };
 
 export default withRouter(QuizList);

@@ -1,6 +1,7 @@
 import types from './../constants/container_constants';
 import * as notifications from './../constants/container_constants/notifications';
 import * as fullquizzes from './../constants/container_constants/fullquizzes';
+import * as quizzes from './../constants/container_constants/quizzes';
 import * as user from './../constants/container_constants/user';
 
 /**
@@ -18,6 +19,9 @@ const asyncTypesConstants = Object.values(types)
  */
 const EXCEPTION_LIST = [
     fullquizzes.GET_TOPICS_BY_CATEGORY.SUCCESS,
+    fullquizzes.GET_QUIZZES_BY_TOPIC.SUCCESS,
+    fullquizzes.GET_TOPIC_INFO_BY_TOPIC_ID.SUCCESS,
+    quizzes.GET_QUIZZES_BY_USER_ID.SUCCESS,
     user.USER_SIGNIN.SUCCESS,
     user.USER_SIGNOUT.SUCCESS
 ];

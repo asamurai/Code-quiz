@@ -25,6 +25,25 @@ export const createQuizSession = quizId => async dispatch => {
     }
 };
 
+export const createQuiz = createData => async dispatch => {
+    try {
+        await dispatch({
+            type: types.CREATE_QUIZ.REQUEST
+        });
+        const { data } = await withAuth('post',`/quizzes/`, createData);
+        await dispatch({
+            type: types.CREATE_QUIZ.SUCCESS,
+            data,
+            message: 'Quiz created succesfully.'
+        });
+    } catch (error) {
+        await dispatch({
+            type: types.CREATE_QUIZ.FAILURE,
+            error: 'Quiz creation failed.'
+        });         
+    }
+};
+
 export const deleteQuizSession = quizId => async dispatch => {
     try {
         await dispatch({
@@ -84,7 +103,7 @@ export const getQuizListByUserId = userId => async dispatch => {
         await dispatch({
             type: types.GET_QUIZZES_BY_USER_ID.REQUEST
         });
-        const data = await withAuth('get',`/quizzes/by_user/${userId}`);
+        const { data } = await withAuth('get',`/quizzes/by_user/${userId}`);
         await dispatch({
             type: types.GET_QUIZZES_BY_USER_ID.SUCCESS,
             data
@@ -111,6 +130,25 @@ export const getQuizByQuizId = quizId => async dispatch => {
         await dispatch({
             type: types.GET_QUIZ_BY_ID.FAILURE,
             error: error.message
+        });         
+    }
+};
+
+export const deleteQuizByQuizId = quizId => async dispatch => {
+    try {
+        await dispatch({
+            type: types.DELETE_QUIZ_BY_QUIZ_ID.REQUEST
+        });
+        await withAuth('delete',`/quizzes/${quizId}/`);
+        await dispatch({
+            type: types.DELETE_QUIZ_BY_QUIZ_ID.SUCCESS,
+            quizId,
+            message: 'Quiz deleted succesfully.'
+        });
+    } catch (error) {
+        await dispatch({
+            type: types.DELETE_QUIZ_BY_QUIZ_ID.FAILURE,
+            error: 'Quiz delete failed.'
         });         
     }
 };

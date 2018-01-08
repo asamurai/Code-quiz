@@ -89,6 +89,7 @@ class QuizFormWrapper extends Component {
             state,
             onSubmit,
             onDelete,
+            quizFormName,
             mainInfoFormData,
             questionFormData
         } = this.props;
@@ -97,6 +98,7 @@ class QuizFormWrapper extends Component {
             <div>
                 <QuizControlPanel
                     state={state}
+                    formName={quizFormName}
 
                     onSubmit={onSubmit}
                     onDelete={onDelete}
@@ -107,7 +109,7 @@ class QuizFormWrapper extends Component {
                             {...mainInfoFormData}
                         />
                     </TabPane>
-                    <TabPane tab={`Questions`} key="2">
+                    <TabPane tab={`Questions`} disabled={state.create} key="2">
                         <QuestionForm
                             {...questionFormData}
                         />
@@ -124,6 +126,7 @@ QuizFormWrapper.propTypes = {
     state: PropTypes.objectOf(PropTypes.bool).isRequired,
     mainInfoFormData: PropTypes.objectOf(PropTypes.any).isRequired,
     questionFormData: PropTypes.objectOf(PropTypes.any).isRequired,
+    quizFormName: PropTypes.string.isRequired,
 
     onChangeState: PropTypes.func.isRequired,
     onSubmit: PropTypes.func.isRequired,

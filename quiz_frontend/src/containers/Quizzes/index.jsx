@@ -137,8 +137,8 @@ class Quizzes extends Component {
 
         this.defFormQuizMainInfoValues = {
             description: { value: '' },
-            category_id: { value: '' },
-            topic_id: { value: '' },
+            category: { value: '' },
+            topic: { value: '' },
             title: { value: '' },
             imageId: { value: '' }
         };
@@ -160,13 +160,42 @@ class Quizzes extends Component {
         this.state = { ...this.defState };
     }
 
+    componentDidMount() {
+        const {
+            getQuizListByUserId,
+            user
+        } = this.props;
+
+        if (user) {
+            const user_id = user.data.user_id;
+            getQuizListByUserId(user_id);
+        }
+    }
+
     componentWillReceiveProps(nextProps) {
         const {
             formQuestion: {
                 data: questionData,
                 state: questionState
-            }
+            },
+            formQuiz: {
+                data: quizData,
+                state: quizState
+            },
+            classifiers
         } = nextProps;
+        if ((quizState.edit || quizState.view) && quizData && !_.isEqual(quizData, this.props.formQuiz.data)) {
+            const categoryId = classifiers.quizTopics.find(topic => topic.id === quizData.topic).category;
+            this.setState((prevState) => ({
+                formQuizMainInfoValues: {
+                    ...prevState.formQuizMainInfoValues,
+                    title: { value: quizData.title },
+                    description: { value: quizData.description },
+                    topic: { value: `${quizData.topic}` },
+                    category: { value: `${categoryId}` },
+                }
+            }));
+        }
         if ((questionState.edit || questionState.view) && questionData && !_.isEqual(questionData, this.props.formQuestion.data)) {
             this.setState((prevState) => ({
                 formQuestionValues: {
@@ -193,13 +222,20 @@ class Quizzes extends Component {
         });
     }
 
+    handleDeleteQuiz = (quizId) => {
+        const {
+            deleteQuizByQuizId
+        } = this.props;
+        deleteQuizByQuizId(quizId);
+    }
+
     handleFormChange = (formName) => (changedFields) => {
         switch (true) {
-            case changedFields.category_id && changedFields.category_id.value !== this.state[formName].category_id.value:
+            case changedFields.category && changedFields.category.value !== this.state[formName].category.value:
                 this.setState({
                     [formName]: { 
                         ...this.state[formName], 
-                        topic_id: { value: '' },
+                        topic: { value: '' },
                         ...changedFields 
                     }
                 });             
@@ -216,7 +252,25 @@ class Quizzes extends Component {
     };
 
     handleSubmitForm = (formName) => {
-        console.log(`submit ${formName}`);
+        const {
+            formQuizMainInfoValues
+        } = this.state;
+        const {
+            formQuiz,
+            user,
+            createQuiz
+        } = this.props;
+        if (formName === 'formQuizMainInfoValues') {
+            if (formQuiz.state.create) {
+                const data = {
+                    title: formQuizMainInfoValues.title.value,
+                    description: formQuizMainInfoValues.description.value,
+                    topic: +formQuizMainInfoValues.topic.value,
+                    user: user.data.user_id
+                };
+                createQuiz(data);
+            }
+        }
     };
 
     handleDeleteForm = (formName) => {
@@ -278,8 +332,11 @@ class Quizzes extends Component {
                                 return (
                                     <QuizzesList
                                         dataSource={register}
+                                        topics={classifiers.quizTopics}
                                         pages={pages}
                                         limit={limit}
+
+                                        onDeleteQuiz={this.handleDeleteQuiz}
                                         onPageChange={this.handleChangeListPage}
                                     />
                                 );
@@ -290,6 +347,7 @@ class Quizzes extends Component {
                                     <QuizFormWrapper
                                         state={formQuiz.state}
                                         maxLevel={formQuiz.maxLevel}
+                                        quizFormName={'formQuizMainInfoValues'}
                                         mainInfoFormData={{
                                             state: formQuiz.state,
                                             fields: formQuizMainInfoValues,
@@ -366,7 +424,8 @@ const mapStateToProps = (state) => ({
     register: state.quizzes.quizList.register,
     requestBody: state.quizzes.quizList.requestBody,
     pages: state.quizzes.quizList.pages,
-    classifiers: state.classifiers
+    classifiers: state.classifiers,
+    user: state.user
 });
   
 export default connect(mapStateToProps, ACTIONS)(Quizzes);
