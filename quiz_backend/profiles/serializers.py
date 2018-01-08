@@ -3,6 +3,7 @@ from rest_framework import serializers
 from .models import UserProfile
 from django.contrib.auth.password_validation import validate_password
 
+
 class UserSerializer(serializers.ModelSerializer):
     confirmPassword = serializers.CharField(style={'input_type': 'password'}, write_only=True)
 
@@ -59,3 +60,7 @@ class ChangePasswordSerializer(serializers.Serializer):
         validate_password(value)
         return value
 
+class UserSimpleSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = ('id','username', 'first_name', 'last_name')
