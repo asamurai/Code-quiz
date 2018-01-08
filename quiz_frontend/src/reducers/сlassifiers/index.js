@@ -8,52 +8,6 @@ const types = {
     ...classifiersTypes
 };
 
-// const mockCategoriesList = [
-//     {
-//         category_id: 1,
-//         name: 'javascript core',
-//         description: 'javascript core'
-//     },
-//     {
-//         category_id: 2,
-//         name: 'ajax library',
-//         description: 'ajax library'
-//     },
-//     {
-//         category_id: 3,
-//         name: 'React',
-//         description: 'React'
-//     },
-//     {
-//         category_id: 4,
-//         name: 'Redux',
-//         description: 'Redux'
-//     }
-// ];
-
-// const mockQuestionChains = [
-//     {
-//         chain_id: 1,
-//         name: 'variables',
-//         description: 'variables'
-//     },
-//     {
-//         chain_id: 2,
-//         name: 'functions',
-//         description: 'functions'
-//     },
-//     {
-//         chain_id: 3,
-//         name: 'loops',
-//         description: 'loops'
-//     },
-//     {
-//         chain_id: 4,
-//         name: 'scopes',
-//         description: 'scopes'
-//     }
-// ];
-
 const initialState = {
     categoriesList: [],
     questionChains: [],

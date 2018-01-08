@@ -152,6 +152,12 @@ class UserAccountContainer extends Component {
                     email: data.newEmail
                 };
             }
+            if (changeField === 'password') {
+                data = {
+                    old_password: data.oldPassword,
+                    new_password: data.newPassword
+                };
+            }
             updateFunction(userId, data);
         }
     };
