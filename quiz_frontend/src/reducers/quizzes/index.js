@@ -81,7 +81,15 @@ const quizList = (state = initialState.quizList, action) => {
                     totalFinded: action.data.length
                 }
             };
-        case types.GET_QUIZZES_BY_USER_ID.FAILURE:
+        case types.DELETE_QUIZ_BY_QUIZ_ID.SUCCESS:
+            return {
+                ...state,
+                register: state.register.filter(quiz => quiz.id !== action.quizId),
+                pages: {
+                    ...state.pages,
+                    totalFinded: state.pages.totalFinded.length - 1
+                }
+            };
         default:
             return state;
     }

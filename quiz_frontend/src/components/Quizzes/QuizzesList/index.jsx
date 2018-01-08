@@ -55,6 +55,12 @@ class QuizList extends Component {
                         <Button                            
                             type="danger"
                             icon="delete"
+                            onClick={() => {
+                                const {
+                                    onDeleteQuiz
+                                } = this.props;
+                                onDeleteQuiz(key.id);
+                            }}
                         />
                     </Row>
                 )
@@ -153,7 +159,8 @@ QuizList.propTypes = {
     limit: PropTypes.number.isRequired,
     topics: PropTypes.arrayOf(PropTypes.any).isRequired,
 
-    onPageChange: PropTypes.func.isRequired
+    onPageChange: PropTypes.func.isRequired,
+    onDeleteQuiz: PropTypes.func.isRequired
 };
 
 export default withRouter(QuizList);

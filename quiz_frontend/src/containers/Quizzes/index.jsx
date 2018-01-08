@@ -205,6 +205,13 @@ class Quizzes extends Component {
         });
     }
 
+    handleDeleteQuiz = (quizId) => {
+        const {
+            deleteQuizByQuizId
+        } = this.props;
+        deleteQuizByQuizId(quizId);
+    }
+
     handleFormChange = (formName) => (changedFields) => {
         switch (true) {
             case changedFields.category_id && changedFields.category_id.value !== this.state[formName].category_id.value:
@@ -293,6 +300,8 @@ class Quizzes extends Component {
                                         topics={classifiers.quizTopics}
                                         pages={pages}
                                         limit={limit}
+
+                                        onDeleteQuiz={this.handleDeleteQuiz}
                                         onPageChange={this.handleChangeListPage}
                                     />
                                 );

@@ -115,6 +115,25 @@ export const getQuizByQuizId = quizId => async dispatch => {
     }
 };
 
+export const deleteQuizByQuizId = quizId => async dispatch => {
+    try {
+        await dispatch({
+            type: types.DELETE_QUIZ_BY_QUIZ_ID.REQUEST
+        });
+        await withAuth('delete',`/quizzes/${quizId}/`);
+        await dispatch({
+            type: types.DELETE_QUIZ_BY_QUIZ_ID.SUCCESS,
+            quizId,
+            message: 'Quiz deleted succesfully.'
+        });
+    } catch (error) {
+        await dispatch({
+            type: types.DELETE_QUIZ_BY_QUIZ_ID.FAILURE,
+            error: 'Quiz delete failed.'
+        });         
+    }
+};
+
 export const setQuestionData = questionData => dispatch => dispatch({
     type: types.SET_QUESTION_DATA,
     data: questionData
