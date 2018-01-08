@@ -30,9 +30,8 @@ class RegisterFullQuizzesElement extends Component {
                             }}
                         >
                             <div>
-                                {quiz.title}
+                                {quiz.name}
                             </div>
-                            <img src={quiz.image} width="50" height="50" alt={quiz.title} />
                         </div>
                     </Link>
                 </Card>

@@ -12,12 +12,12 @@ export const getTopicsByCategoryId = ({categoryName, categoryId}) => async dispa
         await dispatch({
             type: types.GET_TOPICS_BY_CATEGORY.REQUEST
         });
-        const content = await withAuth('get',`/topic/by_category/${categoryId}`);
+        const { data } = await withAuth('get',`/topic/by_category/${categoryId}`);
         await dispatch({
             type: types.GET_TOPICS_BY_CATEGORY.SUCCESS,
             data: {
                 category: categoryName,
-                content
+                content: data
             }
         });
     } catch (error) {
