@@ -91,7 +91,7 @@ class UpdatePassword(APIView):
     curl http://127.0.0.1:8000/change_password/
     -H 'Authorization: Token 7a95bba5bb6e8207097f55daabebe56573a230cd'
     -X PUT -H "Content-Type: application/json"
-    -d '{"old_password":"chainz123", "new_password": "chainz1232"}'
+    -d '{"old_password":"chainz1234", "new_password": "chainz1232", "confirm_password": "chainz1232"}'
 
     """
     permission_classes = (IsAuthenticated, )

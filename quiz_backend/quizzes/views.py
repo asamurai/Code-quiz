@@ -1,5 +1,6 @@
 from django.shortcuts import get_object_or_404
 from django.core.exceptions import ObjectDoesNotExist
+from django.utils.timezone import now
 
 from rest_framework.viewsets import ModelViewSet
 from rest_framework.permissions import IsAuthenticated
@@ -11,7 +12,7 @@ from rest_framework.exceptions import PermissionDenied
 
 from .serializers import QuizCategorySerializer, QuestionsSerializer, QuizSerializer, ChainSerializer, \
     AnswerNestedSerializerForPassing, QuestionsSerializerForPassing, TopicSerializer, QuizNestedSerializer, QuizReadSerializer
-from .models import QuizCategory, Question, Quiz, Chain, Topic
+from .models import QuizCategory, Question, Quiz, Chain, Topic, UserProgress
 
 
 class QuizCategoryViewSet(ModelViewSet):
@@ -48,7 +49,7 @@ class QuizViewSet(ModelViewSet):
         -H 'Authorization: Token 7a95bba5bb6e8207097f55daabebe56573a230cd'
         -X POST -H "Content-Type: application/json"  -d '{ "topic": 1, "title": "1", "description": "test" }'
         response:
-        {"id":9,"topic":1,"title":"1","description":"test","image":null,"created":"2018-01-08T16:45:53.546372Z"}
+        {"id":9,"topic":1,"title":"1","description":"test","image":null}
         :param request: json request
         :return:
         """
@@ -129,10 +130,19 @@ class TopicViewSet(ModelViewSet):
 
 class QuestionList(APIView):
     ''' Implements passing quiz '''
+    permission_classes = (IsAuthenticated,)
     def get(self, request, id):
-        # should be userprogress
-        queryset = Question.objects.filter(quiz__id=id).all()
-        serializer = QuestionsSerializerForPassing(queryset, many=True)
+        # Check, have user passed any tests
+        queryset = UserProgress.objects.filter(quiz__id=id).filter(user=request.user).all()
+        # if user doesnt send answers on test
+        # if queryset.filter()
+        if queryset.filter(answers=None).all():
+            questions = queryset.filter(answers=None).all()
+        else:
+            questions = Quiz.objects.filter(level=1).
+            serializer = QuestionsSerializerForPassing(questions, many=True)
+            for question in queryset:
+                test = UserProgress.objects.create(question=question, user=request.user, datetime_started=now())
         return Response(serializer.data)
 
     def post(self, request, id):
