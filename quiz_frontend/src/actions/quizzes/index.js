@@ -84,7 +84,7 @@ export const getQuizListByUserId = userId => async dispatch => {
         await dispatch({
             type: types.GET_QUIZZES_BY_USER_ID.REQUEST
         });
-        const data = await withAuth('get',`/quizzes/by_user/${userId}`);
+        const { data } = await withAuth('get',`/quizzes/by_user/${userId}`);
         await dispatch({
             type: types.GET_QUIZZES_BY_USER_ID.SUCCESS,
             data

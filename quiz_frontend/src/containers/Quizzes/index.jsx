@@ -160,6 +160,18 @@ class Quizzes extends Component {
         this.state = { ...this.defState };
     }
 
+    componentDidMount() {
+        const {
+            getQuizListByUserId,
+            user
+        } = this.props;
+
+        if (user) {
+            const user_id = user.data.user_id;
+            getQuizListByUserId(user_id);
+        }
+    }
+
     componentWillReceiveProps(nextProps) {
         const {
             formQuestion: {
@@ -278,6 +290,7 @@ class Quizzes extends Component {
                                 return (
                                     <QuizzesList
                                         dataSource={register}
+                                        topics={classifiers.quizTopics}
                                         pages={pages}
                                         limit={limit}
                                         onPageChange={this.handleChangeListPage}
@@ -366,7 +379,8 @@ const mapStateToProps = (state) => ({
     register: state.quizzes.quizList.register,
     requestBody: state.quizzes.quizList.requestBody,
     pages: state.quizzes.quizList.pages,
-    classifiers: state.classifiers
+    classifiers: state.classifiers,
+    user: state.user
 });
   
 export default connect(mapStateToProps, ACTIONS)(Quizzes);
