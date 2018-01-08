@@ -8,6 +8,22 @@ import RegisterFullQuizzesRow from './../RegisterFullQuizzesRow';
 
 class FullQuizzesRegister extends Component {
 
+    componentDidMount() {
+        const {
+            categories,
+            category: selectedCategory,
+            getTopicsByCategoryId
+        } = this.props;
+
+        const categoryObj = categories.find(category => category.name.toLowerCase() === selectedCategory.toLowerCase());
+        if (categoryObj) {
+            getTopicsByCategoryId({
+                categoryName: selectedCategory.toLowerCase(),
+                categoryId: categoryObj.id
+            });
+        }      
+    }
+
     componentWillReceiveProps(nextProps) {
         const {
             categories,
@@ -16,11 +32,11 @@ class FullQuizzesRegister extends Component {
         } = nextProps;
 
         if (selectedCategory.toLowerCase() !== this.props.category.toLowerCase()) {
-            const categoryId = categories.find(category => category.name.toLowerCase() === selectedCategory.toLowerCase()).id;
-            if (categoryId) {
+            const categoryObj = categories.find(category => category.name.toLowerCase() === selectedCategory.toLowerCase());
+            if (categoryObj) {
                 getTopicsByCategoryId({
                     categoryName: selectedCategory.toLowerCase(),
-                    categoryId
+                    categoryId: categoryObj.id
                 });
             }
         }
@@ -47,8 +63,12 @@ class FullQuizzesRegister extends Component {
     }
 }
 
+FullQuizzesRegister.defaultProps = {
+    category: 'language'
+};
+
 FullQuizzesRegister.propTypes = {
-    category: PropTypes.string.isRequired,
+    category: PropTypes.string,
     registers: PropTypes.objectOf(PropTypes.any).isRequired,
     categories: PropTypes.arrayOf(PropTypes.any).isRequired,
     getTopicsByCategoryId: PropTypes.func.isRequired

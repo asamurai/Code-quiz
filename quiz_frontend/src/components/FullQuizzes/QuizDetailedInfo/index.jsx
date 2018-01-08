@@ -1,75 +1,55 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+
+import {
+    Icon
+} from 'antd';
 
 import CategoryQuizList from './../CategoryQuizList';
 
-const mockTestData = {
-    id: 1,
-    image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS45PBU2qyXzci5sfj0Dm4C_4V87mnpvVCqbjyZOHFQ_aROJwYl',
-    title: 'React',
-    content: 'React makes it painless to create interactive UIs. Design simple views for each state in your application, and React will efficiently update and render just the right components when your data changes.'
-};
-
-const mockTestList = [
-    {
-        id: 1,
-        title: 'React test for begginers 1',
-        questions: [
-            {
-                id: 1
-            },
-            {
-                id: 2
-            },
-            {
-                id: 3
-            },
-            {
-                id: 4
-            },
-            {
-                id: 5
-            },
-            {
-                id: 6
-            }
-        ],
-        createdBy: 'Dan Abramov',
-        created: 'Mon Nov 13 2017 22:03:10 GMT+0200 (EET)',
-        rating: 140,
-        ratedBy: 30
-    },
-    {
-        id: 2,
-        title: 'React test for begginers 2',
-        questions: [
-            {
-                id: 1
-            },
-            {
-                id: 2
-            },
-            {
-                id: 3
-            },
-            {
-                id: 4
-            },
-            {
-                id: 5
-            },
-            {
-                id: 6
-            }
-        ],
-        createdBy: 'Dan Abramov',
-        created: 'Mon Nov 13 2017 22:03:10 GMT+0200 (EET)',
-        rating: 135,
-        ratedBy: 30
-    }
-];
-
 class QuizDetailedInfo extends Component {
+
+    componentDidMount() {
+        const {
+            getTopicInfoByTopicId,
+            getQuizzesByTopicId,
+            topicId
+        } = this.props;
+
+        getTopicInfoByTopicId(topicId);
+        getQuizzesByTopicId(topicId);
+    }
+    
+    componentWillUnmount() {
+        const {
+            clearTopicDetailedDataAfterUnmount
+        } = this.props;
+        clearTopicDetailedDataAfterUnmount();
+    }
+    
     render () {
+        const {
+            topic,
+            quizzes,
+            loading
+        } = this.props;
+
+        if (loading) {
+            return (
+                <div
+                    style={{
+                        maxWidth: '700px',
+                        margin: '0 auto',
+                        padding: '30px'
+                    }}
+                >
+                    <Icon
+                        type="loading"
+                    />
+                </div>
+            );
+        }
+
         return (
             <div
                 style={{
@@ -78,35 +58,53 @@ class QuizDetailedInfo extends Component {
                     padding: '30px'
                 }}
             >
-                <div>
-                    <h3>{mockTestData.title}</h3>
-                    <div
-                        style={{
-                            display: 'flex',
-                            justifyContent: 'space-between',
-                            alignItems: 'center'
-                        }}
-                    >
+                {
+                    topic &&
+                    <div>
+                        <h3>{topic.name}</h3>
                         <div
                             style={{
-                                maxWidth: '300px'
+                                display: 'flex',
+                                justifyContent: 'space-between',
+                                alignItems: 'center'
                             }}
                         >
-                            {mockTestData.content}
-                        </div>
-                        <div>
-                            <img
-                                src={mockTestData.image}
-                            />
+                            <div
+                                style={{
+                                    maxWidth: '300px'
+                                }}
+                            >
+                                {topic.description}
+                            </div>
+                            {/* <div>
+                                <img
+                                    src={mockTestData.image}
+                                />
+                            </div> */}
                         </div>
                     </div>
-                </div>
+                }
                 <CategoryQuizList
-                    tests={mockTestList}
+                    tests={quizzes}
                 />
             </div>
         );
     }
 }
+
+QuizDetailedInfo.defaultProps = {
+    selectedTopic: null
+};
+
+QuizDetailedInfo.propTypes = {
+    topicId: PropTypes.oneOfType([PropTypes.number, PropTypes.string]).isRequired,
+    topic: PropTypes.objectOf(PropTypes.any),
+    quizzes: PropTypes.arrayOf(PropTypes.any).isRequired,
+    loading: PropTypes.bool.isRequired,
+
+    getTopicInfoByTopicId: PropTypes.func.isRequired,
+    getQuizzesByTopicId: PropTypes.func.isRequired,
+    clearTopicDetailedDataAfterUnmount: PropTypes.func.isRequired
+};
 
 export default QuizDetailedInfo;

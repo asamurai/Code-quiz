@@ -21,7 +21,7 @@ class RegisterFullQuizzesElement extends Component {
         return (
             <Col style={{ width: '25%' }}>
                 <Card>
-                    <Link to={`${FULL_QUIZZES_PATH}/quiz/${quiz.id}`}>
+                    <Link to={`${FULL_QUIZZES_PATH}/topic/${quiz.id}`}>
                         <div
                             style={{
                                 display: 'flex',

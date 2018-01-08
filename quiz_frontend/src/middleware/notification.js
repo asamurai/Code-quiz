@@ -18,6 +18,8 @@ const asyncTypesConstants = Object.values(types)
  */
 const EXCEPTION_LIST = [
     fullquizzes.GET_TOPICS_BY_CATEGORY.SUCCESS,
+    fullquizzes.GET_QUIZZES_BY_TOPIC.SUCCESS,
+    fullquizzes.GET_TOPIC_INFO_BY_TOPIC_ID.SUCCESS,
     user.USER_SIGNIN.SUCCESS,
     user.USER_SIGNOUT.SUCCESS
 ];

@@ -35,7 +35,7 @@ class CategoryQuizElement extends Component {
                         {test.title}
                     </div>
                     <div>
-                        Author: {test.createdBy}
+                        Author: {test.user}
                     </div>
                 </Link>
                 <div>

@@ -31,15 +31,30 @@ class FullQuizzesContainer extends Component {
         super(props);
     }
 
+    clearTopicDetailedDataAfterUnmount = () => {
+        const {
+            clearFullTopicQuizzes,
+            clearFullTopicInfo
+        } = this.props;
+
+        clearFullTopicInfo();
+        clearFullTopicQuizzes();
+    }
+
     render () {
         const {
             fullquizzes: {
-                registers
+                registers,
+                loading,
+                quizzes: topicQuizzes,
+                topic: selectedTopic
             },
             classifiers: {
                 categoriesList
             },
-            getTopicsByCategoryId
+            getTopicsByCategoryId,
+            getTopicInfoByTopicId,
+            getQuizzesByTopicId,
         } = this.props;
 
         return (
@@ -51,12 +66,19 @@ class FullQuizzesContainer extends Component {
                         const category = routeProps.match.params.category || '';
                         const topicId = routeProps.match.params.topicId || null;
                         switch (category) {
-                            case 'quiz':
+                            case 'topic':
                             switch (!!topicId) {
                                 case true:
                                     return (
                                         <QuizDetailedInfo
                                             topicId={topicId}
+                                            topic={selectedTopic}
+                                            quizzes={topicQuizzes}
+                                            loading={loading}
+
+                                            getTopicInfoByTopicId={getTopicInfoByTopicId}
+                                            getQuizzesByTopicId={getQuizzesByTopicId}
+                                            clearTopicDetailedDataAfterUnmount={this.clearTopicDetailedDataAfterUnmount}
                                         />
                                     ); 
                                 default:
@@ -66,13 +88,13 @@ class FullQuizzesContainer extends Component {
                             case quizzesCategoryNames.FRAMEWORK:
                             case quizzesCategoryNames.LIBRARY:
                             case quizzesCategoryNames.TOOL:
-                            case quizzesCategoryNames.PLATFORM:  
-                                console.log('render');
+                            case quizzesCategoryNames.PLATFORM:
                                 return (
                                     <FullQuizzesRegister
                                         category={category}
                                         registers={registers}
                                         categories={categoriesList}
+                                        loading={loading}
                                         
                                         getTopicsByCategoryId={getTopicsByCategoryId}
                                     />
