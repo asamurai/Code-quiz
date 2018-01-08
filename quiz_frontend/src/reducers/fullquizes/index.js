@@ -8,84 +8,37 @@ const types = {
     ...fullquizzesTypes
 };
 
-const mockLibraryRegister = [
-    {
-        id: 1,
-        image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS45PBU2qyXzci5sfj0Dm4C_4V87mnpvVCqbjyZOHFQ_aROJwYl',
-        title: 'React',
-        content: 'React makes it painless to create interactive UIs. Design simple views for each state in your application, and React will efficiently update and render just the right components when your data changes.'
-    },
-    {
-        id: 2,
-        image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS45PBU2qyXzci5sfj0Dm4C_4V87mnpvVCqbjyZOHFQ_aROJwYl',
-        title: 'React',
-        content: 'React makes it painless to create interactive UIs. Design simple views for each state in your application, and React will efficiently update and render just the right components when your data changes.'
-    },
-    {
-        id: 3,
-        image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS45PBU2qyXzci5sfj0Dm4C_4V87mnpvVCqbjyZOHFQ_aROJwYl',
-        title: 'React',
-        content: 'React makes it painless to create interactive UIs. Design simple views for each state in your application, and React will efficiently update and render just the right components when your data changes.'
-    },
-    {
-        id: 4,
-        image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS45PBU2qyXzci5sfj0Dm4C_4V87mnpvVCqbjyZOHFQ_aROJwYl',
-        title: 'React',
-        content: 'React makes it painless to create interactive UIs. Design simple views for each state in your application, and React will efficiently update and render just the right components when your data changes.'
-    },
-    {
-        id: 5,
-        image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS45PBU2qyXzci5sfj0Dm4C_4V87mnpvVCqbjyZOHFQ_aROJwYl',
-        title: 'React',
-        content: 'React makes it painless to create interactive UIs. Design simple views for each state in your application, and React will efficiently update and render just the right components when your data changes.'
-    },
-    {
-        id: 6,
-        image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS45PBU2qyXzci5sfj0Dm4C_4V87mnpvVCqbjyZOHFQ_aROJwYl',
-        title: 'React',
-        content: 'React makes it painless to create interactive UIs. Design simple views for each state in your application, and React will efficiently update and render just the right components when your data changes.'
-    },
-    {
-        id: 7,
-        image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS45PBU2qyXzci5sfj0Dm4C_4V87mnpvVCqbjyZOHFQ_aROJwYl',
-        title: 'React',
-        content: 'React makes it painless to create interactive UIs. Design simple views for each state in your application, and React will efficiently update and render just the right components when your data changes.'
-    }
-];
-
 const initialState = {
     loading: false,
     error: null,
-    isFreeMode: false,
     registers: {
-        // library: [],
-        // framework: [],
-        // platform: [],
-        // tool: [],
-        // language: []
-        // delete after backend finish
-        library: mockLibraryRegister,
-        framework: mockLibraryRegister,
-        platform: mockLibraryRegister,
-        tool: mockLibraryRegister,
-        language: mockLibraryRegister
-    }
+        library: [],
+        framework: [],
+        platform: [],
+        tool: [],
+        language: []
+    },
+    quizzes: []
 };
 
-const isFreeMode = (state = initialState.isFreeMode, action) => {
+const registers = (state = initialState.registers, action) => {
     switch (action.type) {
+        case types.GET_TOPICS_BY_CATEGORY.SUCCESS: 
+            return {
+                ...state,
+                [action.data.category]: action.data.content
+            };
         default:
             return state;
     }
 };
 
-const registers = (state = initialState.registers, action) => {
+const quizzes = (state = initialState.quizzes, action) => {
     switch (action.type) {
-        case types.GET_QUIZZES_BY_TYPE.SUCCESS: 
-            return {
-                ...state,
-                [action.data.type]: action.data.content
-            };
+        case types.GET_QUIZZES_BY_TOPIC.SUCCESS: 
+            return action.data;
+        case types.CLEAR_QUIZZES_BY_TOPIC: 
+            return [];
         default:
             return state;
     }
@@ -93,10 +46,10 @@ const registers = (state = initialState.registers, action) => {
 
 const loading = (state = initialState.loading, action) => {
     switch (action.type) {
-        case types.GET_QUIZZES_BY_TYPE.REQUEST:
+        case types.GET_TOPICS_BY_CATEGORY.REQUEST:
             return true;
-        case types.GET_QUIZZES_BY_TYPE.SUCCESS:
-        case types.GET_QUIZZES_BY_TYPE.FAILURE:
+        case types.GET_TOPICS_BY_CATEGORY.SUCCESS:
+        case types.GET_TOPICS_BY_CATEGORY.FAILURE:
             return false;
         default:
             return state;
@@ -105,10 +58,10 @@ const loading = (state = initialState.loading, action) => {
 
 const error = (state = initialState.error, action) => {
     switch (action.type) {
-        case types.GET_QUIZZES_BY_TYPE.REQUEST:
-        case types.GET_QUIZZES_BY_TYPE.SUCCESS:
+        case types.GET_TOPICS_BY_CATEGORY.REQUEST:
+        case types.GET_TOPICS_BY_CATEGORY.SUCCESS:
             return null;
-        case types.GET_QUIZZES_BY_TYPE.FAILURE:
+        case types.GET_TOPICS_BY_CATEGORY.FAILURE:
             return action.error;
         default:
             return state;
@@ -117,7 +70,7 @@ const error = (state = initialState.error, action) => {
 
 export default combineReducers({
     registers,
-    isFreeMode,
+    quizzes,
     loading,
     error
 });

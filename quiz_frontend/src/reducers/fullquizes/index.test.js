@@ -17,7 +17,6 @@ const dummyError = 'error';
 const initialState = {
     loading: false,
     error: null,
-    isFreeMode: false,
     registers: {
         library: [],
         framework: [],
@@ -28,20 +27,20 @@ const initialState = {
 };
 
 describe('Reducer fullquizzes test', () => {
-    it('GET_QUIZZES_BY_TYPE_REQUEST test' ,() => {
+    it('GET_TOPICS_BY_CATEGORY_REQUEST test' ,() => {
         expect(
             reducer(initialState, {
-                type: types.GET_QUIZZES_BY_TYPE.REQUEST
+                type: types.GET_TOPICS_BY_CATEGORY.REQUEST
             })
         ).toEqual({ 
             ...initialState, 
             loading: true
         });
     });
-    it('GET_QUIZZES_BY_TYPE_SUCCESS test' ,() => {
+    it('GET_TOPICS_BY_CATEGORY_SUCCESS test' ,() => {
         expect(
             reducer(initialState, {
-                type: types.GET_QUIZZES_BY_TYPE.SUCCESS,
+                type: types.GET_TOPICS_BY_CATEGORY.SUCCESS,
                 data: {
                     type: 'library',
                     content: dummyRegister
@@ -57,12 +56,12 @@ describe('Reducer fullquizzes test', () => {
             } 
         });
     });
-    it('GET_QUIZZES_BY_TYPE_FAILURE test' ,() => {
+    it('GET_TOPICS_BY_CATEGORY_FAILURE test' ,() => {
         expect(
             reducer(
                 initialState, 
                 {
-                    type: types.GET_QUIZZES_BY_TYPE.FAILURE,
+                    type: types.GET_TOPICS_BY_CATEGORY.FAILURE,
                     error: dummyError
                 }
             )

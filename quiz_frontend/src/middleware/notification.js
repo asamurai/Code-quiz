@@ -17,7 +17,7 @@ const asyncTypesConstants = Object.values(types)
  * List of async constants that need to be ignored
  */
 const EXCEPTION_LIST = [
-    fullquizzes.GET_QUIZZES_BY_TYPE.SUCCESS,
+    fullquizzes.GET_TOPICS_BY_CATEGORY.SUCCESS,
     user.USER_SIGNIN.SUCCESS,
     user.USER_SIGNOUT.SUCCESS
 ];

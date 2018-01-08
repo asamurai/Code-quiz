@@ -79,18 +79,12 @@ export const getQuizResults = quizSessionId => async dispatch => {
     }
 };
 
-export const getQuizListByUserId = (userId, requestBody, pages) => async dispatch => {
+export const getQuizListByUserId = userId => async dispatch => {
     try {
         await dispatch({
             type: types.GET_QUIZZES_BY_USER_ID.REQUEST
         });
-        const {
-            limit
-        } = requestBody;
-        const {
-            currentPage
-        } = pages;
-        const { data } = await withAuth('get',`/quizzes/list/${userId}?page=${currentPage}&limit=${limit}`);
+        const data = await withAuth('get',`/quizzes/by_user/${userId}`);
         await dispatch({
             type: types.GET_QUIZZES_BY_USER_ID.SUCCESS,
             data
