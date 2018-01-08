@@ -1,6 +1,6 @@
 from rest_framework import serializers
 from .models import QuizCategory, Question, Quiz, Answer, Chain, Topic
-
+from profiles.serializers import UserSimpleSerializer
 
 class QuizCategorySerializer(serializers.ModelSerializer):
     class Meta:
@@ -12,6 +12,7 @@ class QuizSerializer(serializers.ModelSerializer):
     class Meta:
         model = Quiz
         fields = '__all__'
+        depth = 3
 
 
 class AnswerNestedSerializer(serializers.ModelSerializer):
@@ -61,17 +62,21 @@ class QuestionsSerializer(serializers.ModelSerializer):
 
 
 class QuizNestedSerializer(serializers.ModelSerializer):
+    # questions = QuestionsSerializer(many=True, read_only=True)
+
+    class Meta:
+        model = Quiz
+        fields = ("id", "topic", "title", "description", "image", "created")
+        # extra_kwargs = {'user': {'read_only': True}}
+
+
+class QuizReadSerializer(serializers.ModelSerializer):
     questions = QuestionsSerializer(many=True, read_only=True)
+    user = UserSimpleSerializer(read_only=True)
 
     class Meta:
         model = Quiz
-        fields = ("user", "topic", "title", "description", "image", "created", "questions")
-
-
-class QuizSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Quiz
-        fields = "__all__"
+        fields = ("id", "user", "topic", "title", "description", "image", "created", "questions")
 
 
 class ChainSerializer(serializers.ModelSerializer):

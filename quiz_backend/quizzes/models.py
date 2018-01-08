@@ -59,10 +59,16 @@ class Answer(models.Model):
     def __str__(self):
         return self.answer
 
+# class Session(models.Model):
+#     datetime_start = models.DateTimeField(auto_now_add=True)
+#     # quiz = models.ForeignKey(Quiz, on_delete=models.CASCADE)
+#     is_finished = models.BooleanField(default=False)
 
 class UserProgress(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     question = models.ForeignKey(Question, on_delete=models.CASCADE)
-    quiz = models.ForeignKey(Quiz, on_delete=models.CASCADE)
-    answer = models.ForeignKey(Answer, on_delete=models.CASCADE)
-    datetime_finished = models.DateTimeField(blank=True)
+    # quiz = models.ForeignKey(Quiz, on_delete=models.CASCADE)
+    answer = models.ForeignKey(Answer, on_delete=models.CASCADE, null=True)
+    datetime_started = models.DateTimeField(blank=True)
+    is_finished = models.BooleanField(default=False)
+
