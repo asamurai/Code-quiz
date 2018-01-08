@@ -25,6 +25,25 @@ export const createQuizSession = quizId => async dispatch => {
     }
 };
 
+export const createQuiz = createData => async dispatch => {
+    try {
+        await dispatch({
+            type: types.CREATE_QUIZ.REQUEST
+        });
+        const { data } = await withAuth('post',`/quizzes/`, createData);
+        await dispatch({
+            type: types.CREATE_QUIZ.SUCCESS,
+            data,
+            message: 'Quiz created succesfully.'
+        });
+    } catch (error) {
+        await dispatch({
+            type: types.CREATE_QUIZ.FAILURE,
+            error: 'Quiz creation failed.'
+        });         
+    }
+};
+
 export const deleteQuizSession = quizId => async dispatch => {
     try {
         await dispatch({

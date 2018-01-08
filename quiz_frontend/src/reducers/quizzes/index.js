@@ -90,6 +90,15 @@ const quizList = (state = initialState.quizList, action) => {
                     totalFinded: state.pages.totalFinded.length - 1
                 }
             };
+        case types.CREATE_QUIZ.SUCCESS:
+            return {
+                ...state,
+                register: state.register.concat(action.data),
+                pages: {
+                    ...state.pages,
+                    totalFinded: state.pages.totalFinded.length + 1
+                }
+            };        
         default:
             return state;
     }
@@ -117,7 +126,15 @@ const formQuizCreation = (state = initialState.formQuizCreation, action) => {
                 ...state,
                 maxLevel: action.maxLevel
             };
-        case types.GET_QUIZ_BY_ID.FAILURE:
+        case types.CREATE_QUIZ.SUCCESS:
+            return {
+                ...state,
+                data: action.data,
+                state: {
+                    ...initialState.formQuizCreation.state,
+                    edit: true
+                }
+            };
         default:
             return state;
     }

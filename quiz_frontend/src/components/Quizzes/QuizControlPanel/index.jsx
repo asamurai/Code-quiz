@@ -32,6 +32,15 @@ class QuizControlPanel extends Component {
         }
     }
 
+    onSubmit = () => {
+        const {
+            formName,
+            onSubmit
+        } = this.props;
+
+        onSubmit(formName);
+    }
+
     goToQuizList = () => this.props.history.push(QUIZ_LIST_PATH);
 
     goToEdit = () => this.props.history.push(QUIZ_EDIT_PATH);
@@ -39,7 +48,6 @@ class QuizControlPanel extends Component {
     render () {
         const {
             state,
-            onSubmit,
             onDelete
         } = this.props;
 
@@ -58,7 +66,7 @@ class QuizControlPanel extends Component {
                         type="primary"
                         icon="check"
                         style={{ marginRight: '20px' }}
-                        onClick={onSubmit}
+                        onClick={this.onSubmit}
                     >
                         Create Quiz
                     </Button>
@@ -110,7 +118,7 @@ class QuizControlPanel extends Component {
                         type="primary"
                         icon="save"
                         style={{ marginRight: '20px' }}
-                        onClick={onSubmit}
+                        onClick={this.onSubmit}
                     >
                         Save
                     </Button>

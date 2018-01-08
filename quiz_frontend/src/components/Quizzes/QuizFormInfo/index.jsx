@@ -46,7 +46,7 @@ class QuizFormInfo extends Component {
             quizTopics
         } = this.props;
 
-        const selectedCategory = +fields.category_id.value;
+        const selectedCategory = +fields.category.value;
         const topics = selectedCategory ? quizTopics.filter(topic => topic.category === selectedCategory) : quizTopics;
 
         return (
@@ -79,7 +79,7 @@ class QuizFormInfo extends Component {
                         <FormItem
                             label="Category"
                         >
-                            {getFieldDecorator('category_id', {
+                            {getFieldDecorator('category', {
                                 rules: [
                                     { 
                                         required: true, 
@@ -104,7 +104,7 @@ class QuizFormInfo extends Component {
                         <FormItem
                             label="Topic"
                         >
-                            {getFieldDecorator('topic_id', {
+                            {getFieldDecorator('topic', {
                                 rules: [
                                     { 
                                         required: true, 
@@ -160,8 +160,8 @@ const QuizFormInfoHOC = Form.create({
     mapPropsToFields(props) {
       return getPropsObject(props.fields, [
         'description',
-        'category_id',
-        'topic_id',
+        'category',
+        'topic',
         'title',
         'imageId'
       ]);
@@ -172,13 +172,6 @@ const QuizFormInfoHOC = Form.create({
     state: PropTypes.objectOf(PropTypes.any).isRequired,
     quizCategories: PropTypes.arrayOf(PropTypes.any).isRequired,
     quizTopics: PropTypes.arrayOf(PropTypes.any).isRequired
-        // fields={this.state.formQuizMainInfoValues}
-        // formName={'formQuizMainInfoValues'}
-        
-        // onChange={this.handleFormChange('formQuizMainInfoValues')}
-        // onChangeState={setQuizCreateFormState}
-        // onSubmit={this.handleSubmitForm}
-        // onDelete={this.handleDeleteForm}
   };
   
   export default QuizFormInfoHOC;
