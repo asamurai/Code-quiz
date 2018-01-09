@@ -6,7 +6,7 @@ export default [
         route: routes.FULL_QUIZZES_PATH,
         label: navNames.FULL_QUIZZES,
         permitions: '*',
-        auth: false
+        auth: true
     },
     {
         route: routes.FAQ_PATH,

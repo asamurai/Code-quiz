@@ -15,8 +15,18 @@ import {
 class CategoryQuizElement extends Component {
     render () {
         const {
-            test
+            test,
+            test: {
+                user: {
+                    first_name,
+                    last_name,
+                    username
+                }
+            }
         } = this.props;
+
+        const author = (first_name.length > 0 || last_name.length > 0) ? `${first_name} ${last_name}` : username;
+
         return (
             <div
                 style={{
@@ -35,7 +45,7 @@ class CategoryQuizElement extends Component {
                         {test.title}
                     </div>
                     <div>
-                        Author: {test.user}
+                        Author: {author}
                     </div>
                 </Link>
                 <div>

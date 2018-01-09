@@ -154,6 +154,14 @@ class Quizzes extends Component {
         deleteQuizByQuizId(quizId);
     }
 
+    handleUnmountQuizForm = () => {
+        const {
+            resetQuizzesCreateForm
+        } = this.props;
+
+        resetQuizzesCreateForm();
+    }
+
     handleFormChange = (formName) => (changedFields) => {
         switch (true) {
             case changedFields.category && changedFields.category.value !== this.state[formName].category.value:
@@ -182,7 +190,6 @@ class Quizzes extends Component {
         } = this.state;
         const {
             formQuiz,
-            user,
             createQuiz,
             updateQuiz,
             match: {
@@ -195,8 +202,7 @@ class Quizzes extends Component {
                 const data = {
                     title: formQuizMainInfoValues.title.value,
                     description: formQuizMainInfoValues.description.value,
-                    topic: +formQuizMainInfoValues.topic.value,
-                    user: user.data.user_id
+                    topic: +formQuizMainInfoValues.topic.value
                 };
                 createQuiz(data);
             }
@@ -205,8 +211,7 @@ class Quizzes extends Component {
                 const data = {
                     title: formQuizMainInfoValues.title.value,
                     description: formQuizMainInfoValues.description.value,
-                    topic: +formQuizMainInfoValues.topic.value,
-                    user: user.data.user_id
+                    topic: +formQuizMainInfoValues.topic.value
                 };
                 updateQuiz(quizId, data);
             }
@@ -295,7 +300,7 @@ class Quizzes extends Component {
 
                                             onChange: this.handleFormChange('formQuizMainInfoValues'),
                                             quizCategories: classifiers.categoriesList,
-                                            quizTopics: classifiers.quizTopics,
+                                            quizTopics: classifiers.quizTopics
                                         }}
                                         questionFormData={{
                                             state: formQuiz.state,
@@ -310,6 +315,7 @@ class Quizzes extends Component {
                                         onChangeState={setQuizCreateFormState}
                                         onSubmit={this.handleSubmitForm}
                                         onDelete={this.handleDeleteForm}
+                                        handleUnmountQuizForm={this.handleUnmountQuizForm}
                                     />
                                 );
                             case 'training':
