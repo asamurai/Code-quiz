@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
-import { 
+import {
     Form,
     Row,
     Col,
@@ -19,14 +19,14 @@ import { getPropsObject } from './../../../../helpers/hocHelpers';
 
 /**
  * Profile account component
- * 
- * existing fields: 
+ *
+ * existing fields:
  * image+
  * name+
  * surname+
  * username+
  * bio+
- * 
+ *
  * @class Account
  * @extends {Component}
  */
@@ -128,7 +128,7 @@ class Account extends Component {
                     onCancel={this.handleCancelUploadImageDialog}
                     cancelText={'Cancel'}
                 >
-                    <div 
+                    <div
                         style={{
                             display: 'flex',
                             alignItems: 'center',
@@ -141,7 +141,7 @@ class Account extends Component {
                         />
                     </div>
                 </Modal>
-                <Form>  
+                <Form>
                     <Row span="12">
                         <Col span="12">
                             <FormItem
@@ -149,15 +149,15 @@ class Account extends Component {
                             >
                                 {getFieldDecorator('first_name', {
                                     rules: [
-                                        { 
-                                            required: !viewState, 
-                                            message: 'Please input your first name.' 
+                                        {
+                                            required: !viewState,
+                                            message: 'Please input your first name.'
                                         }
                                     ]
                                 })(
                                     <Input
                                         disabled={viewState}
-                                        placeholder="First name" 
+                                        placeholder="First name"
                                     />
                                 )}
                             </FormItem>
@@ -166,15 +166,15 @@ class Account extends Component {
                             >
                                 {getFieldDecorator('last_name', {
                                     rules: [
-                                        { 
-                                            required: !viewState, 
-                                            message: 'Please input your last name.' 
+                                        {
+                                            required: !viewState,
+                                            message: 'Please input your last name.'
                                         }
                                     ]
                                 })(
-                                    <Input 
+                                    <Input
                                         disabled={viewState}
-                                        placeholder="Last name" 
+                                        placeholder="Last name"
                                     />
                                 )}
                             </FormItem>
@@ -183,15 +183,15 @@ class Account extends Component {
                             >
                                 {getFieldDecorator('username', {
                                     rules: [
-                                        { 
-                                            required: !viewState, 
-                                            message: 'Please input your username.' 
+                                        {
+                                            required: !viewState,
+                                            message: 'Please input your username.'
                                         }
                                     ]
                                 })(
-                                    <Input 
+                                    <Input
                                         disabled={viewState}
-                                        placeholder="Username" 
+                                        placeholder="Username"
                                     />
                                 )}
                             </FormItem>
@@ -249,7 +249,7 @@ class Account extends Component {
                     </Row>
                     {
                         editState &&
-                        <Row span="12" style={{padding: '10px'}}> 
+                        <Row span="12" style={{padding: '10px'}}>
                             <Button
                                 type="primary"
                                 style={{marginRight: '10px'}}
@@ -267,7 +267,7 @@ class Account extends Component {
                     }
                     {
                         viewState &&
-                        <Row span="12" style={{padding: '10px'}}> 
+                        <Row span="12" style={{padding: '10px'}}>
                             <Button
                                 type="primary"
                                 style={{marginRight: '10px'}}
