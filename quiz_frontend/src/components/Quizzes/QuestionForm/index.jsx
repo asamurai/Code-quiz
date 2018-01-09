@@ -41,7 +41,6 @@ class QuestionForm extends Component {
                                     selectQuestion,
                                     setQuestionCreateFormState
                                 } = this.props;
-
                                 const selectedQuestion = questions.find(question => question.question_id === key);
                                 selectQuestion(selectedQuestion);
                                 setQuestionCreateFormState({
@@ -64,7 +63,6 @@ class QuestionForm extends Component {
                                     selectQuestion,
                                     setQuestionCreateFormState
                                 } = this.props;
-
                                 const selectedQuestion = questions.find(question => question.question_id === key);
                                 selectQuestion(selectedQuestion);
                                 setQuestionCreateFormState({
@@ -73,7 +71,7 @@ class QuestionForm extends Component {
                                 console.log('edit question data', key);
                             }}
                         />
-                        <Button                            
+                        <Button
                             type="danger"
                             icon="delete"
                             disabled={this.props.state.view}
@@ -139,7 +137,7 @@ class QuestionForm extends Component {
         text_question: el.text_question || '',
         source: el.source || '',
         level: el.level || '',
-        chain: this.props.chains.find(chain => chain.id === el.chain).chain_text || '', 
+        chain: this.props.chains.find(chain => chain.id === el.chain).chain_text || '',
         correct_answers: el.answers.filter(answer => answer.is_true),
         incorrect_answers: el.answers.filter(answer => !answer.is_true),
     });
@@ -159,9 +157,9 @@ class QuestionForm extends Component {
             setQuizMaxLevels
         } = this.props;
         const maxLevel = questions && questions.length > 0 ? Math.max(...questions.map(question => question.level)) + 1 : this.state.maxLevel;
-        setQuizMaxLevels(maxLevel);     
+        setQuizMaxLevels(maxLevel);
     }
-    
+
     componentWillReceiveProps(nextProps) {
         const {
             questions,
@@ -176,10 +174,10 @@ class QuestionForm extends Component {
             const levels = Array(maxLevel).fill('').map((el, ind) => ind + 1);
             this.setState({
                 levels
-            });            
-        }  
+            });
+        }
     }
-    
+
 
     render () {
         const {
@@ -198,7 +196,7 @@ class QuestionForm extends Component {
                     </Button>
                 </Row>
                 <br/>
-                <Table 
+                <Table
                     dataSource={questions.map(this.generateQuestionsRow)}
                     columns={this.questionListColumns}
                 />

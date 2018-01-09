@@ -128,24 +128,34 @@ class TopicViewSet(ModelViewSet):
         serializer = TopicSerializer(Topic.objects.filter(category__id=id).all(), many=True)
         return Response(serializer.data)
 
+
 class QuestionList(APIView):
     ''' Implements passing quiz '''
     permission_classes = (IsAuthenticated,)
+
     def get(self, request, id):
         # Check, have user passed any tests
-        queryset = UserProgress.objects.filter(quiz__id=id).filter(user=request.user).all()
+        queryset = UserProgress.objects.filter(question__quiz__id=id).filter(user=request.user).all()
         # if user doesnt send answers on test
-        # if queryset.filter()
-        if queryset.filter(answers=None).all():
+        if not queryset.filter(is_finished=False):
+            # if user pass test first time
+            questions = Question.objects.filter(level=1).order_by('?').distinct()
+            print(questions)
+            serializer = QuestionsSerializerForPassing(questions, many=True)
+            for question in queryset:
+                UserProgress.objects.create(question=question, user=request.user, datetime_started=now())
+        elif queryset.filter(answers=None).all():
+            # print('here2')
             questions = queryset.filter(answers=None).all()
         else:
             questions = Quiz.objects.filter(level=1)
             serializer = QuestionsSerializerForPassing(questions, many=True)
-            for question in queryset:
-                test = UserProgress.objects.create(question=question, user=request.user, datetime_started=now())
         return Response(serializer.data)
 
     def post(self, request, id):
         serializer = QuestionsSerializerForPassing(data=request.data, many=True)
         if serializer.is_valid(raise_exception=True):
             return Response({'ok': 'ok'})
+
+    # def __distinct_by_chain(self, queryset):
+
