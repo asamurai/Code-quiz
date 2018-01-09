@@ -12,7 +12,6 @@ https://docs.djangoproject.com/en/1.11/ref/settings/
 
 import os
 from .production import DB_POSTGRES
-
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
@@ -30,6 +29,7 @@ ALLOWED_HOSTS = []
 
 
 # Application definition
+
 
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -144,6 +144,8 @@ EMAIL_USE_SSL = True
 REST_FRAMEWORK = {
     'EXCEPTION_HANDLER': 'profiles.utils.custom_exception_handler',
     'DEFAULT_AUTHENTICATION_CLASSES': (
-        'rest_framework.authentication.TokenAuthentication',
+        'quiz_backend.bearer_auth.BearerAuthentication',
     ),
 }
+
+
