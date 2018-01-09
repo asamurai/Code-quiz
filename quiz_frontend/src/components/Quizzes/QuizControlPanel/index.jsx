@@ -9,8 +9,7 @@ import {
 } from 'antd';
 
 import {
-    QUIZ_LIST_PATH,
-    QUIZ_EDIT_PATH
+    QUIZ_LIST_PATH
 } from './../../../routes';
 
 const Confirm = Modal.confirm;
@@ -43,7 +42,14 @@ class QuizControlPanel extends Component {
 
     goToQuizList = () => this.props.history.push(QUIZ_LIST_PATH);
 
-    goToEdit = () => this.props.history.push(QUIZ_EDIT_PATH);
+    goToEdit = () => {
+        const {
+            onChangeState
+        } = this.props;
+        onChangeState({
+            edit: true
+        });
+    }
 
     render () {
         const {
@@ -133,7 +139,8 @@ QuizControlPanel.propTypes = {
     state: PropTypes.objectOf(PropTypes.bool).isRequired,
 
     onSubmit: PropTypes.func.isRequired,
-    onDelete: PropTypes.func.isRequired
+    onDelete: PropTypes.func.isRequired,
+    onChangeState: PropTypes.func.isRequired
 };
 
 export default withRouter(QuizControlPanel);

@@ -139,7 +139,7 @@ class QuestionList(APIView):
         if queryset.filter(answers=None).all():
             questions = queryset.filter(answers=None).all()
         else:
-            questions = Quiz.objects.filter(level=1).
+            questions = Quiz.objects.filter(level=1)
             serializer = QuestionsSerializerForPassing(questions, many=True)
             for question in queryset:
                 test = UserProgress.objects.create(question=question, user=request.user, datetime_started=now())

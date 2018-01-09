@@ -44,6 +44,31 @@ export const createQuiz = createData => async dispatch => {
     }
 };
 
+export const updateQuiz = (quizId, dataToUpdate) => async dispatch => {
+    try {
+        await dispatch({
+            type: types.UPDATE_QUIZ.REQUEST
+        });
+        const { data } = await withAuth('put',`/quizzes/${quizId}/`, dataToUpdate);
+        await dispatch({
+            type: types.UPDATE_QUIZ.SUCCESS,
+            data,
+            message: 'Quiz updated succesfully.'
+        });
+        await dispatch({
+            type: types.CHANGE_QUIZZES_CREATE_FORM_STATE,
+            state: {
+                view: true
+            }
+        });
+    } catch (error) {
+        await dispatch({
+            type: types.UPDATE_QUIZ.FAILURE,
+            error: 'Quiz creation failed.'
+        });         
+    }
+};
+
 export const deleteQuizSession = quizId => async dispatch => {
     try {
         await dispatch({
@@ -121,7 +146,7 @@ export const getQuizByQuizId = quizId => async dispatch => {
         await dispatch({
             type: types.GET_QUIZ_BY_ID.REQUEST
         });
-        const { data } = await withAuth('get',`/quizzes/quiz/${quizId}`);
+        const { data } = await withAuth('get',`/quizzes/${quizId}`);
         await dispatch({
             type: types.GET_QUIZ_BY_ID.SUCCESS,
             data

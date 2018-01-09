@@ -98,7 +98,18 @@ const quizList = (state = initialState.quizList, action) => {
                     ...state.pages,
                     totalFinded: state.pages.totalFinded.length + 1
                 }
-            };        
+            };
+        case types.UPDATE_QUIZ.SUCCESS:
+            return {
+                ...state,
+                //uncomment after backend update
+                // register: state.register.filter(quiz => quiz.id !== action.data.id).concat(action.data),
+                register: state.register,
+                pages: {
+                    ...state.pages,
+                    totalFinded: state.pages.totalFinded.length + 1
+                }
+            };
         default:
             return state;
     }
@@ -134,6 +145,11 @@ const formQuizCreation = (state = initialState.formQuizCreation, action) => {
                     ...initialState.formQuizCreation.state,
                     edit: true
                 }
+            };
+        case types.UPDATE_QUIZ.SUCCESS:
+            return {
+                ...state,
+                data: action.data
             };
         default:
             return state;

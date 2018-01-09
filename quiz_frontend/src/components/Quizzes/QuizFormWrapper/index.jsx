@@ -18,7 +18,15 @@ import {
 
 const TabPane = Tabs.TabPane;
 
-class QuizFormWrapper extends Component {    
+class QuizFormWrapper extends Component {   
+    
+    componentWillUnmount() {
+        const {
+            handleUnmountQuizForm
+        } = this.props;
+        handleUnmountQuizForm();
+    }
+
     componentWillMount() {
         const {
             location: {
@@ -91,7 +99,8 @@ class QuizFormWrapper extends Component {
             onDelete,
             quizFormName,
             mainInfoFormData,
-            questionFormData
+            questionFormData,
+            onChangeState
         } = this.props;
 
         return (
@@ -102,6 +111,7 @@ class QuizFormWrapper extends Component {
 
                     onSubmit={onSubmit}
                     onDelete={onDelete}
+                    onChangeState={onChangeState}
                 />
                 <Tabs defaultActiveKey="1">
                     <TabPane tab="Main info" key="1">
@@ -130,7 +140,8 @@ QuizFormWrapper.propTypes = {
 
     onChangeState: PropTypes.func.isRequired,
     onSubmit: PropTypes.func.isRequired,
-    onDelete: PropTypes.func.isRequired
+    onDelete: PropTypes.func.isRequired,
+    handleUnmountQuizForm: PropTypes.func.isRequired
 };
 
 export default withRouter(QuizFormWrapper);

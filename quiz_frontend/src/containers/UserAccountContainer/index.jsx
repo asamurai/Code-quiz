@@ -155,7 +155,8 @@ class UserAccountContainer extends Component {
             if (changeField === 'password') {
                 data = {
                     old_password: data.oldPassword,
-                    new_password: data.newPassword
+                    new_password: data.newPassword,
+                    confirm_password: data.confirmPassword
                 };
             }
             updateFunction(userId, data);
