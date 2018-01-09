@@ -273,12 +273,15 @@ class QuizModalForm extends Component {
                     >
                         Correct
                     </Checkbox>
-                    <Button
-                        type="danger"
-                        icon="close-circle-o"
-                        disabled={viewState}
-                        onClick={() => this.handleDeleteAnswer(key)}
-                    />
+                    {
+                        !viewState &&
+                        <Button
+                            type="danger"
+                            icon="close-circle-o"
+                            disabled={viewState}
+                            onClick={() => this.handleDeleteAnswer(key)}
+                        />
+                    }
                 </Row>
             );
         });
@@ -303,7 +306,7 @@ class QuizModalForm extends Component {
                             <FormItem
                                 label="Question"
                             >
-                                {getFieldDecorator('question', {
+                                {getFieldDecorator('text_question', {
                                     rules: [
                                         { 
                                             required: true, 
@@ -317,27 +320,16 @@ class QuizModalForm extends Component {
                                     />
                                 )}
                             </FormItem>
-                            <FormItem
-                                label="Description"
-                            >
-                                {getFieldDecorator('description', {
-                                    rules: [
-                                        { 
-                                            required: false, 
-                                            message: 'Please input question description.' 
-                                        }
-                                    ]
-                                })(
-                                    <TextArea
-                                        disabled={viewState}
-                                        autosize={{ minRows: 6 }}
-                                        maxLength="1000"
-                                    />
-                                )}
-                            </FormItem>
                             {
                                 answers.length > 0 &&
-                                answersList
+                                <Row span="12">
+                                    <Row span="12" style={{marginBottom: '20px'}}>
+                                        {'Answers list:'}
+                                    </Row>
+                                    <Row span="12">
+                                        {answersList}
+                                    </Row>
+                                </Row>
                             }
                             {
                                 answers.length === 0 &&
@@ -407,13 +399,13 @@ class QuizModalForm extends Component {
                                 )}
                             </FormItem>
                             <FormItem
-                                label="Sources"
+                                label="Source"
                             >
-                                {getFieldDecorator('sources', {
+                                {getFieldDecorator('source', {
                                     rules: [
                                         { 
                                             required: true, 
-                                            message: 'Please input your sources.' 
+                                            message: 'Please input your source.' 
                                         }
                                     ]
                                 })(
@@ -451,11 +443,10 @@ const QuizModalFormHOC = Form.create({
     },
     mapPropsToFields(props) {
         return getPropsObject(props.fields, [
-          'question',
-          'description',
+          'text_question',
           'chain',
           'level',
-          'sources'
+          'source'
         ]);
     }
 })(QuizModalForm);

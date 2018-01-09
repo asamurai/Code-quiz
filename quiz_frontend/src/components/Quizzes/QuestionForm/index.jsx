@@ -86,9 +86,9 @@ class QuestionForm extends Component {
                 width: 150
             },
             {
-                key: 'question',
+                key: 'text_question',
                 title: 'question',
-                dataIndex: 'question',
+                dataIndex: 'text_question',
                 width: 250
             },
             {
@@ -102,9 +102,9 @@ class QuestionForm extends Component {
                 dataIndex: 'chain'
             },
             {
-                key: 'sources',
-                title: 'sources',
-                dataIndex: 'sources'
+                key: 'source',
+                title: 'source',
+                dataIndex: 'source'
             },
             {
                 key: 'correct_answers',
@@ -136,13 +136,12 @@ class QuestionForm extends Component {
     generateQuestionsRow = el => ({
         action: el.question_id,
         key: uuid(),
-        question: el.question || '',
-        description: el.description || '',
-        sources: el.sources || '',
+        text_question: el.text_question || '',
+        source: el.source || '',
         level: el.level || '',
-        chain: el.chain || '', 
-        correct_answers: el.answers.filter(answer => answer.isCorrect),
-        incorrect_answers: el.answers.filter(answer => !answer.isCorrect),
+        chain: this.props.chains.find(chain => chain.id === el.chain).chain_text || '', 
+        correct_answers: el.answers.filter(answer => answer.is_true),
+        incorrect_answers: el.answers.filter(answer => !answer.is_true),
     });
 
     handleOpenQuestionModal = () => {
@@ -187,8 +186,6 @@ class QuestionForm extends Component {
             questions
         } = this.props;
 
-        console.log(this.state.levels);
-
         return (
             <Row span="12">
                 <Row span="12">
@@ -214,6 +211,7 @@ QuestionForm.propTypes = {
     maxLevel: PropTypes.number.isRequired,
     state: PropTypes.objectOf(PropTypes.bool).isRequired,
     questions: PropTypes.arrayOf(PropTypes.any).isRequired,
+    chains: PropTypes.arrayOf(PropTypes.any).isRequired,
 
     selectQuestion: PropTypes.func.isRequired,
     setQuestionCreateFormState: PropTypes.func.isRequired,

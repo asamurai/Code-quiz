@@ -31,109 +31,6 @@ const ACTIONS = {
     ...quizzesActions
 };
 
-const mockQuestions = [
-    {
-        question_id: 1,
-        question: 'question 1?',
-        description: 'description question 1',
-        level: 1,
-        chain: 2,
-        sources: 'question 1 sources',
-        answers: [
-            {
-                id: 1,
-                answer: 'answer 1',
-                is_true: true
-            },
-            {
-                id: 2,
-                answer: 'answer 2',
-                is_true: false
-            },
-            {
-                id: 3,
-                answer: 'answer 3',
-                is_true: false
-            }
-        ]
-    },
-    {
-        question_id: 2,
-        question: 'question 2?',
-        description: 'description question 2',
-        level: 1,
-        chain: 1,
-        sources: 'question 2 sources',
-        answers: [
-            {
-                id: 4,
-                answer: 'answer 1',
-                is_true: false
-            },
-            {
-                id: 5,
-                answer: 'answer 2',
-                is_true: true
-            },
-            {
-                id: 6,
-                answer: 'answer 3',
-                is_true: false
-            }
-        ]
-    },
-    {
-        question_id: 3,
-        question: 'question 3?',
-        description: 'description question 3',
-        sources: 'question 3 sources',
-        level: 2,
-        chain: 1,
-        answers: [
-            {
-                id: 7,
-                answer: 'answer 1',
-                is_true: true
-            },
-            {
-                id: 8,
-                answer: 'answer 2',
-                is_true: false
-            },
-            {
-                id: 9,
-                answer: 'answer 3',
-                is_true: true
-            }
-        ]
-    },
-    {
-        question_id: 4,
-        question: 'question 4?',
-        description: 'description question 4',
-        sources: 'question 4 sources',
-        level: 3,
-        chain: 1,
-        answers: [
-            {
-                id: 10,
-                answer: 'answer 1',
-                is_true: true
-            },
-            {
-                id: 11,
-                answer: 'answer 2',
-                is_true: false
-            },
-            {
-                id: 12,
-                answer: 'answer 3',
-                is_true: true
-            }
-        ]
-    }
-];
-
 class Quizzes extends Component {
 
     constructor(props) {
@@ -148,11 +45,10 @@ class Quizzes extends Component {
         };
 
         this.defFormQuestionValues = {
-            question: { value: '' },
+            text_question: { value: '' },
             level: { value: '' },
             chain: { value: '' },
-            description: { value: '' },
-            sources: { value: '' },
+            source: { value: '' },
             answers: []
         };
 
@@ -225,11 +121,10 @@ class Quizzes extends Component {
             this.setState((prevState) => ({
                 formQuestionValues: {
                     ...prevState.formQuestionValues,
-                    question: { value: questionData.question },
+                    text_question: { value: questionData.text_question },
                     level: { value: `${questionData.level}` },
                     chain: { value: `${questionData.chain}` },
-                    description: { value: questionData.description },
-                    sources: { value: questionData.sources },
+                    source: { value: questionData.source },
                     answers: questionData.answers
                 }
             }));
@@ -405,11 +300,12 @@ class Quizzes extends Component {
                                         questionFormData={{
                                             state: formQuiz.state,
                                             maxLevel: formQuiz.maxLevel,
-                                            questions: mockQuestions,
+                                            questions: formQuiz.data ? formQuiz.data.questions : [],
 
                                             setQuizMaxLevels: setQuizMaxLevels,
                                             selectQuestion: setQuestionData,
-                                            setQuestionCreateFormState: setQuestionCreateFormState
+                                            setQuestionCreateFormState: setQuestionCreateFormState,
+                                            chains: classifiers.questionChains
                                         }}
                                         onChangeState={setQuizCreateFormState}
                                         onSubmit={this.handleSubmitForm}
@@ -430,7 +326,7 @@ class Quizzes extends Component {
                     maxLevel={formQuiz.maxLevel}
                     answers={formQuestionValues.answers}
                     questionChains={classifiers.questionChains}
-                    questions={mockQuestions}
+                    questions={formQuiz.data ? formQuiz.data.questions : []}
                     formName={'formQuestionValues'}
                     fields={formQuestionValues}
                     
