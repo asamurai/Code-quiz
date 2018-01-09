@@ -1,4 +1,6 @@
 from django.shortcuts import get_object_or_404
+from django.core.exceptions import ObjectDoesNotExist
+from django.utils.timezone import now
 
 from rest_framework.viewsets import ModelViewSet
 from rest_framework.permissions import IsAuthenticated
@@ -6,10 +8,11 @@ from rest_framework.decorators import detail_route, list_route
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import generics
+from rest_framework.exceptions import PermissionDenied
 
 from .serializers import QuizCategorySerializer, QuestionsSerializer, QuizSerializer, ChainSerializer, \
-    AnswerNestedSerializerForPassing, QuestionsSerializerForPassing, TopicSerializer, QuizNestedSerializer
-from .models import QuizCategory, Question, Quiz, Chain, Topic
+    AnswerNestedSerializerForPassing, QuestionsSerializerForPassing, TopicSerializer, QuizNestedSerializer, QuizReadSerializer
+from .models import QuizCategory, Question, Quiz, Chain, Topic, UserProgress
 
 
 class QuizCategoryViewSet(ModelViewSet):
@@ -33,24 +36,68 @@ class QuizCategoryViewSet(ModelViewSet):
 
 
 class QuizViewSet(ModelViewSet):
-    # permission_classes = (IsAuthenticated,) its for auth!!!
-    serializer_class = QuizNestedSerializer
+    """ /quizzes
+    GET quizzes, POST  and change quizzes with bearer auth
+    """
+    serializer_class = QuizReadSerializer
     queryset = Quiz.objects.all()
+    http_method_names = ['get', 'post', 'head', 'put']
 
-    def list(self, request):
-        serializer = QuizSerializer(self.queryset, many=True)
-        return Response(serializer.data)
+    def create(self, request):
+        """ Create quiz
+        curl http://127.0.0.1:8000/quizzes/
+        -H 'Authorization: Token 7a95bba5bb6e8207097f55daabebe56573a230cd'
+        -X POST -H "Content-Type: application/json"  -d '{ "topic": 1, "title": "1", "description": "test" }'
+        response:
+        {"id":9,"topic":1,"title":"1","description":"test","image":null}
+        :param request: json request
+        :return:
+        """
+        serialized = QuizNestedSerializer(data=request.data)
+        if serialized.is_valid(raise_exception=True):
+            serialized.validated_data['user'] = request.user
+            serialized.save()
+            return Response(QuizReadSerializer(serialized.instance).data)
 
-    # @detail_route(methods=['get'])
+    def update(self,request,pk=None):
+        """
+        curl http://127.0.0.1:8000/quizzes/6/
+        -H 'Authorization: Token 7a95bba5bb6e8207097f55daabebe56573a230cd'
+        -X PUT -H "Content-Type: application/json"  -
+        d '{ "topic": 1, "title": "1", "description": "test" }'
+        :param request: json request
+        :param pk: primary key for quiz instance
+        :return: Full quiz data with user's lastname, firstname and questions with answers
+        """
+        serialized = QuizNestedSerializer(data=request.data)
+        if serialized.is_valid(raise_exception=True):
+            serialized.data['user'] = request.user
+            try:
+                quiz = Quiz.objects.get(pk=pk)
+            except ObjectDoesNotExist:
+                raise PermissionDenied()
+            if quiz.user != request.user:
+                raise PermissionDenied()
+            serialized.update(quiz, serialized.validated_data)
+            return Response(QuizReadSerializer(quiz).data)
+
     def get_queryset_by_user(self, request, id=None):
-        serializer = QuizSerializer(Quiz.objects.filter(user__id=id).all(), many=True)
+        serializer = QuizReadSerializer(Quiz.objects.filter(user__id=id).all(), many=True)
         return Response(serializer.data)
 
     def get_queryset_by_topic(self, request, id=None):
-        serializer = QuizSerializer(Quiz.objects.filter(topic__id=id).all(), many=True)
+        serializer = QuizReadSerializer(Quiz.objects.filter(topic__id=id).all(), many=True)
         return Response(serializer.data)
 
-
+    def get_permissions(self):
+        """
+        Instantiates and returns the list of permissions that this view requires.
+        """
+        if self.action in ['update', 'create']:
+            permission_classes = [IsAuthenticated]
+        else:
+            permission_classes = []
+        return [permission() for permission in permission_classes]
 
 class QuestionViewSet(ModelViewSet):
     serializer_class = QuestionsSerializer
@@ -83,10 +130,19 @@ class TopicViewSet(ModelViewSet):
 
 class QuestionList(APIView):
     ''' Implements passing quiz '''
+    permission_classes = (IsAuthenticated,)
     def get(self, request, id):
-        # should be userprogress
-        queryset = Question.objects.filter(quiz__id=id).all()
-        serializer = QuestionsSerializerForPassing(queryset, many=True)
+        # Check, have user passed any tests
+        queryset = UserProgress.objects.filter(quiz__id=id).filter(user=request.user).all()
+        # if user doesnt send answers on test
+        # if queryset.filter()
+        if queryset.filter(answers=None).all():
+            questions = queryset.filter(answers=None).all()
+        else:
+            questions = Quiz.objects.filter(level=1).
+            serializer = QuestionsSerializerForPassing(questions, many=True)
+            for question in queryset:
+                test = UserProgress.objects.create(question=question, user=request.user, datetime_started=now())
         return Response(serializer.data)
 
     def post(self, request, id):
