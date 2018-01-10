@@ -18,6 +18,12 @@ export const GET_QUIZZES_BY_USER_ID = createRequestTypes('GET_QUIZZES_BY_USER_ID
 
 export const GET_QUIZ_BY_ID = createRequestTypes('GET_QUIZ_BY_ID');
 
+export const CREATE_QUESTION = createRequestTypes('CREATE_QUESTION');
+
+export const UPDATE_QUESTION = createRequestTypes('UPDATE_QUESTION');
+
+export const DELETE_QUESTION = createRequestTypes('DELETE_QUESTION');
+
 export const SET_QUESTION_DATA = 'SET_QUESTION_DATA';
 
 export const CHANGE_QUIZZES_CREATE_FORM_STATE = 'CHANGE_QUIZZES_CREATE_FORM_STATE';

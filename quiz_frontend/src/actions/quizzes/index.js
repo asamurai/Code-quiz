@@ -1,6 +1,7 @@
 import * as quizzesTypes from './../../constants/container_constants/quizzes';
 import { 
-    withAuth 
+    withAuth,
+    withAuthToken
 } from './../../api';
 
 const types = {
@@ -30,7 +31,7 @@ export const createQuiz = createData => async dispatch => {
         await dispatch({
             type: types.CREATE_QUIZ.REQUEST
         });
-        const { data } = await withAuth('post',`/quizzes/`, createData);
+        const { data } = await withAuthToken('post',`/quizzes/`, createData);
         await dispatch({
             type: types.CREATE_QUIZ.SUCCESS,
             data,
@@ -49,7 +50,7 @@ export const updateQuiz = (quizId, dataToUpdate) => async dispatch => {
         await dispatch({
             type: types.UPDATE_QUIZ.REQUEST
         });
-        const { data } = await withAuth('put',`/quizzes/${quizId}/`, dataToUpdate);
+        const { data } = await withAuthToken('put',`/quizzes/${quizId}/`, dataToUpdate);
         await dispatch({
             type: types.UPDATE_QUIZ.SUCCESS,
             data,
@@ -174,6 +175,84 @@ export const deleteQuizByQuizId = quizId => async dispatch => {
         await dispatch({
             type: types.DELETE_QUIZ_BY_QUIZ_ID.FAILURE,
             error: 'Quiz delete failed.'
+        });         
+    }
+};
+
+export const createQuestion = questionData => async dispatch => {
+    try {
+        await dispatch({
+            type: types.CREATE_QUESTION.REQUEST
+        });
+        const { data } = await withAuth('post',`/questions/`, questionData);
+        await dispatch({
+            type: types.CREATE_QUESTION.SUCCESS,
+            data,
+            message: 'Question created succesfully.'
+        });
+        await dispatch({
+            type: types.CHANGE_QUESTION_CREATE_FORM_STATE,
+            state: {}
+        });
+        await dispatch({
+            type: types.RESET_QUESTION_CREATE_FORM
+        });
+    } catch (error) {
+        await dispatch({
+            type: types.CREATE_QUESTION.FAILURE,
+            error: 'Question create failed.'
+        });         
+    }
+};
+
+export const editQuestion = (questionId, questionData) => async dispatch => {
+    try {
+        await dispatch({
+            type: types.UPDATE_QUESTION.REQUEST
+        });
+        const { data } = await withAuth('put',`/questions/${questionId}/`, questionData);
+        await dispatch({
+            type: types.UPDATE_QUESTION.SUCCESS,
+            data,
+            message: 'Question updated succesfully.'
+        });
+        await dispatch({
+            type: types.CHANGE_QUESTION_CREATE_FORM_STATE,
+            state: {}
+        });
+        await dispatch({
+            type: types.RESET_QUESTION_CREATE_FORM
+        });
+    } catch (error) {
+        await dispatch({
+            type: types.UPDATE_QUESTION.FAILURE,
+            error: 'Question update failed.'
+        });         
+    }
+};
+
+export const deleteQuestion = questionId => async dispatch => {
+    try {
+        await dispatch({
+            type: types.DELETE_QUESTION.REQUEST
+        });
+        await withAuth('delete',`/questions/${questionId}/`);
+        await dispatch({
+            type: types.DELETE_QUESTION.SUCCESS,
+            questionId,
+            message: 'Question deleted succesfully.'
+        });
+        await dispatch({
+            type: types.CHANGE_QUESTION_CREATE_FORM_STATE,
+            state: {}
+        });
+        await dispatch({
+            type: types.RESET_QUESTION_CREATE_FORM
+        });
+    } catch (error) {
+        await dispatch({
+            type: types.DELETE_QUESTION.FAILURE,
+            error: 'Question deleted failed.'
         });         
     }
 };
