@@ -2,7 +2,8 @@ import * as userTypes from './../../constants/container_constants/user';
 import { 
     saveToken,
     removeToken,
-    withAuth 
+    withAuth,
+    withAuthToken
 } from './../../api';
 
 import {
@@ -113,7 +114,7 @@ export const updateUserPassword = (id, userData) => async dispatch => {
         await dispatch({
             type: types.USER_PASSWORD_CHANGE.REQUEST
         }); 
-        await withAuth('put',`/change_password/`, userData);
+        await withAuthToken('put',`/change_password/`, userData);
         await dispatch({
             type: types.USER_PASSWORD_CHANGE.SUCCESS,
             title: 'Update succeed!',

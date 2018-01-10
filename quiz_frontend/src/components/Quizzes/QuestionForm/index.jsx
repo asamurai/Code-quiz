@@ -41,12 +41,11 @@ class QuestionForm extends Component {
                                     selectQuestion,
                                     setQuestionCreateFormState
                                 } = this.props;
-                                const selectedQuestion = questions.find(question => question.question_id === key);
+                                const selectedQuestion = questions.find(question => question.id === key);
                                 selectQuestion(selectedQuestion);
                                 setQuestionCreateFormState({
                                     view: true
                                 });
-                                console.log('view question data', key);
                             }}
                         />
                         <Button
@@ -63,12 +62,11 @@ class QuestionForm extends Component {
                                     selectQuestion,
                                     setQuestionCreateFormState
                                 } = this.props;
-                                const selectedQuestion = questions.find(question => question.question_id === key);
+                                const selectedQuestion = questions.find(question => question.id === key);
                                 selectQuestion(selectedQuestion);
                                 setQuestionCreateFormState({
                                     edit: true
                                 });
-                                console.log('edit question data', key);
                             }}
                         />
                         <Button
@@ -76,7 +74,11 @@ class QuestionForm extends Component {
                             icon="delete"
                             disabled={this.props.state.view}
                             onClick={() => {
-                                console.log('delete question data', key);
+                                const {
+                                    onDeleteQuestion
+                                } = this.props;
+
+                                onDeleteQuestion(key);
                             }}
                         />
                     </Row>
@@ -132,7 +134,7 @@ class QuestionForm extends Component {
     }
 
     generateQuestionsRow = el => ({
-        action: el.question_id,
+        action: el.id,
         key: uuid(),
         text_question: el.text_question || '',
         source: el.source || '',
@@ -181,7 +183,8 @@ class QuestionForm extends Component {
 
     render () {
         const {
-            questions
+            questions,
+            loading
         } = this.props;
 
         return (
@@ -199,21 +202,28 @@ class QuestionForm extends Component {
                 <Table
                     dataSource={questions.map(this.generateQuestionsRow)}
                     columns={this.questionListColumns}
+                    loading={loading}
                 />
             </Row>
         );
     }
 }
 
+QuestionForm.defaultProps = {
+    maxLevel: 1
+};
+
 QuestionForm.propTypes = {
-    maxLevel: PropTypes.number.isRequired,
+    maxLevel: PropTypes.number,
     state: PropTypes.objectOf(PropTypes.bool).isRequired,
     questions: PropTypes.arrayOf(PropTypes.any).isRequired,
     chains: PropTypes.arrayOf(PropTypes.any).isRequired,
+    loading: PropTypes.bool.isRequired,
 
     selectQuestion: PropTypes.func.isRequired,
     setQuestionCreateFormState: PropTypes.func.isRequired,
-    setQuizMaxLevels: PropTypes.func.isRequired
+    setQuizMaxLevels: PropTypes.func.isRequired,
+    onDeleteQuestion: PropTypes.func.isRequired
 };
 
 export default QuestionForm;

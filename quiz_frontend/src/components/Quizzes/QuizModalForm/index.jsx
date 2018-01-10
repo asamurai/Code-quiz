@@ -31,8 +31,12 @@ class QuizModalForm extends Component {
                 key="submit_edit"
                 type="primary"
                 icon="save"
+                loading={this.props.loading}
                 onClick={() => {
-                    console.log('save question');
+                    const {
+                        onEdit
+                    } = this.props;
+                    onEdit();
                 }}
             >
                 Save
@@ -56,8 +60,12 @@ class QuizModalForm extends Component {
                 key="submit_create"
                 type="primary"
                 icon="check"
+                loading={this.props.loading}
                 onClick={() => {
-                    console.log('submit creating');
+                    const {
+                        onCreate
+                    } = this.props;
+                    onCreate();
                 }}
             >
                 Create
@@ -424,16 +432,23 @@ class QuizModalForm extends Component {
     }
 }
 
+QuizModalForm.defaultProps = {
+    maxLevel: 1
+};
+
 QuizModalForm.propTypes = {
     form: PropTypes.objectOf(PropTypes.any).isRequired,
-    maxLevel: PropTypes.number.isRequired,
+    maxLevel: PropTypes.number,
     modalStatus: PropTypes.objectOf(PropTypes.bool).isRequired,
     questionChains: PropTypes.arrayOf(PropTypes.any).isRequired,
     answers: PropTypes.arrayOf(PropTypes.any).isRequired,
     questions: PropTypes.arrayOf(PropTypes.any).isRequired,
+    loading: PropTypes.bool.isRequired,
 
     closeModal: PropTypes.func.isRequired,
-    onSetNewAnswerList: PropTypes.func.isRequired
+    onSetNewAnswerList: PropTypes.func.isRequired,
+    onCreate: PropTypes.func.isRequired,
+    onEdit: PropTypes.func.isRequired
     // questionData: PropTypes.objectOf(PropTypes.any).isRequired
 };
 

@@ -29,3 +29,10 @@ export const withAuth = (method, url, data) => axios({
     data,
     headers: { Authorization: `Bearer ${cookie.load(TOKEN_NAME) || ''}` }
 });
+
+export const withAuthToken = (method, url, data) => axios({ 
+    method,
+    url: `${apiUrl}${url}`,
+    data,
+    headers: { Authorization: `Token ${cookie.load(TOKEN_NAME) || ''}` }
+});

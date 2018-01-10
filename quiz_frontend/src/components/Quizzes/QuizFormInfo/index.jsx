@@ -6,7 +6,8 @@ import {
     // Row,
     Col,
     Input,
-    Select
+    Select,
+    Icon
 } from 'antd';
 
 import { getPropsObject } from './../../../helpers/hocHelpers';
@@ -43,11 +44,18 @@ class QuizFormInfo extends Component {
             },
             state,
             quizCategories,
-            quizTopics
+            quizTopics,
+            loading
         } = this.props;
 
         const selectedCategory = +fields.category.value;
         const topics = selectedCategory ? quizTopics.filter(topic => topic.category === selectedCategory) : quizTopics;
+
+        if (loading) {
+            return (
+                <Icon type={'loading'}/>
+            );
+        }
 
         return (
             <Form>
@@ -171,7 +179,8 @@ const QuizFormInfoHOC = Form.create({
   QuizFormInfo.propTypes = {
     state: PropTypes.objectOf(PropTypes.any).isRequired,
     quizCategories: PropTypes.arrayOf(PropTypes.any).isRequired,
-    quizTopics: PropTypes.arrayOf(PropTypes.any).isRequired
+    quizTopics: PropTypes.arrayOf(PropTypes.any).isRequired,
+    loading: PropTypes.bool.isRequired
   };
   
   export default QuizFormInfoHOC;

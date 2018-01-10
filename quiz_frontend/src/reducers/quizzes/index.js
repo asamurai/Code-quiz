@@ -132,6 +132,30 @@ const formQuizCreation = (state = initialState.formQuizCreation, action) => {
                 ...state,
                 data: action.data
             };
+        case types.CREATE_QUESTION.SUCCESS: 
+            return {
+                ...state,
+                data: {
+                    ...state.data,
+                    questions: state.data.questions.concat(action.data)
+                }
+            };
+        case types.UPDATE_QUESTION.SUCCESS: 
+            return {
+                ...state,
+                data: {
+                    ...state.data,
+                    questions: state.data.questions.filter(question => question.id !== action.data.id).concat(action.data)
+                }
+            };
+        case types.DELETE_QUESTION.SUCCESS: 
+            return {
+                ...state,
+                data: {
+                    ...state.data,
+                    questions: state.data.questions.filter(question => question.id !== action.questionId)
+                }
+            };
         case types.SET_QUIZ_MAX_LEVELS:
             return {
                 ...state,
@@ -227,6 +251,9 @@ const error = (state = initialState.error, action) => {
         case types.CREATE_QUIZ_SESSION.FAILURE:
         case types.GET_QUIZ_LEVEL.FAILURE:
         case types.DELETE_QUIZ_SESSION.FAILURE:
+        case types.CREATE_QUESTION.FAILURE:
+        case types.UPDATE_QUESTION.FAILURE:
+        case types.DELETE_QUESTION.FAILURE:
             return action.error;
         default:
             return state;
@@ -241,6 +268,9 @@ const loading = (state = initialState.loading, action) => {
         case types.GET_QUIZ_RESULTS.REQUEST:
         case types.DELETE_QUIZ_SESSION.REQUEST:
         case types.GET_QUIZZES_BY_USER_ID.REQUEST:
+        case types.CREATE_QUESTION.REQUEST:
+        case types.UPDATE_QUESTION.REQUEST:
+        case types.DELETE_QUESTION.REQUEST:
             return true;
         case types.GET_QUIZZES_BY_USER_ID.SUCCESS:
         case types.DELETE_QUIZ_SESSION.SUCCESS:
@@ -248,11 +278,17 @@ const loading = (state = initialState.loading, action) => {
         case types.CREATE_QUIZ_SESSION.SUCCESS:
         case types.GET_QUIZ_LEVEL.SUCCESS:
         case types.GET_QUIZ_BY_ID.SUCCESS:
+        case types.CREATE_QUESTION.SUCCESS:
+        case types.UPDATE_QUESTION.SUCCESS:
+        case types.DELETE_QUESTION.SUCCESS:
         case types.GET_QUIZ_RESULTS.FAILURE:
         case types.CREATE_QUIZ_SESSION.FAILURE:
         case types.GET_QUIZ_LEVEL.FAILURE:
         case types.DELETE_QUIZ_SESSION.FAILURE:
         case types.GET_QUIZ_BY_ID.FAILURE:
+        case types.CREATE_QUESTION.FAILURE:
+        case types.UPDATE_QUESTION.FAILURE:
+        case types.DELETE_QUESTION.FAILURE:
             return false;
         default:
             return state;

@@ -113,7 +113,8 @@ class QuizList extends Component {
             dataSource,
             pages,
             limit,
-            onPageChange
+            onPageChange,
+            loading
         } = this.props;
 
         return (
@@ -142,6 +143,7 @@ class QuizList extends Component {
                             pageSize: limit,
                             onChange: (el) => onPageChange(el)
                         }}
+                        loading={loading}
                     />
                 </Row>
             </div>
@@ -158,6 +160,7 @@ QuizList.propTypes = {
     }).isRequired,
     limit: PropTypes.number.isRequired,
     topics: PropTypes.arrayOf(PropTypes.any).isRequired,
+    loading: PropTypes.bool.isRequired,
 
     onPageChange: PropTypes.func.isRequired,
     onDeleteQuiz: PropTypes.func.isRequired
