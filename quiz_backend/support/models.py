@@ -24,7 +24,7 @@ class SupportTopic(models.Model):
 
 class Comment(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
-    topic = models.ForeignKey(SupportCategory, on_delete=models.CASCADE, related_name='comemnts')
+    topic = models.ForeignKey(SupportTopic, on_delete=models.CASCADE, related_name='comments')
     rate = models.IntegerField(default=0)
-    description = models.TextField()
+    comment_text = models.TextField()
     created = models.DateTimeField(auto_now_add=True)

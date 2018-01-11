@@ -13,20 +13,19 @@ class SupportCategorySerializer(serializers.ModelSerializer):
 
 
 class CommentSerializer(serializers.ModelSerializer):
-    user = UserSimpleSerializer(read_only=True)
 
     class Meta:
-        model = SupportTopic
+        model = Comment
         fields = '__all__'
 
 
 class SupportReadTopicSerializer(serializers.ModelSerializer):
-    user = UserSimpleSerializer(read_only=True)
-    comments = CommentSerializer(read_only=True)
+    user = UserSimpleSerializer()
+    comments = CommentSerializer(many=True)
 
     class Meta:
         model = SupportTopic
-        fields = '__all__'
+        fields = ('id', 'user', 'name','category','rate','is_closed','created', 'comments')
 
 class SupportTopicSerializer(serializers.ModelSerializer):
 
