@@ -8,7 +8,7 @@
  * 
  * @return {object}            Form state
  */
-export const getPropsObject = (props, fieldNames) => {
+const getPropsObject = (props, fieldNames) => {
     const madePropsObj = (prev, curName) => ({
         ...prev,
         [curName]: {
@@ -29,7 +29,7 @@ export const getPropsObject = (props, fieldNames) => {
  * 
  * @return {object}               form values
  */
-export const getValuesFromForm = formState => 
+const getValuesFromForm = formState => 
     Object.entries(formState)
     .reduce(
         (prev, curr) => ({
@@ -49,10 +49,17 @@ export const getValuesFromForm = formState =>
  * 
  * @return {object}                 form values
  */
-export const getCertainValuesFromForm = (formState, keys) => 
+const getCertainValuesFromForm = (formState, keys) => 
     Object.entries(formState)
     .filter((entry) => keys.includes(entry[0]))
     .reduce((prev, curr) => ({
         ...prev,
         [curr[0]]: curr[1]['value']
     }), {});
+
+
+export default {
+    getPropsObject,
+    getValuesFromForm,
+    getCertainValuesFromForm
+};

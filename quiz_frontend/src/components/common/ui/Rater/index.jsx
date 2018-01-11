@@ -3,12 +3,14 @@ import PropTypes from 'prop-types';
 import { Rate } from 'antd';
 
 class Rater extends Component {
+
     constructor(props) {
         super(props);
         this.state = {
             value: this.props.value
         };
     }
+
     handleChange = (value) => {
         const {
             handleSetValue
@@ -18,6 +20,7 @@ class Rater extends Component {
             handleSetValue(value);
         }
     }
+    
     render() {
         const { 
             value

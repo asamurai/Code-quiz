@@ -76,11 +76,14 @@ class QuizDetailedInfo extends Component {
                             >
                                 {topic.description}
                             </div>
-                            {/* <div>
-                                <img
-                                    src={mockTestData.image}
-                                />
-                            </div> */}
+                            {
+                                topic.image &&
+                                <div>
+                                    <img
+                                        src={topic.image}
+                                    />
+                                </div>
+                            }
                         </div>
                     </div>
                 }

@@ -15,11 +15,15 @@ import {
 
 import uuid from 'uuid';
 
-import { getPropsObject } from './../../../helpers/hocHelpers';
+import { hocHelpers } from './../../../helpers';
 
 const FormItem = Form.Item;
 const Option = Select.Option;
 const TextArea = Input.TextArea;
+
+const {
+    getPropsObject
+} = hocHelpers;
 
 class QuizModalForm extends Component {
 

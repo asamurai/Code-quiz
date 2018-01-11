@@ -1,7 +1,6 @@
 import * as quizzesTypes from './../../constants/container_constants/quizzes';
 import { 
-    withAuth,
-    withAuthToken
+    withAuth
 } from './../../api';
 
 const types = {
@@ -13,7 +12,7 @@ export const createQuiz = createData => async dispatch => {
         await dispatch({
             type: types.CREATE_QUIZ.REQUEST
         });
-        const { data } = await withAuthToken('post',`/quizzes/`, createData);
+        const { data } = await withAuth('post',`/quizzes/`, createData);
         await dispatch({
             type: types.CREATE_QUIZ.SUCCESS,
             data,
@@ -32,7 +31,7 @@ export const updateQuiz = (quizId, dataToUpdate) => async dispatch => {
         await dispatch({
             type: types.UPDATE_QUIZ.REQUEST
         });
-        const { data } = await withAuthToken('put',`/quizzes/${quizId}/`, dataToUpdate);
+        const { data } = await withAuth('put',`/quizzes/${quizId}/`, dataToUpdate);
         await dispatch({
             type: types.UPDATE_QUIZ.SUCCESS,
             data,
@@ -48,24 +47,6 @@ export const updateQuiz = (quizId, dataToUpdate) => async dispatch => {
         await dispatch({
             type: types.UPDATE_QUIZ.FAILURE,
             error: 'Quiz creation failed.'
-        });         
-    }
-};
-
-export const getQuizResults = quizId => async dispatch => {
-    try {
-        await dispatch({
-            type: types.GET_QUIZ_RESULTS.REQUEST
-        });
-        const { data } = await withAuth('get',`/quizzes/results/${quizId}`);
-        await dispatch({
-            type: types.GET_QUIZ_RESULTS.SUCCESS,
-            data
-        });
-    } catch (error) {
-        await dispatch({
-            type: types.GET_QUIZ_RESULTS.FAILURE,
-            error: error.message
         });         
     }
 };
@@ -290,16 +271,8 @@ export const setQuizMaxLevels = maxLevel => dispatch => dispatch({
     maxLevel
 });
 
-export const resetQuizzesErrors = () => dispatch => dispatch({
-    type: types.RESET_QUIZZES_ERRORS
-});
-
 export const resetQuizzesTraining = () => dispatch => dispatch({
     type: types.RESET_QUIZ_TRAINING
-});
-
-export const resetQuizzesList = () => dispatch => dispatch({
-    type: types.RESET_QUIZ_LIST
 });
 
 export const resetQuizzesCreateForm = () => dispatch => dispatch({
@@ -308,11 +281,6 @@ export const resetQuizzesCreateForm = () => dispatch => dispatch({
 
 export const resetQuestionCreateForm = () => dispatch => dispatch({
     type: types.RESET_QUESTION_CREATE_FORM
-});
-
-export const setQuizzesRequestBody = requestBody => dispatch => dispatch({
-    type: types.SET_QUIZZES_REQUEST_BODY,
-    requestBody
 });
 
 export const setQuizzesPages = pages => dispatch => dispatch({

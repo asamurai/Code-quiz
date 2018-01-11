@@ -24,8 +24,8 @@ import Main from './../../components/Main';
 
 import { stringHelper } from './../../helpers';
 import {
-    getAuthDataFromStorage
-} from './../../helpers/localStorageHelpers';
+    localStorageHelpers
+} from './../../helpers';
 
 import {
     USER_ACCOUNT_PATH
@@ -37,6 +37,10 @@ import 'antd/dist/antd.css';
 const {
     capitalize
 } = stringHelper;
+
+const {
+    getAuthDataFromStorage
+} = localStorageHelpers;
 
 class Application extends Component {
     constructor(props){

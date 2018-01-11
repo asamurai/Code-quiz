@@ -2,15 +2,18 @@ import * as userTypes from './../../constants/container_constants/user';
 import { 
     saveToken,
     removeToken,
-    withAuth,
-    withAuthToken
+    withAuth
 } from './../../api';
 
 import {
+    localStorageHelpers
+} from './../../helpers';
+
+const {
     setAuthDataIntoStorage,
     getAuthDataFromStorage,
     removeAuthDataFromStorage
-} from './../../helpers/localStorageHelpers';
+} = localStorageHelpers;
 
 const types = {
     ...userTypes
@@ -114,7 +117,7 @@ export const updateUserPassword = (id, userData) => async dispatch => {
         await dispatch({
             type: types.USER_PASSWORD_CHANGE.REQUEST
         }); 
-        await withAuthToken('put',`/change_password/`, userData);
+        await withAuth('put',`/change_password/`, userData);
         await dispatch({
             type: types.USER_PASSWORD_CHANGE.SUCCESS,
             title: 'Update succeed!',
@@ -123,7 +126,7 @@ export const updateUserPassword = (id, userData) => async dispatch => {
     } catch (error) {
         await dispatch({
             type: types.USER_PASSWORD_CHANGE.FAILURE,
-            error: error.message
+            error: Object.values(error.response.data).map(el => el[0]).join(',')
         });    
     }
 };

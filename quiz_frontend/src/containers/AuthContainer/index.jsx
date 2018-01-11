@@ -18,6 +18,7 @@ class AuthContainer extends Component {
         this.handleSignIn = this.props.signIn.bind(this);
         this.handleSignUp = this.props.signUp.bind(this);
     }
+
     render () {
         const {
             match: {
@@ -36,6 +37,7 @@ class AuthContainer extends Component {
                 />
             );
         }
+        
         if(url.includes(routes.SIGNUP_PATH)){
             return (
                 <SignUp

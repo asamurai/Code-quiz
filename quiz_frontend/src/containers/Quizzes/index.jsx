@@ -20,8 +20,8 @@ import QuizTraining from './../../components/Quizzes/QuizTraining';
 import QuizModalForm from './../../components/Quizzes/QuizModalForm';
 
 import {
-    getCertainValuesFromForm
-} from './../../helpers/hocHelpers';
+    hocHelpers
+} from './../../helpers';
 
 import {
     QUIZ_FULL_PATH ,
@@ -34,6 +34,10 @@ import {
 const ACTIONS = {
     ...quizzesActions
 };
+
+const {
+    getCertainValuesFromForm
+} = hocHelpers;
 
 class Quizzes extends Component {
 
@@ -216,10 +220,7 @@ class Quizzes extends Component {
         const {
             formQuiz,
             createQuiz,
-            updateQuiz,
-            match: {
-                params
-            }
+            updateQuiz
         } = this.props;
 
         if (formName === 'formQuizMainInfoValues') {
@@ -232,7 +233,7 @@ class Quizzes extends Component {
                 createQuiz(data);
             }
             if (formQuiz.state.edit) {
-                const quizId = params.id;
+                const quizId = formQuiz.data.id;
                 const data = {
                     title: formQuizMainInfoValues.title.value,
                     description: formQuizMainInfoValues.description.value,

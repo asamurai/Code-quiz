@@ -10,6 +10,7 @@ import uuid from 'uuid';
 const Panel = Collapse.Panel;
 
 class FaqList extends Component {
+    
     renderElements = (el) => (
         <Panel
             key={uuid()}

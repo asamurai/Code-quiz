@@ -1,5 +1,11 @@
-export const setAuthDataIntoStorage = authData => localStorage.setItem('authData', JSON.stringify(authData));
+const setAuthDataIntoStorage = authData => localStorage.setItem('authData', JSON.stringify(authData));
 
-export const getAuthDataFromStorage = () => localStorage.getItem('authData');
+const getAuthDataFromStorage = () => localStorage.getItem('authData');
 
-export const removeAuthDataFromStorage = () => localStorage.removeItem('authData');
+const removeAuthDataFromStorage = () => localStorage.removeItem('authData');
+
+export default {
+    setAuthDataIntoStorage,
+    getAuthDataFromStorage,
+    removeAuthDataFromStorage
+};

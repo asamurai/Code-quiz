@@ -64,6 +64,7 @@ class HeaderNavigationAuth extends Component {
                 </Dropdown>
             );
         }
+        
         return (
             <div>
                 <Link to={routes.SIGNIN_PATH} className={styles.link}>{navigationTopNames.SIGN_IN}</Link>

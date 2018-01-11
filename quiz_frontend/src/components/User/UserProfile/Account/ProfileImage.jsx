@@ -52,6 +52,7 @@ class ProfileImage extends Component {
                 />
             );          
         }
+        
         return <span/>;
     }
 }

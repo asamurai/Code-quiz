@@ -15,7 +15,7 @@ const TextArea = Input.TextArea;
 
 import ProfileImage from './ProfileImage';
 
-import { getPropsObject } from './../../../../helpers/hocHelpers';
+import { hocHelpers } from './../../../../helpers';
 
 /**
  * Profile account component
@@ -30,6 +30,10 @@ import { getPropsObject } from './../../../../helpers/hocHelpers';
  * @class Account
  * @extends {Component}
  */
+
+const {
+    getPropsObject
+} = hocHelpers;
 
 class Account extends Component {
     constructor(props) {

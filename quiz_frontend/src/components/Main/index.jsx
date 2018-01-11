@@ -30,7 +30,7 @@ class Main extends Component {
                     <Route exact path={routes.HOME_PATH} component={HomeContainer}/>
                     <Route path={routes.SIGNIN_PATH} component={AuthContainer}/>
                     <Route path={routes.SIGNUP_PATH} component={AuthContainer}/>
-                    <Route path={routes.FULL_QUIZZES_PATH} component={FullQuizzesContainer}/>
+                    <PrivateRoute authed={loggedIn} path={routes.FULL_QUIZZES_PATH} component={FullQuizzesContainer}/>
                     <Route path={routes.FAQ_PATH} component={FAQ}/>
                     <PrivateRoute authed={loggedIn} path={routes.QUIZ_FULL_PATH} component={Quizzes}/>
                     <PrivateRoute authed={loggedIn} path={routes.USER_FULL_PATH} component={UserAccountContainer}/>

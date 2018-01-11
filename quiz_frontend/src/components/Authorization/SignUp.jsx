@@ -18,10 +18,12 @@ import {
 import styles from './signin.sass';
 
 class SignUp extends Component {
+    
     constructor(props){
         super(props);
         this.handleSubmit = this.handleSubmit.bind(this);
     }
+
     handleSubmit(e){
         const {
             form: {
@@ -36,6 +38,7 @@ class SignUp extends Component {
             }
         });
     }
+
     render() {
         const { 
             form:{

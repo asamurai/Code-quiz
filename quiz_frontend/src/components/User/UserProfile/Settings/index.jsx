@@ -9,7 +9,7 @@ import {
     Input
 } from 'antd';
 
-import { getPropsObject } from './../../../../helpers/hocHelpers';
+import { hocHelpers } from './../../../../helpers';
 
 const Panel = Collapse.Panel;
 const FormItem = Form.Item;
@@ -24,6 +24,10 @@ const PANELS = [
         header: 'Change user email'
     }
 ];
+
+const {
+    getPropsObject
+} = hocHelpers;
 
 class Settings extends Component {
 
