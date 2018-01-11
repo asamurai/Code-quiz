@@ -208,17 +208,21 @@ export const getQuizQuestionsForPass = (quizId, isFinished) => async dispatch =>
         await dispatch({
             type: types.GET_QUIZ_LEVEL.REQUEST
         });
-        if (isFinished) {
-            const { data } = await withAuth('get', `/pass_quiz/${quizId}`);
+        if (!isFinished) {
+            const { 
+                data: {
+                    questions
+                } 
+            } = await withAuth('get', `/pass_quiz/${quizId}/`);
             await dispatch({
                 type: types.GET_QUIZ_LEVEL.SUCCESS,
-                data
+                data: questions
             });
         } else {
             await dispatch({
                 type: types.GET_QUIZ_RESULTS.REQUEST
             });
-            const { data } = await withAuth('get', `/quiz_results/${quizId}`);
+            const { data } = await withAuth('get', `/quiz_results/${quizId}/`);
             await dispatch({
                 type: types.GET_QUIZ_RESULTS.SUCCESS,
                 data
@@ -237,21 +241,25 @@ export const sendQuizQuestionsForPass = (quizId, levelResults) => async dispatch
         await dispatch({
             type: types.GET_QUIZ_LEVEL.REQUEST
         });
-        const { data } = await withAuth('post', `/pass_quiz/${quizId}`, levelResults);
+        const { data } = await withAuth('post', `/pass_quiz/${quizId}/`, levelResults);
         if (data.is_finished) {
             await dispatch({
                 type: types.GET_QUIZ_RESULTS.REQUEST
             });
-            const { data: dataResults } = await withAuth('get', `/quiz_results/${quizId}`);
+            const { data: dataResults } = await withAuth('get', `/quiz_results/${quizId}/`);
             await dispatch({
                 type: types.GET_QUIZ_RESULTS.SUCCESS,
                 data: dataResults
             });
         } else {
-            const { data: nextLevelData } = await withAuth('get', `/pass_quiz/${quizId}`, levelResults);
+            const {
+                data: {
+                    questions
+                }
+            } = await withAuth('get', `/pass_quiz/${quizId}/`, levelResults);
             await dispatch({
                 type: types.GET_QUIZ_LEVEL.SUCCESS,
-                data: nextLevelData
+                data: questions
             });
         }
     } catch (error) {

@@ -85,20 +85,20 @@ class QuizTraining extends Component {
         }
     }
 
-    // componentDidMount() {
-    //     const {
-    //         getQuizLevel,
-    //         match: {
-    //             params: {
-    //                 id
-    //             }
-    //         }
-    //     } = this.props;
+    componentDidMount() {
+        const {
+            getQuizLevel,
+            match: {
+                params: {
+                    id
+                }
+            }
+        } = this.props;
 
-    //     if (id) {
-    //         getQuizLevel(id);
-    //     }
-    // }
+        if (id) {
+            getQuizLevel(id);
+        }
+    }
     
     componentWillUnmount() {
         const {

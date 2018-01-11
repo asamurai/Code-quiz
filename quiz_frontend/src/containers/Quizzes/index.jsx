@@ -74,7 +74,7 @@ class Quizzes extends Component {
             getQuizListByUserId,
             user
         } = this.props;
-        
+        console.log(user, component);
         if (user && !component) {
             const user_id = user.data.user_id;
             getQuizListByUserId(user_id);

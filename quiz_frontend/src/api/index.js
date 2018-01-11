@@ -5,8 +5,7 @@ import cookie from 'react-cookies';
 const {
     global: {
         api: {
-            url: apiUrl,
-            ttl: tokenTtl
+            url: apiUrl
         }
     }
 } = config;
@@ -14,11 +13,7 @@ const {
 const TOKEN_NAME = 'token';
 
 export const saveToken = token => cookie.save(TOKEN_NAME, token, {
-    path: '/',
-    expires: tokenTtl,
-    maxAge: tokenTtl,
-    secure: true,
-    httpOnly: true
+    path: '/'
 });
 
 export const removeToken = () => cookie.remove(TOKEN_NAME, { path: '/' });
