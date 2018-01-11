@@ -154,7 +154,7 @@ class QuestionList(APIView):
                 questions = Question.objects.filter(quiz__id=id).filter(level=1).order_by('chain', '?').distinct('chain')
                 time_started = now()
             else:
-                last_level = queryset.order_by('question__level').last().question.level
+                last_level = queryset.filter(is_finished=False).order_by('question__level').last().question.level
                 time_started = queryset.order_by('question__level').last().datetime_started
                 chain_exclude = []
                 for question_instance in queryset.filter(question__level=last_level):
@@ -179,11 +179,11 @@ class QuestionList(APIView):
                 return Response({'error': {'errors': 'You should send all received questions'}}, status=status.HTTP_400_BAD_REQUEST)
             is_finished = False
             result_list = serializer.save(owner=request.user)
-            level = UserProgress.objects.filter(user=request.user).filter(question__quiz_id=id).\
+            level = UserProgress.objects.filter(user=request.user).filter(is_finished=False).filter(question__quiz_id=id).\
                 order_by('question__level').last().question.level
             if level == Question.objects.filter(quiz_id=id).order_by('level').last().level or (True not in result_list):
                 is_finished = True
-                UserProgress.objects.filter(user=request.user).filter(question__quiz_id=id).update(is_finished=True)
+                UserProgress.objects.filter(user=request.user).filter(question__quiz_id=id).filter(is_finished=False).update(is_finished=True)
             return Response({'is_finished': is_finished})
 
     def delete(self,request, id):
@@ -192,6 +192,8 @@ class QuestionList(APIView):
 
 
 class QuizResultView(APIView):
+
+    permission_classes = (IsAuthenticated,)
 
     def get(self, request, id):
         queryset = UserProgress.objects.filter(user_id=request.user).filter(question__quiz_id=id)\
@@ -226,6 +228,8 @@ class QuizResultView(APIView):
 
                 quiz_serializer['questions'].append(question_serialized)
             response_data.append(quiz_serializer)
+        if request.query_params['latest'] == 'true':
+            response_data = response_data[-1]
         return Response(json.dumps(response_data))
 
 

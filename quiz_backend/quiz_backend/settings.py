@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     'rest_framework',
     'profiles',
     'quizzes',
+    'support',
     'rest_framework.authtoken',
     'django.contrib.sites'
 ]
@@ -148,5 +149,6 @@ REST_FRAMEWORK = {
         # 'rest_framework.authentication.TokenAuthentication',
     ),
 }
+
 
 
