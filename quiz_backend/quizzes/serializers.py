@@ -1,7 +1,6 @@
 from django.core.exceptions import ObjectDoesNotExist
 
 from rest_framework import serializers
-from rest_framework.fields import CurrentUserDefault
 
 from .models import QuizCategory, Question, Quiz, Answer, Chain, Topic, UserProgress
 from profiles.serializers import UserSimpleSerializer
@@ -17,7 +16,7 @@ class QuizSerializer(serializers.ModelSerializer):
     class Meta:
         model = Quiz
         fields = '__all__'
-        depth = 3
+        # depth = 3
 
 
 class AnswerNestedSerializer(serializers.ModelSerializer):
@@ -25,6 +24,12 @@ class AnswerNestedSerializer(serializers.ModelSerializer):
         model = Answer
         fields = ('answer', 'is_true', 'id')
         extra_kwargs = {'id': {'required': False, 'read_only': False}}
+
+
+class QuestionSerializesGET(serializers.ModelSerializer):
+    class Meta:
+        model = Question
+        fields = '__all__'
 
 
 class QuestionsSerializer(serializers.ModelSerializer):
@@ -122,7 +127,6 @@ class QuestionsSerializerPost(serializers.ModelSerializer):
         fields = ("id", 'answers')
         extra_kwargs = {'id': {'read_only': False}}
 
-
     def create(self, validated_data):
         question_id = validated_data['id']
         answers = validated_data.get('answers')
@@ -134,6 +138,7 @@ class QuestionsSerializerPost(serializers.ModelSerializer):
             raise serializers.ValidationError('You should answer on all questions')
         else:
             queryset.answer = answers[0]
+            queryset.datetime_started = queryset.datetime_started
             queryset.save()
         if len(answers) > 1:
             for answer in answers[1:]:
@@ -143,3 +148,17 @@ class QuestionsSerializerPost(serializers.ModelSerializer):
             if not answer.is_true:
                 return False
         return True
+
+
+class QuestionResult(serializers.ModelSerializer):
+
+    # chosen = serializers.PrimaryKeyRelatedField(many=True, queryset=UserProgress.answer)
+    answers = AnswerNestedSerializer(many=True, read_only=True)
+
+    class Meta:
+        model = Question
+        fields = ("id", "quiz", "chain", "level", "source", "answers", 'text_question')
+
+
+class QuizResult(QuizReadSerializer):
+    questions = QuestionResult(many=True, read_only=True)

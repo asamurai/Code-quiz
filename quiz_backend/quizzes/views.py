@@ -1,4 +1,5 @@
 import random
+import json
 
 from django.shortcuts import get_object_or_404
 from django.core.exceptions import ObjectDoesNotExist
@@ -11,11 +12,12 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import generics
 from rest_framework import status
-from rest_framework.exceptions import PermissionDenied
+from rest_framework.exceptions import PermissionDenied, NotFound
 
 from .serializers import QuizCategorySerializer, QuestionsSerializer, QuizSerializer, ChainSerializer, \
     AnswerNestedSerializerForPassing, QuestionsSerializerForPassing, TopicSerializer, QuizNestedSerializer, QuizReadSerializer, \
-    QuestionsSerializerPost
+    QuestionsSerializerPost, QuizResult, QuestionSerializesGET
+
 from .models import QuizCategory, Question, Quiz, Chain, Topic, UserProgress
 
 
@@ -35,7 +37,6 @@ class QuizCategoryViewSet(ModelViewSet):
         serializer = QuizCategorySerializer(queryset)
         serializer.data['topics'] = TopicSerializer(Topic.objects.filter(category__id=pk).all(),
                                                      many=True).data
-        print(serializer.data)
         return Response(serializer.data)
 
 
@@ -151,8 +152,10 @@ class QuestionList(APIView):
             # if user pass test first time
             if not queryset.filter(is_finished=False):
                 questions = Question.objects.filter(quiz__id=id).filter(level=1).order_by('chain', '?').distinct('chain')
+                time_started = now()
             else:
                 last_level = queryset.order_by('question__level').last().question.level
+                time_started = queryset.order_by('question__level').last().datetime_started
                 chain_exclude = []
                 for question_instance in queryset.filter(question__level=last_level):
                     if not question_instance.answer.is_true:
@@ -162,7 +165,7 @@ class QuestionList(APIView):
                     exclude(chain__in=chain_exclude).order_by('chain', '?').distinct('chain')
 
             for question in questions:
-                UserProgress.objects.create(question=question, user=request.user, datetime_started=now())
+                UserProgress.objects.create(question=question, user=request.user, datetime_started=time_started)
         else:
             questions = Question.objects.filter(id__in=[q['question'] for q in list(queryset_filtered.values('question'))]).all()
         serializer = QuestionsSerializerForPassing(questions, many=True)
@@ -172,23 +175,75 @@ class QuestionList(APIView):
         serializer = QuestionsSerializerPost(data=request.data, many=True)
         if serializer.is_valid(raise_exception=True):
             if len(UserProgress.objects.filter(user=request.user).filter(question__quiz__id=id).filter(answer=None)) != \
-                len(serializer.data):
-                # print(len(UserProgress.objects.filter(user=request.user).filter(question__quiz__id=id).filter(answer=None)))
-                # print(len(serializer.data))
+                    len(serializer.data):
                 return Response({'error': {'errors': 'You should send all received questions'}}, status=status.HTTP_400_BAD_REQUEST)
             is_finished = False
             result_list = serializer.save(owner=request.user)
             level = UserProgress.objects.filter(user=request.user).filter(question__quiz_id=id).\
                 order_by('question__level').last().question.level
-            # queryset = UserProgress.objects.filter(user=request.user).filter(question__quiz_id=id).\
-            #     filter(question__level=level).filter(answer__is_true=True)
             if level == Question.objects.filter(quiz_id=id).order_by('level').last().level or (True not in result_list):
                 is_finished = True
                 UserProgress.objects.filter(user=request.user).filter(question__quiz_id=id).update(is_finished=True)
-            print(result_list)
             return Response({'is_finished': is_finished})
 
     def delete(self,request, id):
         UserProgress.objects.filter(user=request.user).filter(question__quiz_id=id).filter(is_finished=False).delete()
         return Response(status=status.HTTP_200_OK)
 
+
+class QuizResultView(APIView):
+
+    def get(self, request, id):
+        queryset = UserProgress.objects.filter(user_id=request.user).filter(question__quiz_id=id)\
+            .filter(is_finished=True)
+        if not queryset:
+            raise NotFound('You have not passed this test')
+        datetime_started = queryset.order_by('datetime_started').distinct('datetime_started')
+        response_data = []
+        for datetime_result in datetime_started:
+            # quiz_serializes = QuizSerializer(Quiz.object.get(id=id)).data
+            questions = queryset.filter(datetime_started=datetime_result.datetime_started).order_by('question').distinct('question')
+            quiz = Quiz.objects.get(id=questions[0].question.quiz.id)
+            levels = Question.objects.filter(quiz=quiz).order_by('level').last().level + 1
+            chained_answers = 0
+            for level in range(1, levels):
+                chained_answers += Question.objects.filter(quiz=quiz).filter(level=level).order_by('chain').distinct('chain').count()
+            quiz_serializer = QuizSerializer(quiz).data
+            quiz_serializer['chained_answers'] = chained_answers
+            correct_chained_answers = 0
+            for question in questions:
+                if question.answer.is_true:
+                    correct_chained_answers += 1
+            quiz_serializer['correct_chained_answers'] = correct_chained_answers
+            quiz_serializer['questions'] = []
+            for question in questions:
+                answers = queryset.filter(datetime_started=datetime_result.datetime_started).filter(question_id=question.question.id).values('answer')
+                chosen = []
+                for answer in answers:
+                    chosen.append(answer['answer'])
+                question_serialized =  QuestionsSerializer(Question.objects.get(id=question.question.id)).data
+                question_serialized['chosen'] = chosen
+
+                quiz_serializer['questions'].append(question_serialized)
+            response_data.append(quiz_serializer)
+        return Response(json.dumps(response_data))
+
+
+class UserResults(APIView):
+
+    def get(self, request, id):
+
+        queryset = UserProgress.objects.filter(user_id=id).filter(is_finished=True)
+        if not queryset:
+            raise NotFound('You have not passed any tests')
+        datetime_started = queryset.order_by('datetime_started').distinct('datetime_started')
+
+        response_data = []
+        for started in datetime_started:
+            serializer = QuizSerializer(Quiz.objects.get(id=started.question.quiz.id)).data
+            serializer['passed'] = started.datetime_started
+            serializer['chains'] = Quiz.objects.filter(id=started.question.quiz.id).order_by('questions__chain').distinct('questions__chain').count()
+            serializer['levels'] = Question.objects.filter(quiz__id=started.question.quiz.id).order_by('level').last().level
+            response_data.append(serializer)
+
+        return Response(response_data)

@@ -5,7 +5,7 @@ from django.conf import settings
 from rest_framework.routers import SimpleRouter
 
 from .views import QuizCategoryViewSet, QuestionViewSet, QuizViewSet, ChainsList, QuestionList, \
-    ChainsListAll, TopicViewSet
+    ChainsListAll, TopicViewSet, QuizResultView, UserResults
 
 router = SimpleRouter()
 router.register("categories", QuizCategoryViewSet)
@@ -31,7 +31,9 @@ urlpatterns = [
     url(r'^pass_quiz/(?P<id>\d+)/$', QuestionList.as_view()),
     url(r'^quizzes/by_user/(?P<id>\d+)/$', quizzes_filter_by_user, name='quizzes-filter-by-user'),
     url(r'^quizzes/by_topic/(?P<id>\d+)/$', quizzes_filter_by_topic, name='quizzes-filter-by-topic'),
-    url(r'^topic/by_category/(?P<id>\d+)/$', topic_filter_by_category, name='topic-filter-by-category')
+    url(r'^topic/by_category/(?P<id>\d+)/$', topic_filter_by_category, name='topic-filter-by-category'),
+    url(r'^result/(?P<id>\d+)/$', QuizResultView.as_view()),
+    url(r'^result/user/(?P<id>\d+)/$',UserResults.as_view()),
 ]
 
 urlpatterns += router.urls
