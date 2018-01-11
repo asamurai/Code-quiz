@@ -369,6 +369,29 @@ class Quizzes extends Component {
         getQuizQuestionsForPass(quizId, is_finished);
     }
 
+    handleCompleteUncompletedQuizResult = () => {
+        const {
+            history,
+            match: {
+                params: {
+                    id: quizId
+                }
+            },
+            formTraining: {
+                is_finished
+            },
+            deleteUncompletedQuizResults
+        } = this.props;
+
+        if (!is_finished && quizId) {
+            deleteUncompletedQuizResults(quizId);
+        }
+
+        if (is_finished && quizId) {
+            history.goBack();
+        }
+    }
+
     handleSendQuizLevel = (quizId, data) => {
         const {
             sendQuizQuestionsForPass
@@ -379,10 +402,22 @@ class Quizzes extends Component {
 
     handleUnmountQuizTraining = () => {
         const {
-            resetQuizzesTraining
+            match: {
+                params: {
+                    id: quizId
+                }
+            },
+            resetQuizzesTraining,
+            formTraining: {
+                is_finished
+            },
+            deleteUncompletedQuizResults
         } = this.props;
 
         resetQuizzesTraining();
+        if (!is_finished && quizId) {
+            deleteUncompletedQuizResults(quizId);
+        }
     }
 
     render () {
@@ -476,6 +511,7 @@ class Quizzes extends Component {
 
                                         getQuizLevel={this.handleGetQuizLevel}
                                         sendQuizLevel={this.handleSendQuizLevel}
+                                        exitUncompletedQuizResult={this.handleCompleteUncompletedQuizResult}
                                         onUnmountQuizTraining={this.handleUnmountQuizTraining}
                                     />
                                 );                   
@@ -527,7 +563,8 @@ Quizzes.propTypes = {
     resetQuestionCreateForm: PropTypes.func.isRequired,
     sendQuizQuestionsForPass: PropTypes.func.isRequired,
     getQuizQuestionsForPass: PropTypes.func.isRequired,
-    resetQuizzesTraining: PropTypes.func.isRequired
+    resetQuizzesTraining: PropTypes.func.isRequired,
+    deleteUncompletedQuizResults: PropTypes.func.isRequired
 };
 
 const mapStateToProps = (state) => ({

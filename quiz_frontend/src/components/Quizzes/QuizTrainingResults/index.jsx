@@ -102,7 +102,8 @@ class QuizTrainingResults extends Component {
 
     render () {
         const {
-            results
+            results,
+            exitUncompletedQuizResult
         } = this.props; 
 
         return (
@@ -116,19 +117,9 @@ class QuizTrainingResults extends Component {
                     <Button
                         type="primary"
                         icon="close"
-                        onClick={() => {}}
+                        onClick={() => exitUncompletedQuizResult()}
                     >
                         Back to Quizzes page
-                    </Button>
-                    <Button
-                        type="primary"
-                        icon="rollback"
-                        style={{
-                            marginLeft: '20px'
-                        }}
-                        onClick={() => {}}
-                    >
-                        Try pass quiz again
                     </Button>
                 </Row>
                 <Row span="12">
@@ -160,7 +151,9 @@ class QuizTrainingResults extends Component {
 }
 
 QuizTrainingResults.propTypes = {
-    results: PropTypes.objectOf(PropTypes.any).isRequired
+    results: PropTypes.objectOf(PropTypes.any).isRequired,
+
+    exitUncompletedQuizResult: PropTypes.func.isRequired
 };
 
 export default QuizTrainingResults;

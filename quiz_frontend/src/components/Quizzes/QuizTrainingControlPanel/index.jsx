@@ -9,7 +9,8 @@ import {
 class QuizTrainingControlPanel extends Component {
     render () {
         const {
-            onSendQuizLevel
+            onSendQuizLevel,
+            exitUncompletedQuizResult
         } = this.props;
 
         return (
@@ -17,6 +18,7 @@ class QuizTrainingControlPanel extends Component {
                 <Button
                     type="danger"
                     icon="close"
+                    onClick={() => exitUncompletedQuizResult()}
                 >
                     Exit quiz
                 </Button>
@@ -36,7 +38,8 @@ class QuizTrainingControlPanel extends Component {
 }
 
 QuizTrainingControlPanel.propTypes = {
-    onSendQuizLevel: PropTypes.func.isRequired
+    onSendQuizLevel: PropTypes.func.isRequired,
+    exitUncompletedQuizResult: PropTypes.func.isRequired
 };
 
 export default QuizTrainingControlPanel;

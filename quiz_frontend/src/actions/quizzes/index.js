@@ -203,7 +203,7 @@ export const getQuizQuestionsForPass = (quizId, isFinished) => async dispatch =>
             await dispatch({
                 type: types.GET_QUIZ_RESULTS.REQUEST
             });
-            const { data } = await withAuth('get', `/quiz_results/${quizId}/`);
+            const { data } = await withAuth('get', `/result/${quizId}/`);
             await dispatch({
                 type: types.GET_QUIZ_RESULTS.SUCCESS,
                 data
@@ -227,7 +227,7 @@ export const sendQuizQuestionsForPass = (quizId, levelResults) => async dispatch
             await dispatch({
                 type: types.GET_QUIZ_RESULTS.REQUEST
             });
-            const { data: dataResults } = await withAuth('get', `/quiz_results/${quizId}/`);
+            const { data: dataResults } = await withAuth('get', `/result/${quizId}/`);
             await dispatch({
                 type: types.GET_QUIZ_RESULTS.SUCCESS,
                 data: dataResults
@@ -248,6 +248,23 @@ export const sendQuizQuestionsForPass = (quizId, levelResults) => async dispatch
             type: types.GET_QUIZ_LEVEL.FAILURE,
             error: 'Question not received.'
         });         
+    }
+};
+
+export const deleteUncompletedQuizResults = quizId => async dispatch => {
+    try {
+        await dispatch({
+            type: types.DELETE_UNCOMPLETED_QUIZ_RESULTS.REQUEST
+        });
+        await withAuth('delete', `/result/${quizId}/`);
+        await dispatch({
+            type: types.DELETE_UNCOMPLETED_QUIZ_RESULTS.SUCCESS
+        });
+    } catch (error) {
+        await dispatch({
+            type: types.DELETE_UNCOMPLETED_QUIZ_RESULTS.FAILURE,
+            error: 'Quiz results delete failed.'
+        });
     }
 };
 

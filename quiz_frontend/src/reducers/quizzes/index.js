@@ -219,6 +219,12 @@ const formTraining = (state = initialState.formTraining, action) => {
             };
         case types.GET_QUIZ_LEVEL.FAILURE:
         case types.GET_QUIZ_RESULTS.FAILURE:
+        case types.DELETE_UNCOMPLETED_QUIZ_RESULTS.SUCCESS:
+            return {
+                ...state,
+                is_finished: false,
+                results: null
+            };
         default:
             return state;
     }
