@@ -4,6 +4,10 @@ import PropTypes from 'prop-types';
 import _ from 'lodash';
 import uuid from 'uuid';
 
+import {
+    Icon
+} from 'antd';
+
 import RegisterFullQuizzesRow from './../RegisterFullQuizzesRow';
 
 class FullQuizzesRegister extends Component {
@@ -45,9 +49,42 @@ class FullQuizzesRegister extends Component {
     render () {
         const {
             registers,
-            category
+            category,
+            loading
         } = this.props;
         const register = registers[category];
+        if (loading) {
+            return (
+                <div
+                    style={{
+                        display: 'flex',
+                        justifyContent: 'center',
+                        alignItems: 'center',
+                        background: '#ECECEC',
+                        padding: '10px'
+                    }}
+                >
+                    <Icon type="loading" />
+                </div>
+            );
+        }
+
+        if (register.length === 0 ) {
+            return (
+                <div
+                    style={{
+                        display: 'flex',
+                        justifyContent: 'center',
+                        alignItems: 'center',
+                        background: '#ECECEC',
+                        padding: '10px'
+                    }}
+                >
+                    <h2>{'There are no topics for this category'}</h2>
+                </div>
+            );
+        }
+
         return (
             <div style={{ background: '#ECECEC', padding: '10px' }}>
                 {
@@ -71,7 +108,8 @@ FullQuizzesRegister.propTypes = {
     category: PropTypes.string,
     registers: PropTypes.objectOf(PropTypes.any).isRequired,
     categories: PropTypes.arrayOf(PropTypes.any).isRequired,
-    getTopicsByCategoryId: PropTypes.func.isRequired
+    getTopicsByCategoryId: PropTypes.func.isRequired,
+    loading: PropTypes.bool.isRequired
 };
 
 export default FullQuizzesRegister;

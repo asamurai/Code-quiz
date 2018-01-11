@@ -85,20 +85,20 @@ class QuizTraining extends Component {
         }
     }
 
-    // componentDidMount() {
-    //     const {
-    //         getQuizLevel,
-    //         match: {
-    //             params: {
-    //                 id
-    //             }
-    //         }
-    //     } = this.props;
+    componentDidMount() {
+        const {
+            getQuizLevel,
+            match: {
+                params: {
+                    id
+                }
+            }
+        } = this.props;
 
-    //     if (id) {
-    //         getQuizLevel(id);
-    //     }
-    // }
+        if (id) {
+            getQuizLevel(id);
+        }
+    }
     
     componentWillUnmount() {
         const {
@@ -127,7 +127,8 @@ class QuizTraining extends Component {
                 is_finished,
                 results
             },
-            loading
+            loading,
+            exitUncompletedQuizResult
         } = this.props;
 
         const {
@@ -144,6 +145,8 @@ class QuizTraining extends Component {
             return (
                 <QuizTrainingResults
                     results={results}
+
+                    exitUncompletedQuizResult={exitUncompletedQuizResult}
                 />
             );
         }
@@ -154,6 +157,7 @@ class QuizTraining extends Component {
                 
                 onChangeAnswer={this.handleChangeQuestionAnswer}
                 onSendQuizLevel={this.handleSendQuizLevel}
+                exitUncompletedQuizResult={exitUncompletedQuizResult}
             />
         );
     }
@@ -166,6 +170,7 @@ QuizTraining.propTypes = {
 
     sendQuizLevel: PropTypes.func.isRequired,
     getQuizLevel: PropTypes.func.isRequired,
+    exitUncompletedQuizResult: PropTypes.func.isRequired,
     onUnmountQuizTraining: PropTypes.func.isRequired
 };
 

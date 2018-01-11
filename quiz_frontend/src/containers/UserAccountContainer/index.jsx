@@ -13,8 +13,10 @@ import {
 
 import moment from 'moment';
 import _ from 'lodash';
+import validator from 'validator';
 
 import * as userActions from './../../actions/user';
+import * as notificationActions from './../../actions/notifications';
 
 import UserAccountMenu from './../../components/User/UserAccountMenu';
 import UserProfileAccount from './../../components/User/UserProfile/Account';
@@ -27,13 +29,18 @@ import {
 } from './../../routes';
 
 import { 
-    getValuesFromForm,
-    getCertainValuesFromForm
-} from './../../helpers/hocHelpers';
+    hocHelpers
+} from './../../helpers';
 
 const ACTIONS = {
-    ...userActions
+    ...userActions,
+    ...notificationActions
 };
+
+const {
+    getValuesFromForm,
+    getCertainValuesFromForm
+} = hocHelpers;
 
 class UserAccountContainer extends Component {
     constructor(props) {
@@ -128,10 +135,14 @@ class UserAccountContainer extends Component {
                 }
             },
             updateUserEmail,
-            updateUserPassword
+            updateUserPassword,
+            showErrorMessage
         } = this.props;
+
         let neededProps = [],
+        isValid = true,
         updateFunction = () => {};
+
         switch (changeField) {
             case 'password':
                 neededProps = ['oldPassword', 'newPassword', 'confirmPassword'];
@@ -151,6 +162,12 @@ class UserAccountContainer extends Component {
                     ...userData,
                     email: data.newEmail
                 };
+                if (!validator.isEmail(data.email)) {
+                    isValid = false;
+                    showErrorMessage({
+                        message: 'Email should be valid.'
+                    });
+                }
             }
             if (changeField === 'password') {
                 data = {
@@ -158,8 +175,16 @@ class UserAccountContainer extends Component {
                     new_password: data.newPassword,
                     confirm_password: data.confirmPassword
                 };
+                if (Object.values(data).filter(passwords => passwords.trim().length < 8).length > 0) {
+                    isValid = false;
+                    showErrorMessage({
+                        message: 'Password invalid. It should be 8 or more characters.'
+                    });
+                }
             }
-            updateFunction(userId, data);
+            if (isValid) {
+                updateFunction(userId, data);
+            }
         }
     };
 
@@ -315,7 +340,11 @@ class UserAccountContainer extends Component {
 }
 
 UserAccountContainer.propTypes = {
-    user: PropTypes.objectOf(PropTypes.any).isRequired
+    user: PropTypes.objectOf(PropTypes.any).isRequired,
+
+    showErrorMessage: PropTypes.func.isRequired,
+    setUserFormViewState: PropTypes.func.isRequired,
+    setUserFormEditState: PropTypes.func.isRequired
 };
 
 const mapStateToProps = (state) => ({

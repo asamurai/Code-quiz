@@ -10,11 +10,15 @@ import {
     Icon
 } from 'antd';
 
-import { getPropsObject } from './../../../helpers/hocHelpers';
+import { hocHelpers } from './../../../helpers';
 
 const FormItem = Form.Item;
 const Option = Select.Option;
 const TextArea = Input.TextArea;
+
+const {
+    getPropsObject
+} = hocHelpers;
 
 class QuizFormInfo extends Component {
 

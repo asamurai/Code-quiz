@@ -18,6 +18,7 @@ class RegisterFullQuizzesElement extends Component {
         const {
             quiz
         } = this.props;
+        
         return (
             <Col style={{ width: '25%' }}>
                 <Card>

@@ -20,8 +20,8 @@ import QuizTraining from './../../components/Quizzes/QuizTraining';
 import QuizModalForm from './../../components/Quizzes/QuizModalForm';
 
 import {
-    getCertainValuesFromForm
-} from './../../helpers/hocHelpers';
+    hocHelpers
+} from './../../helpers';
 
 import {
     QUIZ_FULL_PATH ,
@@ -34,6 +34,10 @@ import {
 const ACTIONS = {
     ...quizzesActions
 };
+
+const {
+    getCertainValuesFromForm
+} = hocHelpers;
 
 class Quizzes extends Component {
 
@@ -74,7 +78,7 @@ class Quizzes extends Component {
             getQuizListByUserId,
             user
         } = this.props;
-        
+        console.log(user, component);
         if (user && !component) {
             const user_id = user.data.user_id;
             getQuizListByUserId(user_id);
@@ -216,10 +220,7 @@ class Quizzes extends Component {
         const {
             formQuiz,
             createQuiz,
-            updateQuiz,
-            match: {
-                params
-            }
+            updateQuiz
         } = this.props;
 
         if (formName === 'formQuizMainInfoValues') {
@@ -232,7 +233,7 @@ class Quizzes extends Component {
                 createQuiz(data);
             }
             if (formQuiz.state.edit) {
-                const quizId = params.id;
+                const quizId = formQuiz.data.id;
                 const data = {
                     title: formQuizMainInfoValues.title.value,
                     description: formQuizMainInfoValues.description.value,
@@ -368,6 +369,30 @@ class Quizzes extends Component {
         getQuizQuestionsForPass(quizId, is_finished);
     }
 
+    handleCompleteUncompletedQuizResult = () => {
+        const {
+            history,
+            match: {
+                params: {
+                    id: quizId
+                }
+            },
+            formTraining: {
+                is_finished
+            },
+            deleteUncompletedQuizResults
+        } = this.props;
+
+        if (!is_finished && quizId) {
+            deleteUncompletedQuizResults(quizId);
+            history.goBack();
+        }
+
+        if (is_finished && quizId) {
+            history.goBack();
+        }
+    }
+
     handleSendQuizLevel = (quizId, data) => {
         const {
             sendQuizQuestionsForPass
@@ -378,10 +403,22 @@ class Quizzes extends Component {
 
     handleUnmountQuizTraining = () => {
         const {
-            resetQuizzesTraining
+            match: {
+                params: {
+                    id: quizId
+                }
+            },
+            resetQuizzesTraining,
+            formTraining: {
+                is_finished
+            },
+            deleteUncompletedQuizResults
         } = this.props;
 
         resetQuizzesTraining();
+        if (!is_finished && quizId) {
+            deleteUncompletedQuizResults(quizId);
+        }
     }
 
     render () {
@@ -475,6 +512,7 @@ class Quizzes extends Component {
 
                                         getQuizLevel={this.handleGetQuizLevel}
                                         sendQuizLevel={this.handleSendQuizLevel}
+                                        exitUncompletedQuizResult={this.handleCompleteUncompletedQuizResult}
                                         onUnmountQuizTraining={this.handleUnmountQuizTraining}
                                     />
                                 );                   
@@ -526,7 +564,8 @@ Quizzes.propTypes = {
     resetQuestionCreateForm: PropTypes.func.isRequired,
     sendQuizQuestionsForPass: PropTypes.func.isRequired,
     getQuizQuestionsForPass: PropTypes.func.isRequired,
-    resetQuizzesTraining: PropTypes.func.isRequired
+    resetQuizzesTraining: PropTypes.func.isRequired,
+    deleteUncompletedQuizResults: PropTypes.func.isRequired
 };
 
 const mapStateToProps = (state) => ({

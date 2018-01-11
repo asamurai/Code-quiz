@@ -58,7 +58,8 @@ class QuizTrainingQuestionList extends Component {
     render () {
         const {
             questions,
-            onSendQuizLevel
+            onSendQuizLevel,
+            exitUncompletedQuizResult
         } = this.props;
 
         return (
@@ -75,6 +76,7 @@ class QuizTrainingQuestionList extends Component {
                 </Row>
                 <QuizTrainingControlPanel
                     onSendQuizLevel={onSendQuizLevel}
+                    exitUncompletedQuizResult={exitUncompletedQuizResult}
                 />
             </Row>
         );
@@ -84,7 +86,9 @@ class QuizTrainingQuestionList extends Component {
 QuizTrainingQuestionList.propTypes = {
     questions: PropTypes.arrayOf(PropTypes.any).isRequired,
 
-    onChangeAnswer: PropTypes.func.isRequired
+    onChangeAnswer: PropTypes.func.isRequired,
+    exitUncompletedQuizResult: PropTypes.func.isRequired,
+    onSendQuizLevel: PropTypes.func.isRequired
 };
 
 export default QuizTrainingQuestionList;

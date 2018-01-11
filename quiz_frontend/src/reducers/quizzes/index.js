@@ -8,62 +8,6 @@ const types = {
     ...quizzesTypes
 };
 
-// const mockResults = {
-//     id: 1,
-//     user: 2,
-//     topic: 3,
-//     title: "Python beginers",
-//     description: "Want to test your knowledge of Python? Give this quiz if you experienced in data types, functions, statements and have fun!",
-//     image: null,
-//     created: "2018-01-09T19:45:20.700160Z",
-//     chained_answers:16,
-//     correct_chained_answers: 10,
-//     questions: [
-//         {
-//             id: 1,
-//             quiz: 1,
-//             chain: 1,
-//             level: 1,
-//             source: "9999",
-//             chosen: [2],
-//             answers: [
-//                 {
-//                     answer: "True",
-//                     is_true: false,
-//                     id: 1
-//                 },
-//                 {
-//                     answer: "False",
-//                     is_true: true,
-//                     id: 2
-//                 }
-//             ],
-//             text_question: "Text question"
-//         }
-//     ]
-// };
-
-// const mockTrainingData = [
-//     {
-//         id: 3,
-//         quiz: 1,
-//         chain: 2,
-//         level: 1,
-//         source:"A",
-//         answers: [
-//             {
-//                 answer: "Trues",
-//                 id: 5
-//             },
-//             {
-//                 answer: "Falses",
-//                 id: 6
-//             }
-//         ],
-//         text_question: "Test question 1  1"
-//     }
-// ];
-
 const initialState = {
     quizList: {
         pages: {
@@ -98,9 +42,7 @@ const initialState = {
         }
     },
     formTraining: {
-        // data: mockTrainingData,
         data: [],
-        // results: mockResults,
         results: null,
         is_finished: false
     },
@@ -159,9 +101,7 @@ const quizList = (state = initialState.quizList, action) => {
         case types.UPDATE_QUIZ.SUCCESS:
             return {
                 ...state,
-                //uncomment after backend update
-                // register: state.register.filter(quiz => quiz.id !== action.data.id).concat(action.data),
-                register: state.register,
+                register: state.register.filter(quiz => quiz.id !== action.data.id).concat(action.data),
                 pages: {
                     ...state.pages,
                     totalFinded: state.pages.totalFinded.length + 1
@@ -279,6 +219,12 @@ const formTraining = (state = initialState.formTraining, action) => {
             };
         case types.GET_QUIZ_LEVEL.FAILURE:
         case types.GET_QUIZ_RESULTS.FAILURE:
+        case types.DELETE_UNCOMPLETED_QUIZ_RESULTS.SUCCESS:
+            return {
+                ...state,
+                is_finished: false,
+                results: null
+            };
         default:
             return state;
     }

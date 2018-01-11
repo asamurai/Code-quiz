@@ -50,7 +50,7 @@ class CategoryQuizElement extends Component {
                 </Link>
                 <div>
                     <div>
-                        <b>Date created</b>: {`     ${moment(test.created).format('l')}`}
+                        <b>Date created</b>: {`${moment(test.created).format('l')}`}
                     </div>
                     <div
                         style={{

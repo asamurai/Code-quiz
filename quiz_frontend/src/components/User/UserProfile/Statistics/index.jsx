@@ -64,6 +64,7 @@ class Statistics extends Component {
         const {
             testStatistics
         } = this.props;
+        
         return (
             <div>
                 <h3>User Statistics</h3>
