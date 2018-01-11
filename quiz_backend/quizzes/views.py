@@ -1,17 +1,21 @@
+import random
+
 from django.shortcuts import get_object_or_404
 from django.core.exceptions import ObjectDoesNotExist
 from django.utils.timezone import now
 
 from rest_framework.viewsets import ModelViewSet
 from rest_framework.permissions import IsAuthenticated
-from rest_framework.decorators import detail_route, list_route
+from rest_framework.exceptions import APIException
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import generics
+from rest_framework import status
 from rest_framework.exceptions import PermissionDenied
 
 from .serializers import QuizCategorySerializer, QuestionsSerializer, QuizSerializer, ChainSerializer, \
-    AnswerNestedSerializerForPassing, QuestionsSerializerForPassing, TopicSerializer, QuizNestedSerializer, QuizReadSerializer
+    AnswerNestedSerializerForPassing, QuestionsSerializerForPassing, TopicSerializer, QuizNestedSerializer, QuizReadSerializer, \
+    QuestionsSerializerPost
 from .models import QuizCategory, Question, Quiz, Chain, Topic, UserProgress
 
 
@@ -41,7 +45,7 @@ class QuizViewSet(ModelViewSet):
     """
     serializer_class = QuizReadSerializer
     queryset = Quiz.objects.all()
-    http_method_names = ['get', 'post', 'head', 'put']
+    http_method_names = ['get', 'post', 'head', 'put', 'delete']
 
     def create(self, request):
         """ Create quiz
@@ -130,32 +134,60 @@ class TopicViewSet(ModelViewSet):
 
 
 class QuestionList(APIView):
+
     ''' Implements passing quiz '''
+
     permission_classes = (IsAuthenticated,)
 
     def get(self, request, id):
         # Check, have user passed any tests
-        queryset = UserProgress.objects.filter(question__quiz__id=id).filter(user=request.user).all()
+        queryset = UserProgress.objects.filter(question__quiz__id=id).filter(user=request.user)
         # if user doesnt send answers on test
-        if not queryset.filter(is_finished=False):
+        # queryset_filtered = queryset.filter(answer=None)
+        queryset_filtered = UserProgress.objects.filter(question__quiz__id=id).filter(user=request.user).filter(answer=None)
+        if not UserProgress.objects.filter(question__quiz__id=id).filter(user=request.user).filter(answer=None):
             # if user pass test first time
-            questions = Question.objects.filter(level=1).order_by('?').distinct()
-            print(questions)
-            serializer = QuestionsSerializerForPassing(questions, many=True)
-            for question in queryset:
+            if not queryset.filter(is_finished=False):
+                level = 1
+                questions = Question.objects.filter(quiz__id=id).filter(level=1).order_by('chain', '?').distinct('chain')
+            else:
+                last_level = queryset.order_by('question__level').last().question.level
+                chain_exclude = []
+                for question_instance in queryset.filter(question__level=last_level):
+                    if not question_instance.answer.is_true:
+                        chain_exclude.append(question_instance.question.chain)
+
+                questions = Question.objects.filter(quiz__id=id).filter(level=last_level + 1).exclude(chain__in=chain_exclude).order_by('chain', '?').distinct('chain')
+
+            for question in questions:
                 UserProgress.objects.create(question=question, user=request.user, datetime_started=now())
-        elif queryset.filter(answers=None).all():
-            # print('here2')
-            questions = queryset.filter(answers=None).all()
         else:
-            questions = Quiz.objects.filter(level=1)
-            serializer = QuestionsSerializerForPassing(questions, many=True)
-        return Response(serializer.data)
+            questions = Question.objects.filter(id__in=[q['question'] for q in list(queryset_filtered.values('question'))]).all()
+        serializer = QuestionsSerializerForPassing(questions, many=True)
+        return Response({'questions': serializer.data })
 
     def post(self, request, id):
-        serializer = QuestionsSerializerForPassing(data=request.data, many=True)
+        serializer = QuestionsSerializerPost(data=request.data, many=True)
         if serializer.is_valid(raise_exception=True):
-            return Response({'ok': 'ok'})
+            if len(UserProgress.objects.filter(user=request.user).filter(question__quiz__id=id).filter(answer=None)) != \
+                len(serializer.data):
+                # print(len(UserProgress.objects.filter(user=request.user).filter(question__quiz__id=id).filter(answer=None)))
+                # print(len(serializer.data))
+                return Response({'error': {'errors': 'You should send all received questions'}}, status=status.HTTP_400_BAD_REQUEST)
 
-    # def __distinct_by_chain(self, queryset):
+            serializer.save(owner=request.user)
+            is_finished = False
+            level = UserProgress.objects.filter(user=request.user).filter(question__quiz_id=id).order_by('question__level').last().question.level
+            queryset = UserProgress.objects.filter(user=request.user).filter(question__quiz_id=id).filter(question__level=level).filter(answer__is_true=True)
+            if level == Question.objects.filter(quiz_id=id).order_by('level').last().level or not queryset:
+                is_finished = True
+                UserProgress.objects.filter(user=request.user).filter(question__quiz_id=id).update(is_finished=True)
+                print(UserProgress.objects.filter(user=request.user).filter(question__quiz_id=id).filter(
+                question__level=level).exclude(answer__is_true=False))
+                print(queryset)
+            return Response({'is_finished': is_finished})
+
+    def delete(self,request, id):
+        UserProgress.objects.filter(user=request.user).filter(question__quiz_id=id).filter(is_finished=False).delete()
+        return Response(status=status.HTTP_200_OK)
 
