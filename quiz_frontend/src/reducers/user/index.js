@@ -32,7 +32,7 @@ const initialState = {
                 limit: 10
             },
             pages: {
-                currentPage: 0,
+                currentPage: 1,
                 totalFinded: 0
             },
             statistic: null
@@ -125,6 +125,18 @@ const data = (state = initialState.data, action) => {
 
 const forms = (state = initialState.forms, action) => {
     switch (action.type) {
+        case types.GET_USER_PASSED_QUIZZES.SUCCESS:
+            return {
+                ...state,
+                statistics: {
+                    ...state.statistics,
+                    register: action.data,
+                    pages: {
+                        ...state.statistics.pages,
+                        totalFinded: action.data.length
+                    }
+                }
+            };       
         case types.CHANGE_USER_PROFILE_FORM_EDIT_STATE:
             return {
                 ...state,

@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 
 import {
@@ -8,61 +7,58 @@ import {
 
 import moment from 'moment';
 
-import {
-    USER_STATISTICS_PATH
-} from './../../../../routes';
-
 class Statistics extends Component {
     constructor(props) {
         super(props);
         this.statisticsColumns = [
             {
-                title: '',
-                dataIndex: 'testImage',
-                key: 'testImage',
-                render: (key) => (
-                    <div
-                        style={{
-                            width: '35px',
-                            height: '35px',
-                            backgroundImage: `url(${key})`,
-                            backgroundSize: 'contain',
-                            backgroundPosition: 'center center',
-                            backgroundRepeat: 'no-repeat'
-                        }}
-                    />
-                )
-            },
-            {
-                title: 'Test',
+                title: 'Quiz',
                 dataIndex: 'testName',
                 key: 'testName'
             },
             {
-                title: 'Score',
-                dataIndex: 'testScore',
-                key: 'testScore'
+                title: 'Topic',
+                dataIndex: 'topic',
+                key: 'topic'
             },
             {
                 title: 'Date',
                 dataIndex: 'date',
                 key: 'date',
                 render: (key) => moment(key).format('l')
-            },      
-            {
-                title: 'Action',
-                dataIndex: 'action',
-                key: 'action',
-                render: (key) => (
-                    <Link to={`${USER_STATISTICS_PATH}/${key}`}>Link</Link>
-                )
+            }   
+            // {
+            //     title: 'Action',
+            //     dataIndex: 'action',
+            //     key: 'action',
+            //     render: (key) => (
+            //         <Link to={`${USER_STATISTICS_PATH}/${key}`}>Link</Link>
+            //     )
 
-            }     
+            // }     
         ];
     }
+
+    componentDidMount () {
+        const {
+            getUserStatisticsData,
+            user: {
+                data: {
+                    user_id: userId
+                }
+            }
+        } = this.props;
+
+        getUserStatisticsData(userId);
+    }
+    
+
     render () {
         const {
-            testStatistics
+            testStatistics,
+            user: {
+                loading
+            }
         } = this.props;
         
         return (
@@ -72,6 +68,8 @@ class Statistics extends Component {
                 <Table
                     columns={this.statisticsColumns}
                     dataSource={testStatistics}
+
+                    loading={loading}
                 />
             </div>
         );
@@ -79,7 +77,10 @@ class Statistics extends Component {
 }
 
 Statistics.propTypes = {
-    testStatistics: PropTypes.arrayOf(PropTypes.any).isRequired
+    testStatistics: PropTypes.arrayOf(PropTypes.any).isRequired,
+    user: PropTypes.objectOf(PropTypes.any).isRequired,
+
+    getUserStatisticsData: PropTypes.func.isRequired
 };
 
 export default Statistics;

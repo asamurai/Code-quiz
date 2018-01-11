@@ -164,7 +164,7 @@ export const setUserImage = (id, newPicture, isPrevPicture) => async dispatch =>
                 type: types.USER_DELETE_PICTURE.SUCCESS
             }); 
         }
-        const data = await withAuth('post',`/photo/upload/user/${id}`, newPicture);
+        const { data } = await withAuth('post',`/photo/upload/user/${id}`, newPicture);
         await dispatch({
             type: types.USER_SET_PICTURE.SUCCESS,
             data,
@@ -182,6 +182,24 @@ export const setUserImage = (id, newPicture, isPrevPicture) => async dispatch =>
             type: types.USER_SET_PICTURE.FAILURE,
             error: error.message
         });    
+    }
+};
+
+export const getUserStatisticsData = userId => async dispatch => {
+    try {
+        await dispatch({
+            type: types.GET_USER_PASSED_QUIZZES.REQUEST
+        });
+        const { data } = await withAuth('get',`/result/user/${userId}/`);
+        await dispatch({
+            type: types.GET_USER_PASSED_QUIZZES.REQUEST,
+            data
+        });
+    } catch (error) {
+        await dispatch({
+            type: types.GET_USER_PASSED_QUIZZES.REQUEST,
+            message: 'Fetching user statistics data failed.'
+        });
     }
 };
 

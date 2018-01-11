@@ -193,15 +193,15 @@ class UserAccountContainer extends Component {
     });
 
     genereteRowForTable = (type, entity) => {
+        const topic = this.props.classifiers.quizTopics.find(topic => topic.id === entity.topic);
         switch (type) {
             case 'test':
                 return {
                     key: entity.id,
                     action: entity.id,
-                    testName: entity.test.name,
-                    testImage: entity.test.imageUrl,
-                    testScore: `${entity.testResult.score*100}%`,
-                    date: moment(entity.date).format('l')
+                    testName: entity.title,
+                    topic: topic ? topic.name : 'Undefined topic',
+                    date: moment(entity.passed).format('l')
                 };
             default:
                 break;
@@ -256,6 +256,7 @@ class UserAccountContainer extends Component {
 
     render () {
         const {
+            user,
             user: {
                 forms: {
                     profile: {
@@ -268,7 +269,8 @@ class UserAccountContainer extends Component {
                 }
             },
             setUserFormViewState,
-            setUserFormEditState
+            setUserFormEditState,
+            getUserStatisticsData
         } = this.props;
 
         return (
@@ -324,6 +326,9 @@ class UserAccountContainer extends Component {
                                                 return (
                                                     <UserProfileStatstics
                                                         testStatistics={statisticsRegister.map(test => this.genereteRowForTable('test', test))}
+
+                                                        user={user}
+                                                        getUserStatisticsData={getUserStatisticsData}
                                                     />
                                                 );  
                                         } 
@@ -344,11 +349,13 @@ UserAccountContainer.propTypes = {
 
     showErrorMessage: PropTypes.func.isRequired,
     setUserFormViewState: PropTypes.func.isRequired,
-    setUserFormEditState: PropTypes.func.isRequired
+    setUserFormEditState: PropTypes.func.isRequired,
+    getUserStatisticsData: PropTypes.func.isRequired
 };
 
 const mapStateToProps = (state) => ({
-    user: state.user
+    user: state.user,
+    classifiers: state.classifiers
 });
   
 export default connect(mapStateToProps, ACTIONS)(UserAccountContainer);
