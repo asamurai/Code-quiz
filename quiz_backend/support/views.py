@@ -25,3 +25,4 @@ class TopicView(ModelViewSet):
 class CommentView(ModelViewSet):
     serializer_class = CommentSerializer
     queryset = Comment.objects.all()
+
