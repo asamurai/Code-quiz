@@ -26,14 +26,13 @@ const dummyQuizCreateData = {
 };
 
 const dummyQuizTrainingData = {
-    quizSessionId: 33,
     data: {
         quizId: 1
     },
     results: {
         result: 'You are great!'
     },
-    isFinished: true
+    is_finished: true
 };
 
 const initialState = {
@@ -64,10 +63,9 @@ const initialState = {
         }
     },
     formTraining: {
-        quizSessionId: null,
         data: null,
         results: null,
-        isFinished: false
+        is_finished: false
     },
     loading: false,
     error: null
@@ -76,53 +74,6 @@ const initialState = {
 describe('Reducer quizzes test', () => {
     it('Undefined action test', () => {
         expect(reducer(initialState, {type: 'UNDEFINED_ACTION'})).toEqual(initialState);
-    });
-    it('CREATE_QUIZ_SESSION action test', () => {
-        expect(reducer(initialState, { type: types.CREATE_QUIZ_SESSION.REQUEST })).toEqual({ ...initialState, loading: true });
-        expect(
-            reducer(
-                initialState, 
-                { 
-                    type: types.CREATE_QUIZ_SESSION.SUCCESS,
-                    data: { quizSessionId: dummyQuizTrainingData.quizSessionId } 
-                }
-            )
-        ).toEqual({ 
-            ...initialState, 
-            formTraining: {
-                ...initialState.formTraining,
-                quizSessionId: dummyQuizTrainingData.quizSessionId
-            }
-        });
-        expect(
-            reducer(
-                initialState,
-                {
-                    type: types.CREATE_QUIZ_SESSION.FAILURE,
-                    error: dummyError.message
-                }
-            )
-        ).toEqual({ ...initialState, error: dummyError.message });
-    });
-    it('DELETE_QUIZ_SESSION action test', () => {
-        expect(
-            reducer(initialState, { type: types.DELETE_QUIZ_SESSION.REQUEST })
-        ).toEqual({ ...initialState, loading: true });
-        expect(
-            reducer(
-                initialState,
-                { type: types.DELETE_QUIZ_SESSION.SUCCESS }
-            )
-        ).toEqual(initialState);
-        expect(
-            reducer(
-                initialState,
-                { 
-                    type: types.DELETE_QUIZ_SESSION.FAILURE,
-                    error: dummyError.message
-                }
-            )
-        ).toEqual({ ...initialState, error: dummyError.message });
     });
     it('GET_QUIZ_LEVEL action test', () => {
         expect(
@@ -135,7 +86,7 @@ describe('Reducer quizzes test', () => {
                     type: types.GET_QUIZ_LEVEL.SUCCESS,
                     data: {
                         content: dummyQuizTrainingData.data,
-                        isFinished: dummyQuizTrainingData.isFinished
+                        is_finished: dummyQuizTrainingData.is_finished
                     }
                 }
             )
@@ -144,7 +95,7 @@ describe('Reducer quizzes test', () => {
             formTraining: {
                 ...initialState.formTraining,
                 data: dummyQuizTrainingData.data,
-                isFinished: dummyQuizTrainingData.isFinished
+                is_finished: dummyQuizTrainingData.is_finished
             }
         });
         expect(
@@ -174,7 +125,7 @@ describe('Reducer quizzes test', () => {
             formTraining: {
                 ...initialState.formTraining,
                 results: dummyQuizTrainingData.results,
-                isFinished: true,
+                is_finished: true,
                 data: null
             }
         });
