@@ -16,6 +16,7 @@ class SupportTopic(models.Model):
     category = models.ForeignKey(SupportCategory, on_delete=models.CASCADE, related_name='topics')
     rate = models.IntegerField(default=0)
     is_closed = models.BooleanField(default=False)
+    created = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
         return self.name
@@ -26,3 +27,4 @@ class Comment(models.Model):
     topic = models.ForeignKey(SupportCategory, on_delete=models.CASCADE, related_name='comemnts')
     rate = models.IntegerField(default=0)
     description = models.TextField()
+    created = models.DateTimeField(auto_now_add=True)
