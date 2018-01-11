@@ -46,6 +46,7 @@ class QuizViewSet(ModelViewSet):
     serializer_class = QuizReadSerializer
     queryset = Quiz.objects.all()
     http_method_names = ['get', 'post', 'head', 'put', 'delete']
+    # permission_classes = (IsAuthenticated,)
 
     def create(self, request):
         """ Create quiz
@@ -97,13 +98,14 @@ class QuizViewSet(ModelViewSet):
         """
         Instantiates and returns the list of permissions that this view requires.
         """
-        if self.action in ['update', 'create']:
+        if self.action in ['update', 'create', 'get_queryset_by_user']:
             permission_classes = [IsAuthenticated]
         else:
             permission_classes = []
         return [permission() for permission in permission_classes]
 
 class QuestionViewSet(ModelViewSet):
+    permission_classes = [IsAuthenticated]
     serializer_class = QuestionsSerializer
     queryset = Question.objects.all()
 
@@ -148,7 +150,6 @@ class QuestionList(APIView):
         if not UserProgress.objects.filter(question__quiz__id=id).filter(user=request.user).filter(answer=None):
             # if user pass test first time
             if not queryset.filter(is_finished=False):
-                level = 1
                 questions = Question.objects.filter(quiz__id=id).filter(level=1).order_by('chain', '?').distinct('chain')
             else:
                 last_level = queryset.order_by('question__level').last().question.level
@@ -157,7 +158,8 @@ class QuestionList(APIView):
                     if not question_instance.answer.is_true:
                         chain_exclude.append(question_instance.question.chain)
 
-                questions = Question.objects.filter(quiz__id=id).filter(level=last_level + 1).exclude(chain__in=chain_exclude).order_by('chain', '?').distinct('chain')
+                questions = Question.objects.filter(quiz__id=id).filter(level=last_level + 1).\
+                    exclude(chain__in=chain_exclude).order_by('chain', '?').distinct('chain')
 
             for question in questions:
                 UserProgress.objects.create(question=question, user=request.user, datetime_started=now())
@@ -174,17 +176,16 @@ class QuestionList(APIView):
                 # print(len(UserProgress.objects.filter(user=request.user).filter(question__quiz__id=id).filter(answer=None)))
                 # print(len(serializer.data))
                 return Response({'error': {'errors': 'You should send all received questions'}}, status=status.HTTP_400_BAD_REQUEST)
-
-            serializer.save(owner=request.user)
             is_finished = False
-            level = UserProgress.objects.filter(user=request.user).filter(question__quiz_id=id).order_by('question__level').last().question.level
-            queryset = UserProgress.objects.filter(user=request.user).filter(question__quiz_id=id).filter(question__level=level).filter(answer__is_true=True)
-            if level == Question.objects.filter(quiz_id=id).order_by('level').last().level or not queryset:
+            result_list = serializer.save(owner=request.user)
+            level = UserProgress.objects.filter(user=request.user).filter(question__quiz_id=id).\
+                order_by('question__level').last().question.level
+            # queryset = UserProgress.objects.filter(user=request.user).filter(question__quiz_id=id).\
+            #     filter(question__level=level).filter(answer__is_true=True)
+            if level == Question.objects.filter(quiz_id=id).order_by('level').last().level or (True not in result_list):
                 is_finished = True
                 UserProgress.objects.filter(user=request.user).filter(question__quiz_id=id).update(is_finished=True)
-                print(UserProgress.objects.filter(user=request.user).filter(question__quiz_id=id).filter(
-                question__level=level).exclude(answer__is_true=False))
-                print(queryset)
+            print(result_list)
             return Response({'is_finished': is_finished})
 
     def delete(self,request, id):

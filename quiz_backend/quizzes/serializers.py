@@ -139,8 +139,7 @@ class QuestionsSerializerPost(serializers.ModelSerializer):
             for answer in answers[1:]:
                 UserProgress.objects.create(user=validated_data['owner'], question_id=question_id, answer=answer,
                                             datetime_started=queryset.datetime_started)
-        # if queryset.question.level != Question.objects.filter(id=question_id).order_by('level').last().level:
-        #     return True
-        # else:
-        #     UserProgress.objects.filter(user=validated_data['owner']).filter(question_id).update(is_finished=True)
-        #     return False
+        for answer in answers:
+            if not answer.is_true:
+                return False
+        return True
