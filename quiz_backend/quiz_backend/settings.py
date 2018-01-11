@@ -145,6 +145,7 @@ REST_FRAMEWORK = {
     'EXCEPTION_HANDLER': 'profiles.utils.custom_exception_handler',
     'DEFAULT_AUTHENTICATION_CLASSES': (
         'quiz_backend.bearer_auth.BearerAuthentication',
+        # 'rest_framework.authentication.TokenAuthentication',
     ),
 }
 
