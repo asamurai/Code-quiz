@@ -5,7 +5,8 @@ import PropTypes from 'prop-types';
 import _ from 'lodash';
 
 import {
-    Icon
+    Icon,
+    Row
 } from 'antd';
 
 import QuizTrainingQuestionsList from './../../../components/Quizzes/QuizTrainingQuestionsList';
@@ -137,7 +138,10 @@ class QuizTraining extends Component {
 
         if (loading) {
             return (
-                <Icon type="loading" />
+                <Row span="12">
+                    <Icon type="loading" />
+                    {' Quiz Questions loading'}
+                </Row>
             );
         }
 

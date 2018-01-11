@@ -192,13 +192,31 @@ export const getUserStatisticsData = userId => async dispatch => {
         });
         const { data } = await withAuth('get',`/result/user/${userId}/`);
         await dispatch({
-            type: types.GET_USER_PASSED_QUIZZES.REQUEST,
+            type: types.GET_USER_PASSED_QUIZZES.SUCCESS,
             data
         });
     } catch (error) {
         await dispatch({
-            type: types.GET_USER_PASSED_QUIZZES.REQUEST,
-            message: 'Fetching user statistics data failed.'
+            type: types.GET_USER_PASSED_QUIZZES.FAILURE,
+            error: 'Fetching user statistics data failed.'
+        });
+    }
+};
+
+export const getUserQuizResultData = quizId => async dispatch => {
+    try {
+        await dispatch({
+            type: types.GET_USER_QUIZ_RESULT.REQUEST
+        });
+        const { data } = await withAuth('get',`/result/${quizId}/?latest=true`);
+        await dispatch({
+            type: types.GET_USER_QUIZ_RESULT.SUCCESS,
+            data: JSON.parse(data)
+        });
+    } catch (error) {
+        await dispatch({
+            type: types.GET_USER_QUIZ_RESULT.FAILURE,
+            error: 'Fetching user quiz result failed.'
         });
     }
 };
@@ -211,6 +229,10 @@ export const setExistingUserData = (authData) => dispatch => {
     });
     saveToken(authData.token);
 };
+
+export const resetUserQuizResultData = () => dispatch => dispatch({
+    type: types.RESET_USER_QUIZ_RESULT
+});
 
 export const setUserFormEditState = state => dispatch => dispatch({
     type: types.CHANGE_USER_PROFILE_FORM_EDIT_STATE,

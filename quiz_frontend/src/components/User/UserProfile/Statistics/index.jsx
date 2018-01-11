@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 
 import {
@@ -6,6 +7,10 @@ import {
 } from 'antd';
 
 import moment from 'moment';
+
+import {
+    USER_STATISTICS_PATH
+} from './../../../../routes';
 
 class Statistics extends Component {
     constructor(props) {
@@ -26,16 +31,16 @@ class Statistics extends Component {
                 dataIndex: 'date',
                 key: 'date',
                 render: (key) => moment(key).format('l')
-            }   
-            // {
-            //     title: 'Action',
-            //     dataIndex: 'action',
-            //     key: 'action',
-            //     render: (key) => (
-            //         <Link to={`${USER_STATISTICS_PATH}/${key}`}>Link</Link>
-            //     )
+            },
+            {
+                title: 'Action',
+                dataIndex: 'action',
+                key: 'action',
+                render: (key) => (
+                    <Link to={`${USER_STATISTICS_PATH}/${key}`}>Show more</Link>
+                )
 
-            // }     
+            }     
         ];
     }
 

@@ -14,6 +14,7 @@ import {
 import moment from 'moment';
 import _ from 'lodash';
 import validator from 'validator';
+import uuid from 'uuid';
 
 import * as userActions from './../../actions/user';
 import * as notificationActions from './../../actions/notifications';
@@ -197,7 +198,7 @@ class UserAccountContainer extends Component {
         switch (type) {
             case 'test':
                 return {
-                    key: entity.id,
+                    key: uuid(),
                     action: entity.id,
                     testName: entity.title,
                     topic: topic ? topic.name : 'Undefined topic',
@@ -264,13 +265,17 @@ class UserAccountContainer extends Component {
                         modals
                     },
                     statistics: {
-                        register: statisticsRegister
+                        register: statisticsRegister,
+                        statistic
                     }
-                }
+                },
+                loading
             },
             setUserFormViewState,
             setUserFormEditState,
-            getUserStatisticsData
+            getUserStatisticsData,
+            resetUserQuizResultData,
+            getUserQuizResultData
         } = this.props;
 
         return (
@@ -319,13 +324,18 @@ class UserAccountContainer extends Component {
                                             case true:
                                                 return (
                                                     <TestStatisticsPage
-                                                        testId={id}
+                                                        quizId={id}
+                                                        statistic={statistic}
+                                                        loading={loading}
+
+                                                        getUserQuizResultData={getUserQuizResultData}
+                                                        resetUserQuizResultData={resetUserQuizResultData}
                                                     />
                                                 );  
                                             default:
                                                 return (
                                                     <UserProfileStatstics
-                                                        testStatistics={statisticsRegister.map(test => this.genereteRowForTable('test', test))}
+                                                        testStatistics={statisticsRegister.sort((a,b) => new Date(b.passed) - new Date(a.passed)).map(test => this.genereteRowForTable('test', test))}
 
                                                         user={user}
                                                         getUserStatisticsData={getUserStatisticsData}
@@ -350,7 +360,9 @@ UserAccountContainer.propTypes = {
     showErrorMessage: PropTypes.func.isRequired,
     setUserFormViewState: PropTypes.func.isRequired,
     setUserFormEditState: PropTypes.func.isRequired,
-    getUserStatisticsData: PropTypes.func.isRequired
+    getUserStatisticsData: PropTypes.func.isRequired,
+    resetUserQuizResultData: PropTypes.func.isRequired,
+    getUserQuizResultData: PropTypes.func.isRequired
 };
 
 const mapStateToProps = (state) => ({

@@ -53,6 +53,8 @@ const error = (state = initialState.error, action) => {
         case types.USER_SIGNOUT.SUCCESS:
         case types.USER_REGISTER.SUCCESS:
         case types.USER_UPDATE.SUCCESS:
+        case types.GET_USER_QUIZ_RESULT.SUCCESS:
+        case types.GET_USER_PASSED_QUIZZES.SUCCESS:
             return null;
         case types.USER_SIGNIN.FAILURE: 
         case types.USER_SIGNOUT.FAILURE:
@@ -60,6 +62,8 @@ const error = (state = initialState.error, action) => {
         case types.USER_UPDATE.FAILURE:
         case types.USER_EMAIL_CHANGE.FAILURE:
         case types.USER_PASSWORD_CHANGE.FAILURE:
+        case types.GET_USER_QUIZ_RESULT.FAILURE:
+        case types.GET_USER_PASSED_QUIZZES.FAILURE:
             return action.error;
         default:
             return state;
@@ -74,6 +78,8 @@ const loading = (state = initialState.loading, action) => {
         case types.USER_UPDATE.REQUEST:
         case types.USER_PASSWORD_CHANGE.REQUEST:
         case types.USER_EMAIL_CHANGE.REQUEST:
+        case types.GET_USER_QUIZ_RESULT.REQUEST:
+        case types.GET_USER_PASSED_QUIZZES.REQUEST:
             return true;
         case types.USER_SIGNIN.SUCCESS:
         case types.USER_SIGNOUT.SUCCESS: 
@@ -85,6 +91,10 @@ const loading = (state = initialState.loading, action) => {
         case types.USER_UPDATE.FAILURE:
         case types.USER_EMAIL_CHANGE.FAILURE:
         case types.USER_PASSWORD_CHANGE.FAILURE:
+        case types.GET_USER_QUIZ_RESULT.SUCCESS:
+        case types.GET_USER_QUIZ_RESULT.FAILURE:
+        case types.GET_USER_PASSED_QUIZZES.SUCCESS:
+        case types.GET_USER_PASSED_QUIZZES.FAILURE:
             return false;
         default:
             return state;
@@ -136,7 +146,23 @@ const forms = (state = initialState.forms, action) => {
                         totalFinded: action.data.length
                     }
                 }
-            };       
+            };
+        case types.GET_USER_QUIZ_RESULT.SUCCESS:
+            return {
+                ...state,
+                statistics: {
+                    ...state.statistics,
+                    statistic: action.data
+                }
+            };
+        case types.RESET_USER_QUIZ_RESULT:
+            return {
+                ...state,
+                statistics: {
+                    ...state.statistics,
+                    statistic: null
+                }
+            };
         case types.CHANGE_USER_PROFILE_FORM_EDIT_STATE:
             return {
                 ...state,
