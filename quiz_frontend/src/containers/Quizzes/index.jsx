@@ -385,6 +385,7 @@ class Quizzes extends Component {
 
         if (!is_finished && quizId) {
             deleteUncompletedQuizResults(quizId);
+            history.goBack();
         }
 
         if (is_finished && quizId) {

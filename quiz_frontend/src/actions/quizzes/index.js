@@ -206,7 +206,7 @@ export const getQuizQuestionsForPass = (quizId, isFinished) => async dispatch =>
             const { data } = await withAuth('get', `/result/${quizId}/`);
             await dispatch({
                 type: types.GET_QUIZ_RESULTS.SUCCESS,
-                data
+                data: JSON.parse(data)[0]
             });
         }
     } catch (error) {
@@ -230,7 +230,7 @@ export const sendQuizQuestionsForPass = (quizId, levelResults) => async dispatch
             const { data: dataResults } = await withAuth('get', `/result/${quizId}/`);
             await dispatch({
                 type: types.GET_QUIZ_RESULTS.SUCCESS,
-                data: dataResults
+                data: JSON.parse(dataResults)[0]
             });
         } else {
             const {
@@ -256,7 +256,7 @@ export const deleteUncompletedQuizResults = quizId => async dispatch => {
         await dispatch({
             type: types.DELETE_UNCOMPLETED_QUIZ_RESULTS.REQUEST
         });
-        await withAuth('delete', `/result/${quizId}/`);
+        await withAuth('delete', `/pass_quiz/${quizId}/`);
         await dispatch({
             type: types.DELETE_UNCOMPLETED_QUIZ_RESULTS.SUCCESS
         });
