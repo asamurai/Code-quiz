@@ -54,8 +54,7 @@ def logout(request):
 
 @api_view(['POST'])
 def login(request):
-    serializer = AuthTokenSerializer(data=request.data,
-                                       context={'request': request})
+    serializer = AuthTokenSerializer(data=request.data)
     serializer.is_valid(raise_exception=True)
     user = serializer.validated_data['user']
     token, created = Token.objects.get_or_create(user=user)
@@ -80,6 +79,7 @@ def restore_password(request):
 
 
 class ProfilesViewSet(ModelViewSet):
+    permission_classes = (IsAuthenticated,)
     queryset = UserProfile.objects.all()
     serializer_class = UserProfileSerializer
     http_method_names = ['get', 'put', 'head']
