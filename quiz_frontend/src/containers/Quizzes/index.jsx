@@ -66,11 +66,16 @@ class Quizzes extends Component {
 
     componentDidMount() {
         const {
+            match: {
+                params: {
+                    component
+                }
+            },
             getQuizListByUserId,
             user
         } = this.props;
-
-        if (user) {
+        
+        if (user && !component) {
             const user_id = user.data.user_id;
             getQuizListByUserId(user_id);
         }
@@ -352,6 +357,33 @@ class Quizzes extends Component {
         deleteQuestion(questionId);
     }
 
+    handleGetQuizLevel = quizId => {
+        const {
+            getQuizQuestionsForPass,
+            formTraining: {
+                is_finished
+            }
+        } = this.props;
+
+        getQuizQuestionsForPass(quizId, is_finished);
+    }
+
+    handleSendQuizLevel = (quizId, data) => {
+        const {
+            sendQuizQuestionsForPass
+        } = this.props;   
+        
+        sendQuizQuestionsForPass(quizId, data);
+    }
+
+    handleUnmountQuizTraining = () => {
+        const {
+            resetQuizzesTraining
+        } = this.props;
+
+        resetQuizzesTraining();
+    }
+
     render () {
 
         const {
@@ -362,6 +394,7 @@ class Quizzes extends Component {
         const {
             formQuiz,
             formQuestion,
+            formTraining,
             register,
             pages,
             classifiers,
@@ -382,6 +415,7 @@ class Quizzes extends Component {
                     path={QUIZ_FULL_PATH}
                     render={(routeProps) => {
                         const component = routeProps.match.params.component || null;
+                        const quizId = routeProps.match.params.id || null;
                         switch (component) {
                             case 'list':
                                 return (
@@ -434,7 +468,15 @@ class Quizzes extends Component {
                                 );
                             case 'training':
                                 return (
-                                    <QuizTraining/>
+                                    <QuizTraining
+                                        quizId={quizId}
+                                        formTraining={formTraining}
+                                        loading={loading}
+
+                                        getQuizLevel={this.handleGetQuizLevel}
+                                        sendQuizLevel={this.handleSendQuizLevel}
+                                        onUnmountQuizTraining={this.handleUnmountQuizTraining}
+                                    />
                                 );                   
                             default:
                                 return <Redirect to={QUIZ_LIST_PATH} />;
@@ -466,6 +508,7 @@ class Quizzes extends Component {
 Quizzes.propTypes = {
     formQuiz: PropTypes.objectOf(PropTypes.any).isRequired,
     formQuestion: PropTypes.objectOf(PropTypes.any).isRequired,
+    formTraining: PropTypes.objectOf(PropTypes.any).isRequired,
     register: PropTypes.arrayOf(PropTypes.any).isRequired,
     requestBody: PropTypes.shape({
         limit: PropTypes.number
@@ -480,12 +523,16 @@ Quizzes.propTypes = {
     setQuestionCreateFormState: PropTypes.func.isRequired,
     setQuestionData: PropTypes.func.isRequired,
     setQuizMaxLevels: PropTypes.func.isRequired,
-    resetQuestionCreateForm: PropTypes.func.isRequired
+    resetQuestionCreateForm: PropTypes.func.isRequired,
+    sendQuizQuestionsForPass: PropTypes.func.isRequired,
+    getQuizQuestionsForPass: PropTypes.func.isRequired,
+    resetQuizzesTraining: PropTypes.func.isRequired
 };
 
 const mapStateToProps = (state) => ({
     formQuiz: state.quizzes.formQuizCreation,
     formQuestion: state.quizzes.formQuestionCreation,
+    formTraining: state.quizzes.formTraining,
     register: state.quizzes.quizList.register,
     requestBody: state.quizzes.quizList.requestBody,
     pages: state.quizzes.quizList.pages,

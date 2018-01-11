@@ -8,24 +8,6 @@ const types = {
     ...quizzesTypes
 };
 
-export const createQuizSession = quizId => async dispatch => {
-    try {
-        await dispatch({
-            type: types.CREATE_QUIZ_SESSION.REQUEST
-        });
-        const { data } = await withAuth('post',`/quizzes/session/`, { quizId });
-        await dispatch({
-            type: types.CREATE_QUIZ_SESSION.SUCCESS,
-            data
-        });
-    } catch (error) {
-        await dispatch({
-            type: types.CREATE_QUIZ_SESSION.FAILURE,
-            error: error.message
-        });         
-    }
-};
-
 export const createQuiz = createData => async dispatch => {
     try {
         await dispatch({
@@ -70,48 +52,12 @@ export const updateQuiz = (quizId, dataToUpdate) => async dispatch => {
     }
 };
 
-export const deleteQuizSession = quizId => async dispatch => {
-    try {
-        await dispatch({
-            type: types.DELETE_QUIZ_SESSION.REQUEST
-        });
-        await withAuth('delete',`/quizzes/session/id/${quizId}`);
-        await dispatch({
-            type: types.DELETE_QUIZ_SESSION.SUCCESS
-        });
-    } catch (error) {
-        await dispatch({
-            type: types.DELETE_QUIZ_SESSION.FAILURE,
-            error: error.message
-        });         
-    }
-};
-
-export const getQuizLevel = (quizData, quizSessionId) => async dispatch => {
-    try {
-        await dispatch({
-            type: types.GET_QUIZ_LEVEL.REQUEST
-        });
-        await withAuth('post',`/quizzes/${quizSessionId}/level`, quizData);
-        const { data } = await withAuth('get',`/quizzes/${quizSessionId}/level/next`);
-        await dispatch({
-            type: types.GET_QUIZ_LEVEL.SUCCESS,
-            data
-        });
-    } catch (error) {
-        await dispatch({
-            type: types.GET_QUIZ_LEVEL.FAILURE,
-            error: error.message
-        });         
-    }
-};
-
-export const getQuizResults = quizSessionId => async dispatch => {
+export const getQuizResults = quizId => async dispatch => {
     try {
         await dispatch({
             type: types.GET_QUIZ_RESULTS.REQUEST
         });
-        const { data } = await withAuth('get',`/quizzes/results/${quizSessionId}`);
+        const { data } = await withAuth('get',`/quizzes/results/${quizId}`);
         await dispatch({
             type: types.GET_QUIZ_RESULTS.SUCCESS,
             data
@@ -253,6 +199,65 @@ export const deleteQuestion = questionId => async dispatch => {
         await dispatch({
             type: types.DELETE_QUESTION.FAILURE,
             error: 'Question deleted failed.'
+        });         
+    }
+};
+
+export const getQuizQuestionsForPass = (quizId, isFinished) => async dispatch => {
+    try {
+        await dispatch({
+            type: types.GET_QUIZ_LEVEL.REQUEST
+        });
+        if (isFinished) {
+            const { data } = await withAuth('get', `/pass_quiz/${quizId}`);
+            await dispatch({
+                type: types.GET_QUIZ_LEVEL.SUCCESS,
+                data
+            });
+        } else {
+            await dispatch({
+                type: types.GET_QUIZ_RESULTS.REQUEST
+            });
+            const { data } = await withAuth('get', `/quiz_results/${quizId}`);
+            await dispatch({
+                type: types.GET_QUIZ_RESULTS.SUCCESS,
+                data
+            });
+        }
+    } catch (error) {
+        await dispatch({
+            type: types.GET_QUIZ_LEVEL.FAILURE,
+            error: 'Question not received.'
+        });         
+    }
+};
+
+export const sendQuizQuestionsForPass = (quizId, levelResults) => async dispatch => {
+    try {
+        await dispatch({
+            type: types.GET_QUIZ_LEVEL.REQUEST
+        });
+        const { data } = await withAuth('post', `/pass_quiz/${quizId}`, levelResults);
+        if (data.is_finished) {
+            await dispatch({
+                type: types.GET_QUIZ_RESULTS.REQUEST
+            });
+            const { data: dataResults } = await withAuth('get', `/quiz_results/${quizId}`);
+            await dispatch({
+                type: types.GET_QUIZ_RESULTS.SUCCESS,
+                data: dataResults
+            });
+        } else {
+            const { data: nextLevelData } = await withAuth('get', `/pass_quiz/${quizId}`, levelResults);
+            await dispatch({
+                type: types.GET_QUIZ_LEVEL.SUCCESS,
+                data: nextLevelData
+            });
+        }
+    } catch (error) {
+        await dispatch({
+            type: types.GET_QUIZ_LEVEL.FAILURE,
+            error: 'Question not received.'
         });         
     }
 };

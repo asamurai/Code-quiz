@@ -8,6 +8,62 @@ const types = {
     ...quizzesTypes
 };
 
+// const mockResults = {
+//     id: 1,
+//     user: 2,
+//     topic: 3,
+//     title: "Python beginers",
+//     description: "Want to test your knowledge of Python? Give this quiz if you experienced in data types, functions, statements and have fun!",
+//     image: null,
+//     created: "2018-01-09T19:45:20.700160Z",
+//     chained_answers:16,
+//     correct_chained_answers: 10,
+//     questions: [
+//         {
+//             id: 1,
+//             quiz: 1,
+//             chain: 1,
+//             level: 1,
+//             source: "9999",
+//             chosen: [2],
+//             answers: [
+//                 {
+//                     answer: "True",
+//                     is_true: false,
+//                     id: 1
+//                 },
+//                 {
+//                     answer: "False",
+//                     is_true: true,
+//                     id: 2
+//                 }
+//             ],
+//             text_question: "Text question"
+//         }
+//     ]
+// };
+
+// const mockTrainingData = [
+//     {
+//         id: 3,
+//         quiz: 1,
+//         chain: 2,
+//         level: 1,
+//         source:"A",
+//         answers: [
+//             {
+//                 answer: "Trues",
+//                 id: 5
+//             },
+//             {
+//                 answer: "Falses",
+//                 id: 6
+//             }
+//         ],
+//         text_question: "Test question 1  1"
+//     }
+// ];
+
 const initialState = {
     quizList: {
         pages: {
@@ -42,10 +98,11 @@ const initialState = {
         }
     },
     formTraining: {
-        quizSessionId: null,
-        data: null,
+        // data: mockTrainingData,
+        data: [],
+        // results: mockResults,
         results: null,
-        isFinished: false
+        is_finished: false
     },
     loading: false,
     error: null
@@ -205,30 +262,23 @@ const formQuestionCreation = (state = initialState.formQuestionCreation, action)
 const formTraining = (state = initialState.formTraining, action) => {
     switch (action.type) {
         case types.RESET_QUIZ_TRAINING:
-        case types.DELETE_QUIZ_SESSION.SUCCESS:
             return initialState.formTraining;
-        case types.CREATE_QUIZ_SESSION.SUCCESS:
-            return {
-                ...state,
-                quizSessionId: action.data.quizSessionId
-            };
         case types.GET_QUIZ_LEVEL.SUCCESS:
             return {
                 ...state,
-                data: action.data.content,
-                isFinished: action.data.isFinished
+                data: action.data,
+                is_finished: false,
+                results: null
             };
         case types.GET_QUIZ_RESULTS.SUCCESS:
             return {
                 ...state,
-                data: null,
-                isFinished: true,
+                data: [],
+                is_finished: true,
                 results: action.data
             };
-        case types.CREATE_QUIZ_SESSION.FAILURE:
         case types.GET_QUIZ_LEVEL.FAILURE:
         case types.GET_QUIZ_RESULTS.FAILURE:
-        case types.DELETE_QUIZ_SESSION.FAILURE:
         default:
             return state;
     }
@@ -248,9 +298,7 @@ const error = (state = initialState.error, action) => {
         case types.GET_QUIZ_BY_ID.FAILURE:
         case types.GET_QUIZZES_BY_USER_ID.FAILURE:
         case types.GET_QUIZ_RESULTS.FAILURE:
-        case types.CREATE_QUIZ_SESSION.FAILURE:
         case types.GET_QUIZ_LEVEL.FAILURE:
-        case types.DELETE_QUIZ_SESSION.FAILURE:
         case types.CREATE_QUESTION.FAILURE:
         case types.UPDATE_QUESTION.FAILURE:
         case types.DELETE_QUESTION.FAILURE:
@@ -263,28 +311,22 @@ const error = (state = initialState.error, action) => {
 const loading = (state = initialState.loading, action) => {
     switch (action.type) {
         case types.GET_QUIZ_BY_ID.REQUEST:
-        case types.CREATE_QUIZ_SESSION.REQUEST:
         case types.GET_QUIZ_LEVEL.REQUEST:
         case types.GET_QUIZ_RESULTS.REQUEST:
-        case types.DELETE_QUIZ_SESSION.REQUEST:
         case types.GET_QUIZZES_BY_USER_ID.REQUEST:
         case types.CREATE_QUESTION.REQUEST:
         case types.UPDATE_QUESTION.REQUEST:
         case types.DELETE_QUESTION.REQUEST:
             return true;
         case types.GET_QUIZZES_BY_USER_ID.SUCCESS:
-        case types.DELETE_QUIZ_SESSION.SUCCESS:
         case types.GET_QUIZ_RESULTS.SUCCESS:
-        case types.CREATE_QUIZ_SESSION.SUCCESS:
         case types.GET_QUIZ_LEVEL.SUCCESS:
         case types.GET_QUIZ_BY_ID.SUCCESS:
         case types.CREATE_QUESTION.SUCCESS:
         case types.UPDATE_QUESTION.SUCCESS:
         case types.DELETE_QUESTION.SUCCESS:
         case types.GET_QUIZ_RESULTS.FAILURE:
-        case types.CREATE_QUIZ_SESSION.FAILURE:
         case types.GET_QUIZ_LEVEL.FAILURE:
-        case types.DELETE_QUIZ_SESSION.FAILURE:
         case types.GET_QUIZ_BY_ID.FAILURE:
         case types.CREATE_QUESTION.FAILURE:
         case types.UPDATE_QUESTION.FAILURE:
