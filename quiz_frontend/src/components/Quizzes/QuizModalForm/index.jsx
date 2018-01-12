@@ -253,7 +253,7 @@ class QuizModalForm extends Component {
         const modalTitle = this.getTitleForModal();
         const modalFooter = this.getFooterForModal();
 
-        const availableLevels = Array(maxLevel).fill('').map((el, ind) => ind + 1);
+        const availableLevels = Array(maxLevel+1).fill('').map((el, ind) => ind + 1);
         const questionLevels = questions.map(question => question.level);
         const isAnyHigherLevelsAvailable = questions.map(question => +question.level).filter(el => el > fields.level.value).length >= 1;
         const isLevelFieldBlocked = questionLevels.filter(el => (+el === +fields.level.value && isAnyHigherLevelsAvailable)).length === 1;
