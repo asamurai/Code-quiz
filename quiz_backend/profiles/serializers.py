@@ -48,7 +48,7 @@ class UserProfileSerializer(serializers.ModelSerializer):
         user.username = user_dict.get('username', user.username)
         user.save()
         instance.bio = validated_data.get('bio', None)
-        instance.profile_image = validated_data.get('profile_image', None)
+        instance.profile_image = validated_data.get('profile_image', instance.profile_image)
         instance.save()
         return instance
 
