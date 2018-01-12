@@ -1,13 +1,10 @@
-import random
 import json
 
-from django.shortcuts import get_object_or_404
 from django.core.exceptions import ObjectDoesNotExist
 from django.utils.timezone import now
 
 from rest_framework.viewsets import ModelViewSet
 from rest_framework.permissions import IsAuthenticated
-from rest_framework.exceptions import APIException
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import generics
@@ -15,8 +12,8 @@ from rest_framework import status
 from rest_framework.exceptions import PermissionDenied, NotFound
 
 from .serializers import QuizCategorySerializer, QuestionsSerializer, QuizSerializer, ChainSerializer, \
-    AnswerNestedSerializerForPassing, QuestionsSerializerForPassing, TopicSerializer, QuizNestedSerializer, QuizReadSerializer, \
-    QuestionsSerializerPost, QuizResult, QuestionSerializesGET
+    QuestionsSerializerForPassing, TopicSerializer, QuizNestedSerializer, QuizReadSerializer, \
+    QuestionsSerializerPost
 
 from .models import QuizCategory, Question, Quiz, Chain, Topic, UserProgress
 
@@ -24,6 +21,9 @@ from .models import QuizCategory, Question, Quiz, Chain, Topic, UserProgress
 class QuizCategoryViewSet(ModelViewSet):
     serializer_class = QuizCategorySerializer
     queryset = QuizCategory.objects.all()
+    '''
+    View for representing categories and top topics.
+    '''
 
     def list(self, request):
         serializer = QuizCategorySerializer(self.queryset, many=True)
@@ -106,6 +106,9 @@ class QuizViewSet(ModelViewSet):
         return [permission() for permission in permission_classes]
 
 class QuestionViewSet(ModelViewSet):
+    '''
+    Changing and creating questions
+    '''
     permission_classes = [IsAuthenticated]
     serializer_class = QuestionsSerializer
     queryset = Question.objects.all()
@@ -138,18 +141,42 @@ class TopicViewSet(ModelViewSet):
 
 class QuestionList(APIView):
 
-    ''' Implements passing quiz '''
+    ''' Implements passing quiz
+    GET:
+    /pass_quiz/<QUIZ_ID>  returns array with question and answers
+    example response:
+    {
+    "questions": [{
+    	"id": 14,
+    	"quiz": 2,
+    	"chain": 1,
+    	"level": 1,
+    	"source": "src",
+    	"answers": [{
+    		"answer": "true",
+    		"id": 28
+    	}, {
+    		"answer": "false",
+    		"id": 29
+    	}],
+    	"text_question": "1 lvl"
+    }]
+    }
+    POST:
+    curl http://127.0.0.1:8000/pass_quiz/2/ -H 'Authorization: Bearer a6e12124ffc1913666c0a9bcbf3aa442fcd6dba1 '
+    -X POST -H "Content-Type: application/json" -d '[{"id":15, "answers": [29,30]}]'
+    answers must be array of answers_id
+    '''
 
     permission_classes = (IsAuthenticated,)
 
     def get(self, request, id):
-        # Check, have user passed any tests
+        ''' Check, have user passed any tests '''
         queryset = UserProgress.objects.filter(question__quiz__id=id).filter(user=request.user)
-        # if user doesnt send answers on test
-        # queryset_filtered = queryset.filter(answer=None)
+        ''' if user doesnt send answers on test '''
         queryset_filtered = UserProgress.objects.filter(question__quiz__id=id).filter(user=request.user).filter(answer=None)
         if not UserProgress.objects.filter(question__quiz__id=id).filter(user=request.user).filter(answer=None):
-            # if user pass test first time
+            '''if user pass test first time  '''
             if not queryset.filter(is_finished=False):
                 questions = Question.objects.filter(quiz__id=id).filter(level=1).order_by('chain', '?').distinct('chain')
                 time_started = now()
@@ -192,14 +219,20 @@ class QuestionList(APIView):
 
 
 class QuizResultView(APIView):
-
+    ''' GET all users results by quiz on /result/<quiz_id>
+    ::returns list of passing quizes or object with quiz (when query param latest = true
+    if user not passes this test returns []
+    quizz includes question with answer. in all questions adding argument chosen, which indicates answer_id that user hasd chosen
+    chained answers is an amount of answer if user pass all quizzes
+    correct chained answers is number of questions that user answer correctly
+    '''
     permission_classes = (IsAuthenticated,)
 
     def get(self, request, id):
         queryset = UserProgress.objects.filter(user_id=request.user).filter(question__quiz_id=id)\
             .filter(is_finished=True)
         if not queryset:
-            raise NotFound('You have not passed this test')
+            return Response([])
         datetime_started = queryset.order_by('datetime_started').distinct('datetime_started')
         response_data = []
         for datetime_result in datetime_started:
@@ -234,7 +267,9 @@ class QuizResultView(APIView):
 
 
 class UserResults(APIView):
-
+    ''' GET /result/user/<user_id>
+    returns all quizzes passed by user
+    '''
     def get(self, request, id):
 
         queryset = UserProgress.objects.filter(user_id=id).filter(is_finished=True)

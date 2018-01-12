@@ -20,6 +20,11 @@ email_activation = EmailActivation()
 
 @api_view(['POST'])
 def register(request):
+    '''
+    1st registration step. Validate passwords, email, username
+    :param request: see UserSerializer
+    :return:
+    '''
     serialized = UserSerializer(data=request.data)
     if serialized.is_valid(raise_exception=True):
         request.data.pop('confirmPassword')
@@ -54,6 +59,11 @@ def logout(request):
 
 @api_view(['POST'])
 def login(request):
+    """
+    Get token after sending credentials to /login
+    :param request:
+    :return:
+    """
     serializer = AuthTokenSerializer(data=request.data)
     serializer.is_valid(raise_exception=True)
     user = serializer.validated_data['user']
@@ -79,6 +89,9 @@ def restore_password(request):
 
 
 class ProfilesViewSet(ModelViewSet):
+    '''
+    Changing user info with extended django user model
+    '''
     permission_classes = (IsAuthenticated,)
     queryset = UserProfile.objects.all()
     serializer_class = UserProfileSerializer
@@ -96,10 +109,15 @@ class UpdatePassword(APIView):
     """
     permission_classes = (IsAuthenticated, )
 
-    def get_object(self, queryset=None):
+    def get_object(self):
         return self.request.user
 
-    def put(self, request, *args, **kwargs):
+    def put(self, request):
+        '''
+        PUT handler for changing password
+        :param request:new_password, old_password, confirm_password
+        :return:
+        '''
         self.object = request.user
         serializer = ChangePasswordSerializer(data=request.data)
 
