@@ -55,6 +55,7 @@ class Account extends Component {
         const {
             onAccountSave
         } = this.props;
+
         onAccountSave();
     }
 

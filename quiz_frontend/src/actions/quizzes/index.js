@@ -203,10 +203,10 @@ export const getQuizQuestionsForPass = (quizId, isFinished) => async dispatch =>
             await dispatch({
                 type: types.GET_QUIZ_RESULTS.REQUEST
             });
-            const { data } = await withAuth('get', `/result/${quizId}/`);
+            const { data } = await withAuth('get', `/result/${quizId}/?latest=true`);
             await dispatch({
                 type: types.GET_QUIZ_RESULTS.SUCCESS,
-                data: JSON.parse(data)[0]
+                data: JSON.parse(data)
             });
         }
     } catch (error) {
@@ -227,10 +227,10 @@ export const sendQuizQuestionsForPass = (quizId, levelResults) => async dispatch
             await dispatch({
                 type: types.GET_QUIZ_RESULTS.REQUEST
             });
-            const { data: dataResults } = await withAuth('get', `/result/${quizId}/`);
+            const { data: dataResults } = await withAuth('get', `/result/${quizId}/?latest=true`);
             await dispatch({
                 type: types.GET_QUIZ_RESULTS.SUCCESS,
-                data: JSON.parse(dataResults)[0]
+                data: JSON.parse(dataResults)
             });
         } else {
             const {

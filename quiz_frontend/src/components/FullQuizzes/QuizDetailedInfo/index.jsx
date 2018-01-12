@@ -46,6 +46,7 @@ class QuizDetailedInfo extends Component {
                     <Icon
                         type="loading"
                     />
+                    {' Quiz info loading'}
                 </div>
             );
         }

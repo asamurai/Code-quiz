@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 
 import {
     Form,
-    // Row,
+    Row,
     Col,
     Input,
     Select,
@@ -57,7 +57,10 @@ class QuizFormInfo extends Component {
 
         if (loading) {
             return (
-                <Icon type={'loading'}/>
+                <Row span="12">
+                    <Icon type={'loading'}/>
+                    {' Quiz data loading'}
+                </Row>
             );
         }
 

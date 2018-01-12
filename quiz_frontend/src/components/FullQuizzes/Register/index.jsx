@@ -65,6 +65,7 @@ class FullQuizzesRegister extends Component {
                     }}
                 >
                     <Icon type="loading" />
+                    {' Register info loading'}
                 </div>
             );
         }

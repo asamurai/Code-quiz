@@ -14,6 +14,7 @@ import {
 import moment from 'moment';
 import _ from 'lodash';
 import validator from 'validator';
+import uuid from 'uuid';
 
 import * as userActions from './../../actions/user';
 import * as notificationActions from './../../actions/notifications';
@@ -87,10 +88,14 @@ class UserAccountContainer extends Component {
                 }
             } 
         } = this.props;
+
         const data = {
             ...userData,
             ...getValuesFromForm(formUserProfileValues)
         };
+
+        delete data.profile_image;
+
         updateUser(userId, data);
     };
 
@@ -104,18 +109,33 @@ class UserAccountContainer extends Component {
     }));
     
     handlePictureUpload = (pictureFile) => {
-        const {
-            user: {
+        const { formUserProfileValues } = this.state;
+        const { 
+            updateUser, 
+            user:{
+                data: userData,
                 data: {
-                    id: userId,
-                    imageId
+                    user_id: userId
                 }
-            },
-            setUserImage
+            } 
         } = this.props;
+
+        const data = {
+            ...userData,
+            ...getValuesFromForm(formUserProfileValues)
+        };
+
         const formData = new FormData();
-        formData.append('file', pictureFile);
-        setUserImage(userId, formData, imageId);
+
+        formData.append('profile_image', pictureFile);
+        formData.append('bio', data.bio);
+        formData.append('email', data.email);
+        formData.append('first_name', data.first_name);
+        formData.append('last_name', data.last_name);
+        formData.append('user_id', data.user_id);
+        formData.append('username', data.username);     
+
+        updateUser(userId, formData);
     };
 
     handleChangeUserModalState = (modalName, state) => {
@@ -193,15 +213,15 @@ class UserAccountContainer extends Component {
     });
 
     genereteRowForTable = (type, entity) => {
+        const topic = this.props.classifiers.quizTopics.find(topic => topic.id === entity.topic);
         switch (type) {
             case 'test':
                 return {
-                    key: entity.id,
+                    key: uuid(),
                     action: entity.id,
-                    testName: entity.test.name,
-                    testImage: entity.test.imageUrl,
-                    testScore: `${entity.testResult.score*100}%`,
-                    date: moment(entity.date).format('l')
+                    testName: entity.title,
+                    topic: topic ? topic.name : 'Undefined topic',
+                    date: moment(entity.passed).format('l')
                 };
             default:
                 break;
@@ -256,19 +276,28 @@ class UserAccountContainer extends Component {
 
     render () {
         const {
+            user,
             user: {
+                data: {
+                    profile_image: image
+                },
                 forms: {
                     profile: {
                         state: profileFormState,
                         modals
                     },
                     statistics: {
-                        register: statisticsRegister
+                        register: statisticsRegister,
+                        statistic
                     }
-                }
+                },
+                loading
             },
             setUserFormViewState,
-            setUserFormEditState
+            setUserFormEditState,
+            getUserStatisticsData,
+            resetUserQuizResultData,
+            getUserQuizResultData
         } = this.props;
 
         return (
@@ -287,7 +316,7 @@ class UserAccountContainer extends Component {
                                     case 'account':
                                         return (
                                             <UserProfileAccount
-                                                image={''}
+                                                image={image ? `${image}` : ''}
                                                 formState={profileFormState}
                                                 modals={modals}
                                                 fields={this.state.formUserProfileValues}
@@ -317,13 +346,21 @@ class UserAccountContainer extends Component {
                                             case true:
                                                 return (
                                                     <TestStatisticsPage
-                                                        testId={id}
+                                                        quizId={id}
+                                                        statistic={statistic}
+                                                        loading={loading}
+
+                                                        getUserQuizResultData={getUserQuizResultData}
+                                                        resetUserQuizResultData={resetUserQuizResultData}
                                                     />
                                                 );  
                                             default:
                                                 return (
                                                     <UserProfileStatstics
-                                                        testStatistics={statisticsRegister.map(test => this.genereteRowForTable('test', test))}
+                                                        testStatistics={statisticsRegister.sort((a,b) => new Date(b.passed) - new Date(a.passed)).map(test => this.genereteRowForTable('test', test))}
+
+                                                        user={user}
+                                                        getUserStatisticsData={getUserStatisticsData}
                                                     />
                                                 );  
                                         } 
@@ -344,11 +381,15 @@ UserAccountContainer.propTypes = {
 
     showErrorMessage: PropTypes.func.isRequired,
     setUserFormViewState: PropTypes.func.isRequired,
-    setUserFormEditState: PropTypes.func.isRequired
+    setUserFormEditState: PropTypes.func.isRequired,
+    getUserStatisticsData: PropTypes.func.isRequired,
+    resetUserQuizResultData: PropTypes.func.isRequired,
+    getUserQuizResultData: PropTypes.func.isRequired
 };
 
 const mapStateToProps = (state) => ({
-    user: state.user
+    user: state.user,
+    classifiers: state.classifiers
 });
   
 export default connect(mapStateToProps, ACTIONS)(UserAccountContainer);

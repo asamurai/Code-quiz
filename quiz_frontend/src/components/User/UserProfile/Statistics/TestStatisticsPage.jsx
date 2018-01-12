@@ -2,50 +2,117 @@ import React, { Component } from 'react';
 import { withRouter } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import {
-    Button
+    Row,
+    Button,
+    Collapse,
+    Icon,
+    Alert
 } from 'antd';
+
 import {
     Doughnut
 } from 'react-chartjs-2';
-
 import moment from 'moment';
+import uuid from 'uuid';
 
-const mockStatisticData = {
-    id: 1,
-    testId: 1,
-    test: {
-        name: 'Python basics',
-        imageUrl: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTHMdsvCwKqIJxU1U-pt6YLZ-iMapbCoWvamcnarpreAa_3xpcd'
-    },
-    testResult: {
-        score: 0.85,
-        correct: 85,
-        incorrect: 15,
-        total: 100
-    },
-    date: 'Mon Oct 30 2017 00:31:59 GMT+0200 (EET)'
-};
+const Panel = Collapse.Panel;
 
 class TestStatisticsPage extends Component {
     constructor(props) {
         super(props);
-        this.state = {
-            statistic: null
-        };
     }
 
-    componentWillMount () {
-        console.log('api get for test details result');
-        this.setState({
-            statistic: mockStatisticData
-        });
+    componentDidMount() {
+        const {
+            getUserQuizResultData,
+            quizId
+        } = this.props;
+
+        getUserQuizResultData(quizId);
+    }
+    
+    componentWillUnmount() {
+        const {
+            resetUserQuizResultData
+        } = this.props;
+
+        resetUserQuizResultData();
     }
 
-    generateDataSetForDiagram = (results) => {
+
+    renderResultAnswers = (answer, choosenAnswers) => {
+        const isAnswerCorrect = answer.is_true ? choosenAnswers.includes(answer.id) : !choosenAnswers.includes(answer.id);
+        return (
+            <Row
+                key={uuid()}
+                span="12"
+                style={{
+                    color: isAnswerCorrect ? '#41b715' : '#f22b31'
+                }}
+            >
+                <Icon
+                    type={
+                        choosenAnswers.includes(answer.id) ? 'check' : 'close'
+                    }
+                />
+                {
+                    answer.answer
+                }
+            </Row>
+        );
+    }
+
+    renderResultQuestions = question => {
+        const chosenAnswers = question.chosen.sort((a, b) => a - b);
+        const correctAnswers = question.answers
+            .filter(answer => answer.is_true)
+            .map(answer => answer.id)
+            .sort((a, b) => a - b);
+
+        const isQuestionCorrect = chosenAnswers.length===correctAnswers.length &&
+         chosenAnswers.every((answer,i) => answer === correctAnswers[i]);
+        
+        return (
+            <Panel
+                key={uuid()}
+                header={
+                    <Row
+                        span="12"
+                    >
+                        <Icon type={isQuestionCorrect ? 'check' : 'close'}/> {question.text_question}
+                    </Row>
+                }
+            >
+                <Row span="12">
+                    {
+                        'Answers: '
+                    }
+                </Row>
+                <Row span="12">
+                    {
+                        question.answers.map(answer => this.renderResultAnswers(answer, question.chosen))
+                    }
+                </Row>
+                {
+                    !isQuestionCorrect &&
+                    <Row span="12">
+                        <h3>
+                            {'Sources you should learn: '}
+                        </h3>
+                        <Row span="12">
+                            {question.source}
+                        </Row>
+                    </Row>
+                }
+            </Panel>
+        );
+    }
+
+    generateDataSetForDiagram = results => {
         return {
             datasets: [
                 {
-                    data: [results.correct, results.incorrect],
+                    data: [results.correct_chained_answers, results.chained_answers-results.correct_chained_answers],
                     backgroundColor: ['#41b715', '#f22b31']
                 }
             ],
@@ -61,41 +128,71 @@ class TestStatisticsPage extends Component {
 
     render () {
         const {
-            testId
+            statistic,
+            loading
         } = this.props;
-        const {
-            statistic
-        } = this.state;
+
+        if (loading) {
+            return (
+                <Row span="12">
+                    <Icon type={'loading'}/>
+                    {' Quiz result loading'}
+                </Row>
+            );
+        }
+        if (statistic) {
+            return (
+                <div>
+                    <Button
+                        type="primary"
+                        icon="rollback"
+                        onClick={this.goBack}
+                        style={{
+                            marginBottom: '20px'
+                        }}
+                    >
+                        Back to statistics page
+                    </Button>
+                    <Row span="12">
+                        <h2>Test: {statistic.title}</h2>
+                        <br/>
+                        <br/>
+                        <div
+                            style={{
+                                width: '400px',
+                                height: '250px'
+                            }}
+                        >
+                            <Doughnut
+                                data={this.generateDataSetForDiagram(statistic)}
+                            />
+                        </div>
+                        <b>Date of quiz passed:</b> {moment(statistic.created).format('l')}
+                        <br/>
+                        <br/>
+                        <Collapse>
+                            {
+                                statistic.questions.map(this.renderResultQuestions)
+                            }
+                        </Collapse>
+                    </Row>
+                </div>
+            );
+        }
 
         return (
-            <div>
-                <Button
-                    type="primary"
-                    icon="rollback"
-                    onClick={this.goBack}
-                >
-                    Back to statistics page
-                </Button>
-                <div>
-                    <b>Test #{testId}</b>
-                    <br/>
-                    <b>Name:</b> {mockStatisticData.test.name}
-                    <br/>
-                    <Doughnut
-                        data={this.generateDataSetForDiagram(statistic.testResult)}
-                    />
-                    <b>Score:</b> {mockStatisticData.testResult.score*100}%
-                    <br/>
-                    <b>Date:</b> {moment(mockStatisticData.date).format('l')}
-                    <br/>
-                </div>
-            </div>
+            <Alert error message={'Failed to reach result data'}/>
         );
     }
 }
 
 TestStatisticsPage.propTypes = {
-    testId: PropTypes.string.isRequired
+    quizId: PropTypes.string.isRequired,
+    statistic: PropTypes.objectOf(PropTypes.any),
+    loading: PropTypes.bool.isRequired,
+
+    getUserQuizResultData: PropTypes.func.isRequired,
+    resetUserQuizResultData: PropTypes.func.isRequired
 };
 
 export default withRouter(TestStatisticsPage);
