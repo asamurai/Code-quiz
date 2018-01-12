@@ -182,12 +182,23 @@ class UserAccountContainer extends Component {
                     ...userData,
                     email: data.newEmail
                 };
+                const formData = new FormData();
+
+                formData.append('bio', data.bio);
+                formData.append('email', data.email);
+                formData.append('first_name', data.first_name);
+                formData.append('last_name', data.last_name);
+                formData.append('user_id', data.user_id);
+                formData.append('username', data.username);     
+        
                 if (!validator.isEmail(data.email)) {
                     isValid = false;
                     showErrorMessage({
                         message: 'Email should be valid.'
                     });
                 }
+
+                data = formData;
             }
             if (changeField === 'password') {
                 data = {
