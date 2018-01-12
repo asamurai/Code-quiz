@@ -88,10 +88,14 @@ class UserAccountContainer extends Component {
                 }
             } 
         } = this.props;
+
         const data = {
             ...userData,
             ...getValuesFromForm(formUserProfileValues)
         };
+
+        delete data.profile_image;
+
         updateUser(userId, data);
     };
 
@@ -105,18 +109,33 @@ class UserAccountContainer extends Component {
     }));
     
     handlePictureUpload = (pictureFile) => {
-        const {
-            user: {
+        const { formUserProfileValues } = this.state;
+        const { 
+            updateUser, 
+            user:{
+                data: userData,
                 data: {
-                    id: userId,
-                    imageId
+                    user_id: userId
                 }
-            },
-            setUserImage
+            } 
         } = this.props;
+
+        const data = {
+            ...userData,
+            ...getValuesFromForm(formUserProfileValues)
+        };
+
         const formData = new FormData();
-        formData.append('file', pictureFile);
-        setUserImage(userId, formData, imageId);
+
+        formData.append('profile_image', pictureFile);
+        formData.append('bio', data.bio);
+        formData.append('email', data.email);
+        formData.append('first_name', data.first_name);
+        formData.append('last_name', data.last_name);
+        formData.append('user_id', data.user_id);
+        formData.append('username', data.username);     
+
+        updateUser(userId, formData);
     };
 
     handleChangeUserModalState = (modalName, state) => {
@@ -259,6 +278,9 @@ class UserAccountContainer extends Component {
         const {
             user,
             user: {
+                data: {
+                    profile_image: image
+                },
                 forms: {
                     profile: {
                         state: profileFormState,
@@ -294,7 +316,7 @@ class UserAccountContainer extends Component {
                                     case 'account':
                                         return (
                                             <UserProfileAccount
-                                                image={''}
+                                                image={image ? `${image}` : ''}
                                                 formState={profileFormState}
                                                 modals={modals}
                                                 fields={this.state.formUserProfileValues}
