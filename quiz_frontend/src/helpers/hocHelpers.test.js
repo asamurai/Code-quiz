@@ -1,7 +1,9 @@
-import {
+import hocHelpers from './hocHelpers';
+
+const {
     getValuesFromForm,
     getCertainValuesFromForm
-} from './hocHelpers';
+} = hocHelpers;
 
 const customForm = {
     name: { value: '' },

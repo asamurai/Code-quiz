@@ -9,9 +9,13 @@ const types = {
 const data = {
     data: {
         name: 'Artem'
-    },
-    role: 2
+    }
 };
+
+const token = {
+    token: '123123'
+};
+
 const error = {
     error: 'Fail'
 };
@@ -44,6 +48,7 @@ const initialState = {
             }
         }
     },
+    token: null,
     loggedIn: false
 };
 
@@ -56,8 +61,8 @@ describe('Reducer user test', () => {
             reducer(initialState, {type: types.USER_SIGNIN.REQUEST})
         ).toEqual({...initialState, loading: true});
         expect(
-            reducer(initialState, {type: types.USER_SIGNIN.SUCCESS, ...data})
-        ).toEqual({...initialState, ...data, loggedIn: true});
+            reducer(initialState, {type: types.USER_SIGNIN.SUCCESS, ...data, ...token})
+        ).toEqual({...initialState, ...data, ...token, loggedIn: true});
         expect(
             reducer(initialState, {type: types.USER_SIGNIN.FAILURE, ...error})
         ).toEqual({...initialState, ...error});
