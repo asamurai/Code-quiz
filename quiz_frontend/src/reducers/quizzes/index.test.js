@@ -10,29 +10,22 @@ const dummyError = {
     message: 'Message'
 };
 
-const dummyQuizListResponse = {
-    content: [
-        1,
-        2,
-        3
-    ],
-    limit: 100,
-    currentPage: 1,
-    totalFinded: 3
-};
+const dummyQuizListResponse = [
+    1,
+    2,
+    3
+];
 
 const dummyQuizCreateData = {
     name: 'Quiz name'
 };
 
 const dummyQuizTrainingData = {
-    data: {
-        quizId: 1
-    },
+    data: [ 1, 2 ],
     results: {
         result: 'You are great!'
     },
-    is_finished: true
+    is_finished: false
 };
 
 const initialState = {
@@ -49,12 +42,18 @@ const initialState = {
     modalStatus: {
         deleteQuiz: false,
         createQuiz: false,
-        editQuestion: false,
-        deleteQuestion: false,
-        createQuestion: false
+        deleteQuestion: false
     },
-    formCreation: {
-        selectedQuizId: null,
+    formQuizCreation: {
+        data: null,
+        maxLevel: 1,
+        state: {
+            create: false,
+            edit: false,
+            view: false
+        }
+    },
+    formQuestionCreation: {
         data: null,
         state: {
             create: false,
@@ -63,7 +62,7 @@ const initialState = {
         }
     },
     formTraining: {
-        data: null,
+        data: [],
         results: null,
         is_finished: false
     },
@@ -84,10 +83,7 @@ describe('Reducer quizzes test', () => {
                 initialState,
                 { 
                     type: types.GET_QUIZ_LEVEL.SUCCESS,
-                    data: {
-                        content: dummyQuizTrainingData.data,
-                        is_finished: dummyQuizTrainingData.is_finished
-                    }
+                    data: dummyQuizTrainingData.data
                 }
             )
         ).toEqual({
@@ -125,8 +121,7 @@ describe('Reducer quizzes test', () => {
             formTraining: {
                 ...initialState.formTraining,
                 results: dummyQuizTrainingData.results,
-                is_finished: true,
-                data: null
+                is_finished: true
             }
         });
         expect(
@@ -148,11 +143,7 @@ describe('Reducer quizzes test', () => {
                 initialState,
                 {
                     type: types.GET_QUIZZES_BY_USER_ID.SUCCESS,
-                    data: {
-                        content: dummyQuizListResponse.content,
-                        currentPage: dummyQuizListResponse.currentPage,
-                        totalFinded: dummyQuizListResponse.totalFinded
-                    }
+                    data: dummyQuizListResponse
                 }
             )
         ).toEqual({
@@ -161,10 +152,10 @@ describe('Reducer quizzes test', () => {
                 ...initialState.quizList,
                 pages: {
                     ...initialState.quizList.pages,
-                    currentPage: dummyQuizListResponse.currentPage,
-                    totalFinded: dummyQuizListResponse.totalFinded
+                    currentPage: 1,
+                    totalFinded: dummyQuizListResponse.length
                 },
-                register: dummyQuizListResponse.content
+                register: dummyQuizListResponse
             }
         });
         expect(
@@ -191,8 +182,8 @@ describe('Reducer quizzes test', () => {
             )
         ).toEqual({
             ...initialState,
-            formCreation: {
-                ...initialState.formCreation,
+            formQuizCreation: {
+                ...initialState.formQuizCreation,
                 data: dummyQuizCreateData
             }
         });
@@ -219,10 +210,10 @@ describe('Reducer quizzes test', () => {
             )
         ).toEqual({
             ...initialState,
-            formCreation: {
-                ...initialState.formCreation,
+            formQuizCreation: {
+                ...initialState.formQuizCreation,
                 state: {
-                    ...initialState.formCreation.state,
+                    ...initialState.formQuizCreation.state,
                     edit: true
                 }
             }
@@ -239,10 +230,10 @@ describe('Reducer quizzes test', () => {
             )
         ).toEqual({
             ...initialState,
-            formCreation: {
-                ...initialState.formCreation,
+            formQuizCreation: {
+                ...initialState.formQuizCreation,
                 state: {
-                    ...initialState.formCreation.state,
+                    ...initialState.formQuizCreation.state,
                     create: true
                 }
             }
@@ -259,10 +250,10 @@ describe('Reducer quizzes test', () => {
             )
         ).toEqual({
             ...initialState,
-            formCreation: {
-                ...initialState.formCreation,
+            formQuizCreation: {
+                ...initialState.formQuizCreation,
                 state: {
-                    ...initialState.formCreation.state,
+                    ...initialState.formQuizCreation.state,
                     view: true
                 }
             }
@@ -315,7 +306,7 @@ describe('Reducer quizzes test', () => {
                 {
                     type: types.SET_QUIZZES_REQUEST_BODY,
                     requestBody: {
-                        limit: dummyQuizListResponse.limit
+                        limit: 10
                     }
                 }
             )
@@ -325,7 +316,7 @@ describe('Reducer quizzes test', () => {
                 ...initialState.quizList,
                 requestBody: {
                     ...initialState.quizList.requestBody,
-                    limit: dummyQuizListResponse.limit
+                    limit: 10
                 }
             }
         });
@@ -337,8 +328,8 @@ describe('Reducer quizzes test', () => {
                 {
                     type: types.SET_QUIZZES_PAGES,
                     pages: {
-                        currentPage: dummyQuizListResponse.currentPage,
-                        totalFinded: dummyQuizListResponse.totalFinded
+                        currentPage: 1,
+                        totalFinded: dummyQuizListResponse.length
                     }
                 }
             )
@@ -348,8 +339,8 @@ describe('Reducer quizzes test', () => {
                 ...initialState.quizList,
                 pages: {
                     ...initialState.quizList.pages,
-                    currentPage: dummyQuizListResponse.currentPage,
-                    totalFinded: dummyQuizListResponse.totalFinded
+                    currentPage: 1,
+                    totalFinded: dummyQuizListResponse.length
                 }
             }
         });

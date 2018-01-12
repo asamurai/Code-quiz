@@ -23,7 +23,9 @@ const initialState = {
         platform: [],
         tool: [],
         language: []
-    }
+    },
+    topic: null,
+    quizzes: []
 };
 
 describe('Reducer fullquizzes test', () => {
@@ -42,7 +44,7 @@ describe('Reducer fullquizzes test', () => {
             reducer(initialState, {
                 type: types.GET_TOPICS_BY_CATEGORY.SUCCESS,
                 data: {
-                    type: 'library',
+                    category: 'library',
                     content: dummyRegister
                 }
             })

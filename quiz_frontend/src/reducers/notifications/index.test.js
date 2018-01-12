@@ -14,7 +14,8 @@ const initialState = {
     isSuccessMessage: false,
     isErrorMessage: false,
     isInfoMessage: false,
-    message: ''
+    message: '',
+    title: ''
 };
 
 describe('Reducer notifications test', () => {
@@ -30,7 +31,8 @@ describe('Reducer notifications test', () => {
         .toEqual({
             ...initialState, 
             isInfoMessage: true, 
-            message: dummyData.message
+            message: dummyData.message,
+            title: 'Attention!'
         });
     });
     it('NOTIFICATION_SHOW_ERROR_MESSAGE action test', () => {
@@ -38,7 +40,8 @@ describe('Reducer notifications test', () => {
         .toEqual({
             ...initialState, 
             isErrorMessage: true, 
-            message: dummyData.message
+            message: dummyData.message,
+            title: 'Error!'
         });
     });
     it('NOTIFICATION_SHOW_SUCCESS_MESSAGE action test', () => {
@@ -46,7 +49,8 @@ describe('Reducer notifications test', () => {
         .toEqual({
             ...initialState, 
             isSuccessMessage: true, 
-            message: dummyData.message
+            message: dummyData.message,
+            title: 'Success!'
         });
     });
 });
