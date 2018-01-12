@@ -16,17 +16,28 @@ class CategoryQiozList extends Component {
                     marginTop: '30px'
                 }}
             >
-                <h2>Available tests: </h2>
-                <div>
-                    {
-                        tests.map((test) => (
-                            <CategoryQiozElement
-                                key={uuid()}
-                                test={test}
-                            />
-                        ))
-                    }
-                </div>
+                {
+                    tests.length > 0 &&
+                    <div>
+                        <h2>Available quizzes: </h2>
+                        <div>
+                            {
+                                tests.map((test) => (
+                                    <CategoryQiozElement
+                                        key={uuid()}
+                                        test={test}
+                                    />
+                                ))
+                            }
+                        </div>
+                    </div>
+                }
+                {
+                    tests.length === 0 &&
+                    <div>
+                        <h2>No Available quizzes</h2>
+                    </div>                    
+                }
             </div>
         );
     }
